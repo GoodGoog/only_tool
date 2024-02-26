@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.only_tool.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#899776"
+        >
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@{viewModel.name}"-->
+<!--            android:textSize="20dp"-->
+<!--            android:textColor="#888999"-->
+<!--            android:background="#221155"-->
+<!--            />-->
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="跳转至SecondActivity"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/btn_first"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
