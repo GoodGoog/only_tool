@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.example.common.util.RoutePathUtil;
 
-@Route(path = "/main/MAIN_TEST_ACTIVITY")
+
 public class SecondActivity extends AppCompatActivity {
 
     @Override

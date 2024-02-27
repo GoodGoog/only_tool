@@ -43,7 +43,7 @@ dependencies {
 
     api project(path: ':common')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(path: ':main')
+    api project(path: ':Home')
     api project(path: ':mystery')
     api project(path: ':more')
     api project(path: ':mine')

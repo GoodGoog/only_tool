@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 rootProject.name = "only_tool"
 include ':app'
 include ':common'
-include ':main'
+include ':Home'
 include ':mystery'
 include ':more'
 include ':mine'
