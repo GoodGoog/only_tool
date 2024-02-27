@@ -27,7 +27,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:text="跳转至SecondActivity"
+            android:text="@{viewModel.name}"
             android:textColor="@color/black"
             android:textSize="18dp"
             android:gravity="center"
