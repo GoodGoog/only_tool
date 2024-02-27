@@ -1,5 +1,6 @@
 package com.example.common.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,5 +41,11 @@ public abstract class BaseFragment<B extends ViewDataBinding, VM extends BaseVie
     protected abstract void initData(@Nullable Bundle savedInstanceState);
 
     protected abstract int getLayoutId();
+
+    protected void startActivity(Class c){
+        Intent intent = new Intent();
+        intent.setClass(getContext(),c);
+        startActivity(intent);
+    }
 
 }

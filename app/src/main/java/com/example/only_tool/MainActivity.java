@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.common.base.BaseActivity;
+import com.example.main.HomeFragment;
 import com.example.mine.MineFragment;
 import com.example.more.MoreFragment;
 import com.example.mystery.MysteryFragment;
@@ -31,7 +32,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,MainViewModel
 
     private void initPager(){
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new MineFragment());
+        fragments.add(new HomeFragment());
         fragments.add(new MysteryFragment());
         fragments.add(new MoreFragment());
         fragments.add(new MineFragment());

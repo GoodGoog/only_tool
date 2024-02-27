@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/zhang/Desktop/only_tool/Home/src/main/res/layout/activity_second.xml" value="0.29010416666666666" />
+        <entry key="..\:/Users/zhang/Desktop/only_tool/Home/src/main/res/layout/fragment_home.xml" value="0.29010416666666666" />
         <entry key="..\:/Users/zhang/Desktop/only_tool/app/src/main/res/drawable/main_tab_home_status.xml" value="0.1" />
         <entry key="..\:/Users/zhang/Desktop/only_tool/app/src/main/res/drawable/main_tab_mine_status.xml" value="0.1" />
         <entry key="..\:/Users/zhang/Desktop/only_tool/app/src/main/res/drawable/main_tab_more_status.xml" value="0.1" />
@@ -13,6 +15,11 @@
         <entry key="..\:/Users/zhang/Desktop/only_tool/app/src/main/res/layout/layout_fun.xml" value="0.16302083333333334" />
         <entry key="..\:/Users/zhang/Desktop/only_tool/common/src/main/res/layout/layout_test.xml" value="0.1636271529888551" />
         <entry key="..\:/Users/zhang/Desktop/only_tool/mine/src/main/res/layout/fragment_mine.xml" value="0.34057971014492755" />
+        <entry key="..\:/Users/zhang/Desktop/only_tool/more/src/main/res/layout/activity_retrofit.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/zhang/Desktop/only_tool/more/src/main/res/layout/fragment_more.xml" value="0.29010416666666666" />
+        <entry key="..\:/Users/zhang/Desktop/only_tool/more/src/main/res/layout/more_activity_ok_http.xml" value="0.2234375" />
+        <entry key="..\:/Users/zhang/Desktop/only_tool/more/src/main/res/layout/more_item_more_rv.xml" value="0.23717948717948717" />
+        <entry key="..\:/Users/zhang/Desktop/only_tool/mystery/src/main/res/layout/fragment_mystery.xml" value="0.29010416666666666" />
       </map>
     </option>
   </component>

@@ -9,36 +9,6 @@
             type="com.example.only_tool.MainViewModel" />
     </data>
 
-    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:background="#899776"-->
-    <!--        >-->
-
-    <!--&lt;!&ndash;        <TextView&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:layout_height="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:gravity="center"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:text="@{viewModel.name}"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:textSize="20dp"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:textColor="#888999"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:background="#221155"&ndash;&gt;-->
-    <!--&lt;!&ndash;            />&ndash;&gt;-->
-
-    <!--        <Button-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="100dp"-->
-    <!--            android:text="@{viewModel.name}"-->
-    <!--            android:textColor="@color/black"-->
-    <!--            android:textSize="18dp"-->
-    <!--            android:gravity="center"-->
-    <!--            app:layout_constraintTop_toTopOf="parent"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"-->
-    <!--            android:id="@+id/btn_first"-->
-    <!--            />-->
-
-    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
             android:orientation="horizontal"
+            android:background="@color/white"
             android:paddingTop="3dp">
 
             <LinearLayout
@@ -86,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="首页"
-                    android:textColor="@drawable/main_tab_home_status"
+                    android:textColor="@drawable/main_tab_text_color"
                     android:textSize="13sp" />
             </LinearLayout>
 
