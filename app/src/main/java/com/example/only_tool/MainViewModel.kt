@@ -1,7 +1,7 @@
 package com.example.only_tool
 
 import androidx.lifecycle.MutableLiveData
-import com.example.common.BaseViewModel
+import com.example.common.base.BaseViewModel
 
 class MainViewModel : BaseViewModel() {
 

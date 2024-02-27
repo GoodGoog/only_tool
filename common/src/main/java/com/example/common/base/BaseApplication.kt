@@ -1,9 +1,9 @@
-package com.example.common
+package com.example.common.base
 
 import android.app.Application
 import com.alibaba.android.arouter.launcher.ARouter
 
-class BaseApplication : Application() {
+class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
@@ -15,6 +15,7 @@ class BaseApplication : Application() {
 
     override fun onTerminate() {
         super.onTerminate()
+        ARouter.getInstance().destroy()
     }
 
 }

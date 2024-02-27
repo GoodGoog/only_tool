@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.common.util.RoutePathUtil;
 import com.example.only_tool.databinding.ActivityMainBinding;
 //
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                ARouter.getInstance().build("/main/SecondActivity").navigation();
+                ARouter.getInstance().build("/app/test").navigation();
             }
         });
     }

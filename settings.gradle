@@ -16,3 +16,6 @@ rootProject.name = "only_tool"
 include ':app'
 include ':common'
 include ':main'
+include ':mystery'
+include ':more'
+include ':mine'

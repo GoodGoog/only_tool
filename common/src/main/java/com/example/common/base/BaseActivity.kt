@@ -1,4 +1,4 @@
-package com.example.common
+package com.example.common.base
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
+import com.example.common.BR
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseActivity<V : ViewDataBinding, VM : BaseViewModel> : AppCompatActivity() {
@@ -31,7 +32,7 @@ abstract class BaseActivity<V : ViewDataBinding, VM : BaseViewModel> : AppCompat
 //        }
         setContentView(binding.root)
         //       setContentView(getLayoutId())
-        binding.setVariable(com.example.common.BR.viewModel, viewModel)
+        binding.setVariable(BR.viewModel, viewModel)
         initData(savedInstanceState)
     }
 
