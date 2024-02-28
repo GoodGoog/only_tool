@@ -12,6 +12,7 @@ import com.example.common.base.BaseFragment;
 import com.example.more.adapter.MoreAdapter;
 import com.example.more.bean.MoreBean;
 import com.example.more.databinding.FragmentMoreBinding;
+import com.example.more.glide.GlideActivity;
 import com.example.more.okHttp.OkHttpActivity;
 import com.example.more.retrofit.RetrofitActivity;
 
@@ -34,6 +35,12 @@ public class MoreFragment extends BaseFragment<FragmentMoreBinding,MoreViewModel
             @Override
             public void onClick(View v) {
                 startActivity(OkHttpActivity.class);
+            }
+        }));
+        beans.add(new MoreBean(R.drawable.more_icon_list_access, "Glide测试", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(GlideActivity.class);
             }
         }));
 

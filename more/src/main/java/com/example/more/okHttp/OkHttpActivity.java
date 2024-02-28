@@ -10,7 +10,9 @@ import android.util.Log;
 import com.example.common.base.BaseActivity;
 import com.example.common.base.BaseViewModel;
 import com.example.more.R;
+import com.example.more.bean.StudentData;
 import com.example.more.databinding.MoreActivityOkHttpBinding;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -29,8 +31,9 @@ public class OkHttpActivity extends BaseActivity<MoreActivityOkHttpBinding, Base
 
     @Override
     protected void initData(@Nullable Bundle savedInstanceState) {
-        getFRequest();
+        //getFRequest();
         //postRequest();
+        testGsonTrans();
     }
 
     /**
@@ -82,6 +85,18 @@ public class OkHttpActivity extends BaseActivity<MoreActivityOkHttpBinding, Base
             }
         });
     }
+
+    /**
+     * 测试gson转换
+     * @return
+     */
+    private void testGsonTrans(){
+        String res = "{student : [{id:1,name:小明,sex:男,age:18,height:175},{id:2,name:小红,sex:女,age:19,height:165},{id:3,name:小强,sex:男,age:20,height:185}]}";
+        Gson gson = new Gson();
+        StudentData data = (gson.fromJson(res, StudentData.class));
+        logD(data.getStudent().get(0).getName());
+    }
+
 
     @Override
     protected int getLayoutId() {
