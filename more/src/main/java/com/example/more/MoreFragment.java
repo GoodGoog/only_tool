@@ -1,19 +1,19 @@
 package com.example.more;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.View;
 
 import com.example.common.base.BaseFragment;
 import com.example.more.adapter.MoreAdapter;
 import com.example.more.bean.MoreBean;
 import com.example.more.databinding.FragmentMoreBinding;
+import com.example.more.okHttp.OkHttpActivity;
+import com.example.more.retrofit.RetrofitActivity;
 
 import java.util.ArrayList;
 

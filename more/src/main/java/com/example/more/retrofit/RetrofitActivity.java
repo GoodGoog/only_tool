@@ -1,4 +1,4 @@
-package com.example.more;
+package com.example.more.retrofit;
 
 import android.os.Bundle;
 
@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.example.common.base.BaseActivity;
 import com.example.common.base.BaseViewModel;
+import com.example.more.R;
 import com.example.more.databinding.MoreActivityRetrofitBinding;
 
 public class RetrofitActivity extends BaseActivity<MoreActivityRetrofitBinding, BaseViewModel> {
