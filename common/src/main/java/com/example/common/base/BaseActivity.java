@@ -12,9 +12,12 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.common.BR;
+import com.example.common.network.NetworkCallBack;
+import com.example.common.network.NetworkRequest;
 import com.example.common.util.LogUtil;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
 
 public abstract class BaseActivity<B extends ViewDataBinding, VM extends BaseViewModel> extends AppCompatActivity {
 
