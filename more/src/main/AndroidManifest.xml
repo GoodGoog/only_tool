@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Only_tool">
         <activity
+            android:name=".rxjava.RxJavaActivity"
+            android:exported="false" />
+        <activity
             android:name=".glide.GlideActivity"
             android:exported="false" />
         <activity
