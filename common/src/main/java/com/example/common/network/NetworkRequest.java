@@ -1,5 +1,6 @@
 package com.example.common.network;
 
+import com.example.common.util.LogUtil;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class NetworkRequest{
     public <T> void execute(String baseUrl, HashMap<String,String> requestMsg,Class<T> tClass, NetworkCallBack<T> listener){
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
+        //似乎查了一个拦截器
         // 创建一个retrofit
         Retrofit retrofit =(new Retrofit.Builder())
                 .client(builder.build())
@@ -45,6 +47,7 @@ public class NetworkRequest{
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
                 Gson gson = new Gson();
+                LogUtil.d(NetworkRequest.class.getName(),gson.toJson(response.body()));
                 T t = gson.fromJson(gson.toJson(response.body()),tClass);
                 listener.onSuccess(t);
             }
