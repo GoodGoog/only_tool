@@ -10,8 +10,8 @@ import retrofit2.http.QueryMap;
  * Created by zhangqy
  * Data : 2024/2/29
  */
-public interface INetworkService<T> {
+public interface INetworkService {
     @POST(".")
-    Call<T> postResult(@QueryMap Map<String,String> map);
+    Call<Object> postResult(@QueryMap Map<String,String> map);
 
 }

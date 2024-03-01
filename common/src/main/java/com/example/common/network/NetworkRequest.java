@@ -1,9 +1,13 @@
 package com.example.common.network;
 
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -12,9 +16,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by zhangqy
  * Data : 2024/2/29
  */
-public class NetworkRequest<T> {
+public class NetworkRequest{
 
-    public void execute(String baseUrl,HashMap<String,String> requestMsg,NetworkCallBack<T> callBack){
+    public static NetworkRequest build(){
+        return new NetworkRequest();
+    }
+
+    public <T> void execute(String baseUrl, HashMap<String,String> requestMsg,Class<T> tClass, NetworkCallBack<T> listener){
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
         // 创建一个retrofit
@@ -28,9 +36,23 @@ public class NetworkRequest<T> {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        INetworkService<T> request = retrofit.create(INetworkService.class);
-        Call<T> dataCall = request.postResult(requestMsg);
+        INetworkService request = retrofit.create(INetworkService.class);
 
-        dataCall.enqueue(callBack);
+        //无法返回Call<T>,故使用Object接收数据网络数据,后自行转换为目标类型
+        Call<Object> dataCall = request.postResult(requestMsg);
+
+        dataCall.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Gson gson = new Gson();
+                T t = gson.fromJson(gson.toJson(response.body()),tClass);
+                listener.onSuccess(t);
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                listener.onFailure(t);
+            }
+        });
     }
 }

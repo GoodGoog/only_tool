@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.common.network.NetworkCallBack;
 import com.example.common.network.NetworkRequest;
-import com.example.common.util.LogUtil;
 
 import java.util.HashMap;
 
@@ -20,9 +19,10 @@ public class BaseViewModel extends ViewModel {
     /**
      * 网络请求
      */
-    public <T> void request(String baseUrl,HashMap<String,String> requestMsg, NetworkCallBack<T> callBack){
-        (new NetworkRequest<T>())
-                .execute(baseUrl,requestMsg,callBack);
+    public <T> void request(String baseUrl,HashMap<String,String> requestMsg,Class<T> tClass, NetworkCallBack<T> callBack){
+        NetworkRequest
+                .build()
+                .execute(baseUrl,requestMsg,tClass,callBack);
     }
 
 }

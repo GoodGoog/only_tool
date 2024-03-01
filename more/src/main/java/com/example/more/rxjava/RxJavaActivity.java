@@ -25,8 +25,6 @@ public class RxJavaActivity extends BaseActivity<MoreActivityRxJavaBinding, Base
 
     Disposable mDisposable;
 
-    ObservableEmitter<String> mEmitter ;
-
     @Override
     protected void initData(@Nullable Bundle savedInstanceState) {
 
@@ -47,7 +45,6 @@ public class RxJavaActivity extends BaseActivity<MoreActivityRxJavaBinding, Base
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                 logD("开始发射数据" + "当前线程" + Thread.currentThread().getName());
                 emitter.onNext("First");
-                mEmitter = emitter;
             }
         });
     }

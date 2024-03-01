@@ -8,15 +8,9 @@ import retrofit2.Response;
  * Created by zhangqy
  * Data : 2024/2/29
  */
-public abstract class NetworkCallBack<T> implements Callback<T> {
+public abstract class NetworkCallBack<T> {
 
-    @Override
-    public void onResponse(Call<T> call, Response<T> response) {
-        onSuccess(response.body());
-    }
-
-    @Override
-    public void onFailure(Call<T> call, Throwable t) {
+    public void onFailure(Throwable t) {
 
     }
 
