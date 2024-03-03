@@ -10,5 +10,7 @@ public class NetworkBaseUrl {
     //全国天气查询
     public static String HOT_SEARCH_URL = "http://ovoa.cc/api/hotlist.php/";
 
+    //ChatGpt3.5模型
+    public static String CHAT_GPT_3_POINT_5_MODEL = "http://se.csnmb.com/API/gpt.php/";
 
 }

@@ -11,16 +11,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Only_tool">
         <activity
-            android:name=".rxjava.RxJavaActivity"
+            android:name=".interestingApi.ChatGptActivity"
             android:exported="false" />
         <activity
-            android:name=".glide.GlideActivity"
+            android:name=".kotlin.BaseKotlinActivity"
             android:exported="false" />
         <activity
-            android:name=".okHttp.OkHttpActivity"
+            android:name=".third.rxjava.RxJavaActivity"
             android:exported="false" />
         <activity
-            android:name=".retrofit.RetrofitActivity"
+            android:name=".third.glide.GlideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".third.okHttp.OkHttpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".third.retrofit.RetrofitActivity"
             android:exported="false" />
     </application>
 
