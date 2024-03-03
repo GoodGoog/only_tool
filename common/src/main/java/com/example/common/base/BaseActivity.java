@@ -1,5 +1,6 @@
 package com.example.common.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
@@ -51,4 +52,11 @@ public abstract class BaseActivity<B extends ViewDataBinding, VM extends BaseVie
     protected void logD(String msg){
         LogUtil.d(this.getClass().getName().toString() + "-log",msg);
     }
+
+    protected void startActivity(Class<?> c) {
+        Intent intent = new Intent();
+        intent.setClass(this, c);
+        startActivity(intent);
+    }
+
 }

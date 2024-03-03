@@ -3,6 +3,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--    enabled 为 true，表明系统可以示例化这个服务，该属性适用于所有应用组件，包括服务。默认值为 true-->
+    <!--    exported 这里设置为 false，表明不给其他进程（app）使用，仅适用于我们这个 app-->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,6 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Only_tool">
+        <activity
+            android:name=".component.JumpAppServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".component.curProcess.CurProcessServiceActivity"
+            android:exported="false" />
         <activity
             android:name=".interestingApi.ChatGptActivity"
             android:exported="false" />
@@ -28,6 +37,16 @@
         <activity
             android:name=".third.retrofit.RetrofitActivity"
             android:exported="false" />
+
+        <service
+            android:name=".component.curProcess.CurProcessService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="AIDL.service" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

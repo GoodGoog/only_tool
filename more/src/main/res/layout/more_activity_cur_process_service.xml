@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".component.curProcess.CurProcessServiceActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="startService"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_start_service"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="stopService"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/tv_start_service"
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_stop_service"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="bindService"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/tv_stop_service"
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_bind_service"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="unBindService"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/tv_bind_service"
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_un_bind_service"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="模拟下载数据"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/tv_un_bind_service"
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_simulate_download"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="停止模拟下载"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/tv_simulate_download"
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_stop_simulate_download"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

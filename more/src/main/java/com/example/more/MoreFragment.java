@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.common.base.BaseFragment;
 import com.example.more.adapter.MoreAdapter;
 import com.example.more.bean.MoreBean;
+import com.example.more.component.JumpAppServiceActivity;
 import com.example.more.databinding.FragmentMoreBinding;
 import com.example.more.interestingApi.ChatGptActivity;
 import com.example.more.kotlin.BaseKotlinActivity;
@@ -25,13 +26,15 @@ public class MoreFragment extends BaseFragment<FragmentMoreBinding, MoreViewMode
     @Override
     protected void initData(@Nullable Bundle savedInstanceState) {
         ArrayList<MoreBean> beans = new ArrayList<>();
-        //组件化与路由测试入口
+        //测试入口
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "Retrofit", RetrofitActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "OkHttp", OkHttpActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "Glide", GlideActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "RxJava", RxJavaActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "kotlin", BaseKotlinActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "chatGpt", ChatGptActivity.class));
+        beans.add(createMoreBean(R.drawable.more_icon_list_access, "service", JumpAppServiceActivity.class));
+
 
         //binding.moreRv.setBackgroundColor(Color.parseColor("#665544"));
         MoreAdapter adapter = new MoreAdapter(beans);
