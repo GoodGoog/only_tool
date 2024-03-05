@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+<!--    界面通用背景颜色-->
+    <color name="default_bg_color">#E0E0E0</color>
+<!--    顶部TopTabBar颜色-->
+    <color name="top_tab_bar_bg_color">#FCFCFC</color>
+
 </resources>

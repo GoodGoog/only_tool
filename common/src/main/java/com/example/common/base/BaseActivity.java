@@ -25,6 +25,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, VM extends BaseVie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.inflate(LayoutInflater.from(this),getLayoutId(),null,false);
+        binding.setLifecycleOwner(this);
         //创建viewModel
         //由泛型高出对应的ViewModel的class
         Class<VM> vClass = (Class<VM>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];

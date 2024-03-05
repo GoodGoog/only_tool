@@ -10,6 +10,7 @@ import com.example.common.base.BaseFragment;
 import com.example.more.adapter.MoreAdapter;
 import com.example.more.bean.MoreBean;
 import com.example.more.component.JumpAppServiceActivity;
+import com.example.more.customView.CustomActivity;
 import com.example.more.databinding.FragmentMoreBinding;
 import com.example.more.interestingApi.ChatGptActivity;
 import com.example.more.kotlin.BaseKotlinActivity;
@@ -34,6 +35,7 @@ public class MoreFragment extends BaseFragment<FragmentMoreBinding, MoreViewMode
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "kotlin", BaseKotlinActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "chatGpt", ChatGptActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "service", JumpAppServiceActivity.class));
+        beans.add(createMoreBean(R.drawable.more_icon_list_access, "自定义视图", CustomActivity.class));
 
 
         //binding.moreRv.setBackgroundColor(Color.parseColor("#665544"));

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import com.example.common.util.LogUtil
 import java.util.*
 
 /**
@@ -21,7 +22,7 @@ class CurProcessService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG,"onCreate")
+        LogUtil.d(TAG,"onCreate")
     }
 
     /**
@@ -30,27 +31,27 @@ class CurProcessService : Service() {
      *  这里所提到的client指的是组件，比如某个Activity。
      */
     override fun onBind(p0: Intent?): IBinder? {
-        Log.d(TAG,"onBind")
+        LogUtil.d(TAG,"onBind")
         return binder
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        Log.d(TAG,"onUnbind")
+        LogUtil.d(TAG,"onUnbind")
         return super.onUnbind(intent)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG,"onStartCommand")
+        LogUtil.d(TAG,"onStartCommand")
         return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
-        Log.d(TAG,"onDestroy")
+        LogUtil.d(TAG,"onDestroy")
         super.onDestroy()
     }
 
     fun handleAfterDownloadData(data :String){
-        Log.d(TAG, "这是刚到手的数据真的6：：：：：$data")
+        LogUtil.d(TAG, "这是刚到手的数据真的6：：：：：$data")
     }
 
     //配合ServiceConnection使得客户端能够持有CurProcessService实例

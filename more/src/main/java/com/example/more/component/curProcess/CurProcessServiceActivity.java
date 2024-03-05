@@ -28,7 +28,7 @@ public class CurProcessServiceActivity extends BaseActivity<MoreActivityCurProce
     private final Timer mTimer = new Timer();
 
     //绑定时回调
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             isBound = true;
