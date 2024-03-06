@@ -10,16 +10,32 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/default_bg_color"
         tools:context=".customView.CustomActivity">
 
-        <com.example.more.customView.ClockView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="clock_view"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_clock"
+            />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="click_event_view"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/tv_clock"
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_click_event"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,6 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Only_tool">
         <activity
+            android:name=".customView.clickEvent.ClickEventActivity"
+            android:exported="false" />
+        <activity
+            android:name=".customView.clock.ClockActivity"
+            android:exported="false" />
+        <activity
             android:name=".customView.CustomActivity"
             android:exported="false" />
         <activity

@@ -1,4 +1,4 @@
-package com.example.more.customView
+package com.example.more.customView.clock
 
 import android.content.Context
 import android.graphics.Canvas
