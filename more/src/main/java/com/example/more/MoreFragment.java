@@ -18,6 +18,7 @@ import com.example.more.third.glide.GlideActivity;
 import com.example.more.third.okHttp.OkHttpActivity;
 import com.example.more.third.retrofit.RetrofitActivity;
 import com.example.more.third.rxjava.RxJavaActivity;
+import com.example.more.thread.ThreadActivity;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class MoreFragment extends BaseFragment<FragmentMoreBinding, MoreViewMode
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "chatGpt", ChatGptActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "service", JumpAppServiceActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "自定义视图", CustomActivity.class));
+        beans.add(createMoreBean(R.drawable.more_icon_list_access, "thread", ThreadActivity.class));
 
 
         //binding.moreRv.setBackgroundColor(Color.parseColor("#665544"));

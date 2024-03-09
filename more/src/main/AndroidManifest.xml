@@ -11,6 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Only_tool">
         <activity
+            android:name=".AsyncTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".thread.handler.HandlerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".thread.ThreadActivity"
+            android:exported="false" />
+        <activity
             android:name=".customView.clickEvent.ClickEventActivity"
             android:exported="false" />
         <activity

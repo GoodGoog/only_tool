@@ -8,24 +8,21 @@ import com.example.common.util.LogUtil
  */
 class TestClass {
 
+    val testFunction : (String,String) -> String = {str1,str2 ->
+
+        "你的名字"
+    }
+
+    fun testFunc(preFix : String,match : (String,String) -> String) : String{
+        return  preFix + match
+    }
+
 }
+
 
 fun main(args: Array<String>) {
 
-
-    print("test-" + "这是测试")
-
-    val a = 9
-    when (a) {
-        in 88..99 -> print("in 0..99 \n")
-        9 -> print("==9\n")
-        else -> print("else\n")
-    }
-
-    val lisi = Person("张三", 99, "123456")
-    print(lisi.name)
-
-    print(Person.instance.name)
-    Person.testObject()
+    val test = TestClass()
+    print(test.testFunction("1","2"))
 
 }
