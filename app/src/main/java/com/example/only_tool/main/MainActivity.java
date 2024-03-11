@@ -7,15 +7,18 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.common.base.BaseActivity;
+import com.example.common.util.EventBusInfo;
 import com.example.main.HomeFragment;
 import com.example.mine.MineFragment;
 import com.example.more.MoreFragment;
 import com.example.mystery.MysteryFragment;
 import com.example.only_tool.R;
 import com.example.only_tool.databinding.ActivityMainBinding;
+import com.jeremyliao.liveeventbus.LiveEventBus;
 
 import java.util.ArrayList;
 
@@ -29,6 +32,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,MainViewModel
         //viewModel.getName().setValue("换个优雅的名字");
         initPager();
         initView();
+        //测试LiveEventBus
+        LiveEventBus.get(EventBusInfo.TEST_EVENT)
+                .observe(this, new Observer<Object>() {
+                    @Override
+                    public void onChanged(Object s) {
+                        logD("这是收到的信息" + s.toString());
+                    }
+                });
     }
 
     private void initPager(){

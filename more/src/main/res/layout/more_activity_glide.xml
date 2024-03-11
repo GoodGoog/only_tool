@@ -31,6 +31,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="30dp"
             android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/layout_opt"
             >
 
             <TextView
@@ -72,6 +73,19 @@
                 android:background="#999999"
                 />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layout_opt"
+            android:layout_marginTop="50dp"
+            android:textSize="17sp"
+            android:text="测试LiveEventBus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/black"
+            android:id="@+id/tv_test_event_bus"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,8 +11,10 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.common.base.BaseActivity;
 import com.example.common.base.BaseViewModel;
+import com.example.common.util.EventBusInfo;
 import com.example.more.R;
 import com.example.more.databinding.MoreActivityGlideBinding;
+import com.jeremyliao.liveeventbus.LiveEventBus;
 
 public class GlideActivity extends BaseActivity<MoreActivityGlideBinding, BaseViewModel> {
 
@@ -29,7 +31,7 @@ public class GlideActivity extends BaseActivity<MoreActivityGlideBinding, BaseVi
         RequestOptions options = new RequestOptions()
                 .placeholder(R.mipmap.ic_launcher)//加载成功之前占位图
                 .error(R.mipmap.ic_launcher)//加载错误之后的错误图
-                .override(400,400)//指定图片的尺寸
+                .override(400, 400)//指定图片的尺寸
                 //指定图片的缩放类型为fitCenter （等比例缩放图片，宽或者是高等于ImageView的宽或者是高。）
                 .fitCenter()
                 //指定图片的缩放类型为centerCrop （等比例缩放图片，直到图片的狂高都大于等于ImageView的宽度，然后截取中间的显示。）
@@ -43,6 +45,14 @@ public class GlideActivity extends BaseActivity<MoreActivityGlideBinding, BaseVi
                     .apply(options)
                     .into(binding.iv1);
         });
+        binding.tvTestEventBus.setOnClickListener(view -> {
+            testEventBus();
+        });
+    }
+
+    public void testEventBus() {
+        LiveEventBus.get(EventBusInfo.TEST_EVENT)
+                .post("test_info_from_glide_activity");
     }
 
     @Override

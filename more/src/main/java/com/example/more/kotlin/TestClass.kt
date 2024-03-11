@@ -1,7 +1,5 @@
 package com.example.more.kotlin
 
-import com.example.common.util.LogUtil
-
 /**
  * Created by zhangqy
  * Data : 2024/3/2
