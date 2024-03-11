@@ -1,4 +1,4 @@
-package com.example.only_tool
+package com.example.only_tool.main
 
 import androidx.lifecycle.MutableLiveData
 import com.example.common.base.BaseViewModel

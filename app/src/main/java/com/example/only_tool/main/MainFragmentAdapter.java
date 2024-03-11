@@ -1,4 +1,4 @@
-package com.example.only_tool;
+package com.example.only_tool.main;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

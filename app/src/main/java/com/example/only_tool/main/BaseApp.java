@@ -1,4 +1,4 @@
-package com.example.only_tool;
+package com.example.only_tool.main;
 
 import android.app.Application;
 

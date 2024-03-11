@@ -1,4 +1,4 @@
-package com.example.only_tool;
+package com.example.only_tool.main;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +14,7 @@ import com.example.main.HomeFragment;
 import com.example.mine.MineFragment;
 import com.example.more.MoreFragment;
 import com.example.mystery.MysteryFragment;
+import com.example.only_tool.R;
 import com.example.only_tool.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;

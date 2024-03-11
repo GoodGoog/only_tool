@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.only_tool.MainViewModel" />
+            type="com.example.only_tool.main.MainViewModel" />
     </data>
 
     <LinearLayout
