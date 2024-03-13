@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
@@ -48,11 +49,26 @@ public class GlideActivity extends BaseActivity<MoreActivityGlideBinding, BaseVi
         binding.tvTestEventBus.setOnClickListener(view -> {
             testEventBus();
         });
+
     }
 
     public void testEventBus() {
         LiveEventBus.get(EventBusInfo.TEST_EVENT)
                 .post("test_info_from_glide_activity");
+    }
+
+    public void testARouter() {
+        //跳转到SecondActivity
+        ARouter.getInstance()
+                .build("")
+                .withString("name","zhangsan")
+                .withInt("age",22)
+                .navigation();
+
+        //获取Fragment对象
+//        MainFragment f=
+//                ARouter.getInstance().build(ARouterPath.MainFragment).navigation() as MainFragment
+
     }
 
     @Override

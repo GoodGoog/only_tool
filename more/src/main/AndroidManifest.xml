@@ -11,7 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Only_tool">
         <activity
-            android:name=".AsyncTaskActivity"
+            android:name=".jetpack.room.RoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".thread.asyncTask.AsyncTaskActivity"
             android:exported="false" />
         <activity
             android:name=".thread.handler.HandlerActivity"

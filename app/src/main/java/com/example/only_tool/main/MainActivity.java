@@ -34,12 +34,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,MainViewModel
         initView();
         //测试LiveEventBus
         LiveEventBus.get(EventBusInfo.TEST_EVENT)
-                .observe(this, new Observer<Object>() {
-                    @Override
-                    public void onChanged(Object s) {
-                        logD("这是收到的信息" + s.toString());
-                    }
-                });
+                .observe(this, s -> logD("这是收到的信息" + s.toString()));
     }
 
     private void initPager(){

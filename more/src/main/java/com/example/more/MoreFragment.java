@@ -13,6 +13,7 @@ import com.example.more.component.JumpAppServiceActivity;
 import com.example.more.customView.CustomActivity;
 import com.example.more.databinding.FragmentMoreBinding;
 import com.example.more.interestingApi.ChatGptActivity;
+import com.example.more.jetpack.room.RoomActivity;
 import com.example.more.kotlin.BaseKotlinActivity;
 import com.example.more.third.glide.GlideActivity;
 import com.example.more.third.okHttp.OkHttpActivity;
@@ -38,6 +39,7 @@ public class MoreFragment extends BaseFragment<FragmentMoreBinding, MoreViewMode
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "service", JumpAppServiceActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "自定义视图", CustomActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "thread", ThreadActivity.class));
+        beans.add(createMoreBean(R.drawable.more_icon_list_access, "Room", RoomActivity.class));
 
 
         //binding.moreRv.setBackgroundColor(Color.parseColor("#665544"));
