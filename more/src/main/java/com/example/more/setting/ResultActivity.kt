@@ -24,7 +24,7 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
         binding.tvInsertAnalyseHead.setOnClickListener {
             writeCache(binding.etAnalyseHead.text?.toString() ?: "请设置默认前缀")
             binding.etAnalyseResult.setText(binding.etAnalyseHead.text.toString()
-                    + "，下面由我带来" + left_team_name
+                    + "，下面由我为大家带来" + left_team_name
                     + "VS"
                     + right_team_name
                     + "的前瞻分析。")
@@ -36,7 +36,8 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
 
     //选择胜方
     fun chooseWinner(winner : String){
-        val tail : String = "\n" + "四、比分预测\n"+ left_team_name+ "VS"+right_team_name + "，" + winner + "受让分胜。"
+        val tail : String = "\n" + "最后、比分预测\n"+ left_team_name+ "VS"+right_team_name + "，" + winner + "受让分胜。"
+        binding.etFinalAnswer.setText(binding.etFinalAnswer.text.toString() + tail)
     }
 
     //分析前瞻默认前缀缓存数据的 存取
