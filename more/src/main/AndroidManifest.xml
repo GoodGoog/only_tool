@@ -55,6 +55,9 @@
         <activity
             android:name=".third.retrofit.RetrofitActivity"
             android:exported="false" />
+        <activity
+            android:name=".setting.SettingActivity"
+            android:exported="false" />
 
         <service
             android:name=".component.curProcess.CurProcessService"
