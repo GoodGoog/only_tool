@@ -8,7 +8,18 @@ import com.example.more.databinding.MoreActivitySettingBinding
 
 class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>() {
     override fun initData(savedInstanceState: Bundle?) {
+        addClickEvent()
+    }
 
+    fun addClickEvent() {
+        binding.tvQuestion.setOnClickListener {
+            binding.etAiQuestion.setText(
+                "分析一下" + binding.etCupName.text + "，"
+                        + binding.etLeftName.text + "VS" + binding.etRightName.text
+                        + "各自的优势和近况，"
+                        + "用中文（一、二、三、四）和数字（1.2.3.4）做好分段，（500字以内）,并预测哪一队更有可能获胜"
+            )
+        }
     }
 
     override fun getLayoutId() = R.layout.more_activity_setting
