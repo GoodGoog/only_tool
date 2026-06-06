@@ -41,7 +41,7 @@ public class MoreFragment extends BaseFragment<FragmentMoreBinding, MoreViewMode
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "自定义视图", CustomActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "thread", ThreadActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "Room", RoomActivity.class));
-        beans.add(createMoreBean(R.drawable.more_icon_list_access, "setting", SettingActivity.class));
+        beans.add(createMoreBean(R.drawable.more_icon_list_access, "玩球", SettingActivity.class));
 
         //binding.moreRv.setBackgroundColor(Color.parseColor("#665544"));
         MoreAdapter adapter = new MoreAdapter(beans);

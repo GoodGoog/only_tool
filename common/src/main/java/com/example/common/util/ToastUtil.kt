@@ -8,6 +8,6 @@ import android.widget.Toast
  * Data : 2024/3/6
  */
 
-fun showToast(mContext: Context,content :String){
+fun showToast(mContext: Context, content: String?){
     Toast.makeText(mContext,content,Toast.LENGTH_LONG).show()
 }
