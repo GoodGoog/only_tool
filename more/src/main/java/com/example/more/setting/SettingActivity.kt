@@ -16,12 +16,11 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
                     .isEmpty()
             )
                 return@setOnClickListener
-            val newIntent = Intent(this, ResultActivity::class.java)
-            newIntent.putExtra(TEAM_LEFT_NAME, binding.etLeftName.text.toString())
-            newIntent.putExtra(TEAM_RIGHT_NAME, binding.etRightName.text.toString())
-//            newIntent.extras?.putString("TEAM_LEFT_NAME", "binding.etLeftName.text.toString()" ?: "没有做数据")
-//            newIntent.extras?.putString("TEAM_RIGHT_NAME", binding.etRightName.text.toString()?: "没有右数据")
-            startActivity(newIntent)
+            Intent(this, ResultActivity::class.java).let {
+                it.putExtra(TEAM_LEFT_NAME, binding.etLeftName.text.toString())
+                it.putExtra(TEAM_RIGHT_NAME, binding.etRightName.text.toString())
+                startActivity(it)
+            }
         }
     }
 
@@ -47,11 +46,11 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
     }
 
     //检测是否需要一键解析
-    fun isNeedSplit(){
+    fun isNeedSplit() {
         binding.etQuickInputThree.text.toString().apply {
             if (this.isEmpty()) return@apply
             split("\n", limit = 3).let {
-                if (it.size == 3){
+                if (it.size == 3) {
                     binding.etCupName.setText(it[0])
                     binding.etLeftName.setText(it[1])
                     binding.etRightName.setText(it[2])
@@ -59,6 +58,7 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
             }
         }
     }
+
 
     override fun getLayoutId() = R.layout.more_activity_setting
 }
