@@ -20,6 +20,9 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
                         + "用中文（一、二、三、四）和数字（1.2.3.4）做好分段，（500字以内）,并预测哪一队更有可能获胜"
             )
         }
+        binding.tvJumpResult.setOnClickListener {
+            startActivity(ResultActivity::class.java)
+        }
     }
 
     override fun getLayoutId() = R.layout.more_activity_setting
