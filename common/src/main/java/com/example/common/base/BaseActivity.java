@@ -1,5 +1,9 @@
 package com.example.common.base;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,16 +19,17 @@ import com.example.common.BR;
 import com.example.common.util.LogUtil;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Objects;
 
 public abstract class BaseActivity<B extends ViewDataBinding, VM extends BaseViewModel> extends AppCompatActivity {
 
-    protected B binding ;
+    protected B binding;
     protected VM viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this),getLayoutId(),null,false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(this), getLayoutId(), null, false);
         binding.setLifecycleOwner(this);
         //创建viewModel
         //由泛型高出对应的ViewModel的class
@@ -32,12 +37,12 @@ public abstract class BaseActivity<B extends ViewDataBinding, VM extends BaseVie
         viewModel = (new ViewModelProvider(this)).get(vClass);
         //绑定布局
         setContentView(binding.getRoot());
-        binding.setVariable(BR.viewModel,viewModel);
+        binding.setVariable(BR.viewModel, viewModel);
         initData(savedInstanceState);
         initObserver();
     }
 
-    private void initObserver(){
+    private void initObserver() {
         viewModel.printMsg.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -50,8 +55,26 @@ public abstract class BaseActivity<B extends ViewDataBinding, VM extends BaseVie
 
     protected abstract int getLayoutId();
 
-    protected void logD(String msg){
-        LogUtil.d(this.getClass().getName().toString() + "-log",msg);
+    protected void logD(String msg) {
+        LogUtil.d(this.getClass().getName().toString() + "-log", msg);
+    }
+
+    //复制功能
+    protected void copyTextToSystem(String input) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("text", input);
+        clipboardManager.setPrimaryClip(clipData);
+    }
+
+    //读取手机粘贴板第一个文本
+    protected String parseTextFromSystem(){
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        //检查时候粘贴板含有文本
+        if (clipboardManager.hasPrimaryClip() && Objects.requireNonNull(clipboardManager.getPrimaryClip()).getItemCount() > 0){
+            ClipData.Item item = Objects.requireNonNull(clipboardManager.getPrimaryClip()).getItemAt(0);
+            return item.getText().toString();
+        }
+        return "剪切板没有已复制的内容";
     }
 
     protected void startActivity(Class<?> c) {

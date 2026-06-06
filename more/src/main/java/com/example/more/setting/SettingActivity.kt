@@ -1,5 +1,8 @@
 package com.example.more.setting
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.example.common.base.BaseActivity
@@ -30,8 +33,8 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
             binding.etAiQuestion.setText(
                 "分析一下" + binding.etCupName.text + "赛事中，"
                         + binding.etLeftName.text + "VS" + binding.etRightName.text
-                        + "各自的优势和近况，"
-                        + "用中文（一、二、三、四）和数字（1.2.3.4）做好分段，（500字以内）,并预测哪一队更有可能获胜"
+                        + "各自的近况和优劣势，对每个球队的分析控制在一个大点之内，"
+                        + "用中文（一、二、三、四）和数字（1.2.3.4）做好分段，（450字以内）,段与段之间不能空行，每一个小点间要换行，并预测哪一队更有可能获胜"
             )
         }
         binding.tvQuestionRude.setOnClickListener {
@@ -42,7 +45,25 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
                         + "，预测哪一队更有可能获胜"
             )
         }
+        binding.tvJumpObtain.setOnClickListener {
+            startActivity(ObtainActivity::class.java)
+        }
 
+        //点击复制
+        binding.tvCopyQuestion.setOnClickListener {
+            binding.etAiQuestion.text.let {
+                if (it.isEmpty()) return@setOnClickListener
+                copyTextToSystem(it.toString())
+            }
+        }
+
+        //点击粘贴比赛信息
+        binding.tvParseKnewMatch.setOnClickListener {
+            parseTextFromSystem().let {
+                binding.etQuickInputThree.setText(it)
+                isNeedSplit()
+            }
+        }
     }
 
     //检测是否需要一键解析
