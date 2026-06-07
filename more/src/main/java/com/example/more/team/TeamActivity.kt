@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.common.base.BaseActivity
 import com.example.common.base.BaseViewModel
+import com.example.common.util.showToast
 import com.example.more.R
 import com.example.more.adapter.MoreAdapter
 import com.example.more.adapter.TeamAdapter
@@ -19,41 +20,50 @@ import com.example.more.setting.SettingActivity
 import com.example.more.setting.TEAM_CUP_NAME
 import com.example.more.setting.TEAM_LEFT_NAME
 import com.example.more.setting.TEAM_RIGHT_NAME
+import com.example.more.setting.splitStringToStrArray
 import com.example.more.third.retrofit.RetrofitActivity
 
 class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>() {
     override fun initData(savedInstanceState: Bundle?) {
 
-        val beans = ArrayList<TeamBean?>()
+        initClickEvent()
+    }
 
-        //测试入口
-        beans.add(
-            createTeamBean(
-                "牛杯",
-                "left",
-                "right"
-            )
-        )
-        beans.add(
-            createTeamBean(
-                "牛杯11",
-                "left11",
-                "right11"
-            )
-        )
-        beans.add(
-            createTeamBean(
-                "牛杯22",
-                "left22",
-                "right22"
-            )
-        )
-        //binding.moreRv.setBackgroundColor(Color.parseColor("#665544"));
+    fun initClickEvent() {
+        binding.tvInputParse.setOnClickListener {
+            binding.etMatchInput.setText(parseTextFromSystem())
+        }
+
+        binding.tvSplitToSingleMatch.setOnClickListener {
+            splitStringToStrArray(binding.etMatchInput.text.toString(), "\n\n").let {
+                if (it.size > 0) {
+                    //再单独解析被分割出来的单个赛程字符串
+                    val array = ArrayList<TeamBean>()
+                    for (singleStr in it) {
+                        splitStringToStrArray(singleStr, "\n").let { beans ->
+
+                            array.add(
+                                createTeamBean(
+                                    beans[0], beans[1], beans[2]
+                                )
+                            )
+                        }
+                    }
+                    initView(array)
+                }
+            }
+        }
+    }
+
+
+    //拿到解析数据再显示列表
+    fun initView(beans: ArrayList<TeamBean>) {
         val adapter = TeamAdapter(beans)
         binding.teamRv.setAdapter(adapter)
         val manager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.teamRv.setLayoutManager(manager)
     }
+
 
     private fun createTeamBean(
         cupName: String,

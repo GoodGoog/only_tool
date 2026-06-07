@@ -8,3 +8,13 @@ const val TEAM_RIGHT_NAME = "TEAM_RIGHT_NAME"
 const val ANALYSE_HEAD_SHARED_PREFERENCE = "ANALYSE_HEAD_SHARED_PREFERENCE"
 const val ANALYSE_HEAD_CACHE = "ANALYSE_HEAD_CACHE"
 
+fun splitStringToStrArray(raw: String, separator: String): ArrayList<String> {
+    return ArrayList<String>().apply {
+        if (raw.isEmpty()) return@apply
+        raw.split(separator).let {
+            for (str in it)
+                add(str)
+        }
+    }
+}
+

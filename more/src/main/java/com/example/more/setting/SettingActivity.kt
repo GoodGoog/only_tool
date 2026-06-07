@@ -48,9 +48,9 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
                         + "，预测哪一队更有可能获胜"
             )
         }
-        binding.tvJumpObtain.setOnClickListener {
-            startActivity(ObtainActivity::class.java)
-        }
+//        binding.tvJumpObtain.setOnClickListener {
+//            startActivity(ObtainActivity::class.java)
+//        }
 
         //点击复制
         binding.tvCopyQuestionAndJumpResult.setOnClickListener {
