@@ -15,8 +15,8 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
     var right_team_name = "没有传来数据右"
 
     override fun initData(savedInstanceState: Bundle?) {
-        left_team_name = (intent.getStringExtra("TEAM_LEFT_NAME") ?: "") as String
-        right_team_name = (intent.getStringExtra("TEAM_RIGHT_NAME") ?: "") as String
+        left_team_name = (intent.getStringExtra(TEAM_LEFT_NAME) ?: "") as String
+        right_team_name = (intent.getStringExtra(TEAM_RIGHT_NAME) ?: "") as String
 
         binding.tvRightWin.text = right_team_name
         binding.tvLeftWin.setText(left_team_name)

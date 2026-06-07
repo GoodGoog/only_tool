@@ -12,8 +12,22 @@ import com.example.more.R
 import com.example.more.databinding.MoreActivitySettingBinding
 
 class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>() {
+
     override fun initData(savedInstanceState: Bundle?) {
+        initJump()
         addClickEvent()
+    }
+
+    fun initJump(){
+        //从球队选择页面传来了球队数据
+        val left_team_name = (intent.getStringExtra(TEAM_LEFT_NAME) ?: "") as String
+        val right_team_name = (intent.getStringExtra(TEAM_RIGHT_NAME) ?: "") as String
+        val team_cup_name = (intent.getStringExtra(TEAM_CUP_NAME) ?: "") as String
+        if (team_cup_name.isNotEmpty() && left_team_name.isNotEmpty() && right_team_name.isNotEmpty()){
+            //是从选球赛页面传来的，有数据
+            binding.etQuickInputThree.setText(team_cup_name + "\n" + left_team_name + "\n" + right_team_name)
+            isNeedSplit()
+        }
     }
 
     fun addClickEvent() {
