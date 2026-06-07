@@ -34,25 +34,60 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
             binding.etMatchInput.setText(parseTextFromSystem())
         }
 
-        binding.tvSplitToSingleMatch.setOnClickListener {
-            splitStringToStrArray(binding.etMatchInput.text.toString(), "\n\n").let {
-                if (it.size > 0) {
-                    //再单独解析被分割出来的单个赛程字符串
-                    val array = ArrayList<TeamBean>()
-                    for (singleStr in it) {
-                        splitStringToStrArray(singleStr, "\n").let { beans ->
-
-                            array.add(
-                                createTeamBean(
-                                    beans[0], beans[1], beans[2]
-                                )
-                            )
-                        }
+        //生成组合问题
+        binding.tvCombineAllQuestion.setOnClickListener {
+            if (binding.etMatchInput.text.isEmpty()) showToast(this, "先输入比赛信息")
+            else {
+                val builder = StringBuilder()
+                builder.append("分别预测以下比赛中哪一个队伍有可能获胜。")
+                val beans = splitRawMatchStrToArray()
+                for (index in beans.indices ){
+                    beans[index].let { bean ->
+                        builder.append("${index + 1}." + bean.cupName + "比赛中，" + bean.left_team_name + "对阵" + bean.right_team_name + "。")
                     }
-                    initView(array)
+                }
+                builder.append("回答限制在" + "${beans.size * 50}字以内，不需要分析。")
+                binding.etFinalQuestion.setText(builder.toString())
+            }
+        }
+        //复制问题
+        binding.tvCopyQuestion.setOnClickListener {
+            binding.etFinalQuestion.text.let {
+                if (it.isNotEmpty()) {
+                    copyTextToSystem(it.toString())
+                    showToast(this, "复制成功")
+                }else{
+                    showToast(this,"复制内容不能为空")
                 }
             }
         }
+
+        binding.tvSplitToSingleMatch.setOnClickListener {
+            if (binding.etMatchInput.text.isEmpty()) showToast(this, "先输入比赛信息")
+            else {
+                initView(splitRawMatchStrToArray())
+            }
+        }
+    }
+
+    //解析原始比赛信息字符串
+    fun splitRawMatchStrToArray(): ArrayList<TeamBean> {
+        val array = ArrayList<TeamBean>()
+        splitStringToStrArray(binding.etMatchInput.text.toString(), "\n\n").let {
+            if (it.size > 0) {
+                //再单独解析被分割出来的单个赛程字符串
+                for (singleStr in it) {
+                    splitStringToStrArray(singleStr, "\n").let { beans ->
+                        array.add(
+                            createTeamBean(
+                                beans[0], beans[1], beans[2]
+                            )
+                        )
+                    }
+                }
+            }
+        }
+        return array
     }
 
 

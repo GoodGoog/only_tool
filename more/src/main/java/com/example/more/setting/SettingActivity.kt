@@ -45,7 +45,7 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
             binding.etAiQuestion.setText(
                 binding.etCupName.text.toString() + "赛事中，" + binding.etLeftName.text + "VS" + binding.etRightName.text
                         + "这一场比赛中"
-                        + "，预测哪一队更有可能获胜（100字以内）"
+                        + "，预测哪一队更有可能获胜（50字以内，不需要分析）"
             )
         }
 //        binding.tvJumpObtain.setOnClickListener {
