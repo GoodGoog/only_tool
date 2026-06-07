@@ -64,6 +64,9 @@
         <activity
             android:name=".setting.ObtainActivity"
             android:exported="false" />
+        <activity
+            android:name=".team.TeamActivity"
+            android:exported="false" />
         <service
             android:name=".component.curProcess.CurProcessService"
             android:enabled="true"
