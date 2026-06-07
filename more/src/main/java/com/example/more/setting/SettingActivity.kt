@@ -18,12 +18,12 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
         addClickEvent()
     }
 
-    fun initJump(){
+    fun initJump() {
         //从球队选择页面传来了球队数据
         val left_team_name = (intent.getStringExtra(TEAM_LEFT_NAME) ?: "") as String
         val right_team_name = (intent.getStringExtra(TEAM_RIGHT_NAME) ?: "") as String
         val team_cup_name = (intent.getStringExtra(TEAM_CUP_NAME) ?: "") as String
-        if (team_cup_name.isNotEmpty() && left_team_name.isNotEmpty() && right_team_name.isNotEmpty()){
+        if (team_cup_name.isNotEmpty() && left_team_name.isNotEmpty() && right_team_name.isNotEmpty()) {
             //是从选球赛页面传来的，有数据
             binding.etQuickInputThree.setText(team_cup_name + "\n" + left_team_name + "\n" + right_team_name)
             isNeedSplit()
@@ -45,7 +45,7 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
             binding.etAiQuestion.setText(
                 binding.etCupName.text.toString() + "赛事中，" + binding.etLeftName.text + "VS" + binding.etRightName.text
                         + "这一场比赛中"
-                        + "，预测哪一队更有可能获胜"
+                        + "，预测哪一队更有可能获胜（100字以内）"
             )
         }
 //        binding.tvJumpObtain.setOnClickListener {
@@ -53,16 +53,30 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
 //        }
 
         //点击复制
-        binding.tvCopyQuestionAndJumpResult.setOnClickListener {
+        binding.tvQuestionCopy.setOnClickListener {
             binding.etAiQuestion.text.let { it ->
-                if (it.isEmpty()){
-                    showToast(this,"生成问题后才能复制并跳转")
+                if (it.isEmpty()) {
+                    showToast(this, "生成问题后才能复制")
                     return@setOnClickListener
                 }
                 //复制
                 copyTextToSystem(it.toString())
+                showToast(this, "复制成功")
+            }
+        }
+
+        //点击复制并跳转
+        binding.tvQuestionCopyAndJump.setOnClickListener {
+            binding.etAiQuestion.text.let { it ->
+                if (it.isEmpty()) {
+                    showToast(this, "生成问题后才能复制并跳转")
+                    return@setOnClickListener
+                }
+                //复制
+                copyTextToSystem(it.toString())
+                showToast(this, "复制成功")
                 //跳转
-                Intent(this, ResultActivity::class.java).let {mIntent ->
+                Intent(this, ResultActivity::class.java).let { mIntent ->
                     mIntent.putExtra(TEAM_LEFT_NAME, binding.etLeftName.text.toString())
                     mIntent.putExtra(TEAM_RIGHT_NAME, binding.etRightName.text.toString())
                     startActivity(mIntent)

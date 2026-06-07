@@ -88,7 +88,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="提问含分析"
                 android:textColor="@color/black"
@@ -105,7 +104,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="提问仅结果"
                 android:textStyle="bold"
@@ -135,17 +133,63 @@
             android:layout_marginEnd="10dp"
             app:layout_constraintTop_toBottomOf="@id/layout_container_question" />
 
-        <TextView
-            android:id="@+id/tv_copy_question_and_jump_result"
+
+
+        <!--        -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:text="复制问题并跳转结果页"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/et_ai_question" />
+            android:id="@+id/layout_container_copy_and_jump"
+            app:layout_constraintTop_toBottomOf="@id/et_ai_question">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="复制问题"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_question_copy_and_jump"
+                android:layout_marginEnd="10dp"
+                android:id="@+id/tv_question_copy"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="复制并跳转"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/tv_question_copy_and_jump"
+                app:layout_constraintStart_toEndOf="@id/tv_question_copy"
+                android:layout_marginStart="10dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_copy_question_and_jump_result"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:gravity="center"-->
+<!--            android:text="复制问题并跳转结果页"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16dp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/et_ai_question" />-->
 
 <!--        <TextView-->
 <!--            android:id="@+id/tv_jump_obtain"-->
