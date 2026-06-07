@@ -54,8 +54,7 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
         binding.tvCopyQuestion.setOnClickListener {
             binding.etFinalQuestion.text.let {
                 if (it.isNotEmpty()) {
-                    copyTextToSystem(it.toString())
-                    showToast(this, "复制成功")
+                    copyTextToSystem(it.toString(),true)
                 }else{
                     showToast(this,"复制内容不能为空")
                 }

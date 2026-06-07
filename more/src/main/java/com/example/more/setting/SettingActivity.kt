@@ -60,8 +60,7 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
                     return@setOnClickListener
                 }
                 //复制
-                copyTextToSystem(it.toString())
-                showToast(this, "复制成功")
+                copyTextToSystem(it.toString(),true)
             }
         }
 
@@ -73,8 +72,7 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
                     return@setOnClickListener
                 }
                 //复制
-                copyTextToSystem(it.toString())
-                showToast(this, "复制成功")
+                copyTextToSystem(it.toString(),true)
                 //跳转
                 Intent(this, ResultActivity::class.java).let { mIntent ->
                     mIntent.putExtra(TEAM_LEFT_NAME, binding.etLeftName.text.toString())

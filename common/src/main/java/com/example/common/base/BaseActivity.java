@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,21 +61,26 @@ public abstract class BaseActivity<B extends ViewDataBinding, VM extends BaseVie
     }
 
     //复制功能
-    protected void copyTextToSystem(String input) {
+    protected void copyTextToSystem(String input, Boolean isShowSuccess) {
+        if (isShowSuccess) showToast("已复制");
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("text", input);
         clipboardManager.setPrimaryClip(clipData);
     }
 
     //读取手机粘贴板第一个文本
-    protected String parseTextFromSystem(){
+    protected String parseTextFromSystem() {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         //检查时候粘贴板含有文本
-        if (clipboardManager.hasPrimaryClip() && Objects.requireNonNull(clipboardManager.getPrimaryClip()).getItemCount() > 0){
+        if (clipboardManager.hasPrimaryClip() && Objects.requireNonNull(clipboardManager.getPrimaryClip()).getItemCount() > 0) {
             ClipData.Item item = Objects.requireNonNull(clipboardManager.getPrimaryClip()).getItemAt(0);
             return item.getText().toString();
         }
-        return "剪切板没有已复制的内容";
+        return "剪切板为空";
+    }
+
+    protected void showToast(String content) {
+        Toast.makeText(this, content, Toast.LENGTH_LONG).show();
     }
 
     protected void startActivity(Class<?> c) {

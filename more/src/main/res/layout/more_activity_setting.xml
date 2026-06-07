@@ -21,19 +21,33 @@
             android:hint="一次性输入三个名字，以换行符隔开"
             android:textColor="@color/black"
             android:textSize="14dp"
+            android:background="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!--            分割线-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="#999999"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_quick_input_three" />
+
 
         <TextView
             android:id="@+id/tv_parse_knew_match"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="粘贴并拆解比赛信息"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="17dp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/et_quick_input_three" />
 
@@ -41,11 +55,12 @@
             android:id="@+id/et_cup_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:hint="赛事名"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="14dp"
+            android:background="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_parse_knew_match" />
@@ -58,7 +73,8 @@
             android:gravity="center"
             android:hint="左侧队伍名"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="14dp"
+            android:background="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_cup_name" />
@@ -71,11 +87,23 @@
             android:gravity="center"
             android:hint="右侧队伍名"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="14dp"
+            android:background="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_left_name" />
-        <!--这是提交名字按钮-->
+
+        <!--            分割线-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="#999999"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_right_name" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -91,7 +119,7 @@
                 android:gravity="center"
                 android:text="提问为分析"
                 android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="17dp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -108,7 +136,7 @@
                 android:text="提问为结果"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="17dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -128,12 +156,23 @@
             android:gravity="center"
             android:hint="此处生成提问内容"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="14dp"
+            android:background="@null"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             app:layout_constraintTop_toBottomOf="@id/layout_container_question" />
 
-
+        <!--            分割线-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="#999999"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_ai_question" />
 
         <!--        -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -150,7 +189,7 @@
                 android:gravity="center"
                 android:text="复制问题"
                 android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="17dp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -167,7 +206,7 @@
                 android:text="复制并跳转"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="17dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

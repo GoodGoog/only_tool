@@ -34,7 +34,8 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
 
         //复制标题点击
         binding.tvCopyTitle.setOnClickListener {
-            copyTextToSystem(binding.etTitle.text.toString() ?: "标题为空")
+            if (binding.etTitle.text.isEmpty()) return@setOnClickListener
+            copyTextToSystem(binding.etTitle.text.toString(), true)
         }
 
         //点击插入前瞻
@@ -51,18 +52,21 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
 
         //点击复制前瞻
         binding.tvCopyPreAnalyse.setOnClickListener {
-            copyTextToSystem(binding.etPreAnalyse.text.toString() ?: "前瞻为空")
+            if (binding.etPreAnalyse.text.isEmpty()) return@setOnClickListener
+            copyTextToSystem(binding.etPreAnalyse.text.toString(), true)
         }
 
         //点击复制最终结果
-        binding.etFinalAnswer.let {
-            it.setOnClickListener { _ ->
-                if (it.text.isEmpty()) {
-                    showToast(this, "结果为空")
-                    return@setOnClickListener
-                }
-                copyTextToSystem(it.text.toString())
+        binding.tvCopyAnswer.setOnClickListener { _ ->
+            if (binding.etFinalAnswer.text.isEmpty()) {
+                return@setOnClickListener
             }
+            copyTextToSystem(binding.etFinalAnswer.text.toString(), true)
+        }
+
+        //粘贴插入外来的分析结果
+        binding.tvParseAnswer.setOnClickListener {
+            binding.etFinalAnswer.setText(parseTextFromSystem())
         }
 
         binding.tvLeftWin.setOnClickListener { chooseWinner(left_team_name) }
