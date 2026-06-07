@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="粘贴比赛信息"
+            android:text="粘贴并拆解比赛信息"
             android:textColor="@color/black"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -121,36 +121,25 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_copy_question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:text="复制问题"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/layout_container_question" />
 
         <EditText
             android:id="@+id/et_ai_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
-            android:hint="复制去ai"
+            android:hint="此处生成提问内容"
             android:textColor="@color/black"
             android:textSize="16dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_copy_question" />
+            app:layout_constraintTop_toBottomOf="@id/layout_container_question" />
 
         <TextView
-            android:id="@+id/tv_jump_result"
+            android:id="@+id/tv_copy_question_and_jump_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
-            android:text="去获取精准分析"
+            android:text="复制问题并跳转结果页"
             android:textColor="@color/black"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -166,7 +155,7 @@
             android:textColor="@color/black"
             android:textSize="16dp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/tv_jump_result" />
+            app:layout_constraintTop_toBottomOf="@id/tv_copy_question_and_jump_result" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

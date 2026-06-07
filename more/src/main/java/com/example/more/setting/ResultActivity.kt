@@ -18,23 +18,52 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
         left_team_name = (intent.getStringExtra("TEAM_LEFT_NAME") ?: "") as String
         right_team_name = (intent.getStringExtra("TEAM_RIGHT_NAME") ?: "") as String
 
-        binding.etTitle.setText(left_team_name + "VS" + right_team_name)
         binding.tvRightWin.text = right_team_name
         binding.tvLeftWin.setText(left_team_name)
-
         binding.etAnalyseHead.setText(readCache())
-        binding.tvInsertAnalyseHead.setOnClickListener {
+
+        initPopWindow()
+
+        addClickEvent()
+    }
+
+    fun addClickEvent(){
+        //默认点击隐藏标题选择弹窗
+        window.decorView.setOnClickListener {
+            binding.layoutPopWindow.apply {
+                if (visibility == View.VISIBLE) visibility = View.INVISIBLE
+            }
+        }
+
+        binding.layoutPopWindow.apply {
+            binding.tvChooseTitle.setOnClickListener {
+                visibility = if (visibility == View.VISIBLE) View.INVISIBLE
+                else View.VISIBLE
+            }
+        }
+
+        //复制标题点击
+        binding.tvCopyTitle.setOnClickListener {
+            copyTextToSystem(binding.etTitle.text.toString() ?: "标题为空")
+        }
+
+        //点击插入前瞻
+        binding.tvInsertAndCachePreAnalyseHead.setOnClickListener {
             writeCache(binding.etAnalyseHead.text?.toString() ?: "请设置默认前缀")
-            binding.etAnalyseResult.setText(binding.etAnalyseHead.text.toString()
+            binding.etPreAnalyse.setText(binding.etAnalyseHead.text.toString()
                     + "，下面由我为大家带来" + left_team_name
                     + "VS"
                     + right_team_name
                     + "的前瞻分析。")
         }
 
+        //点击复制前瞻
+        binding.tvCopyPreAnalyse.setOnClickListener {
+            copyTextToSystem(binding.etPreAnalyse.text.toString() ?: "前瞻为空")
+        }
+
         binding.tvLeftWin.setOnClickListener { chooseWinner(left_team_name) }
         binding.tvRightWin.setOnClickListener { chooseWinner(right_team_name) }
-        initPopWindow()
     }
 
     //选择胜方
@@ -55,14 +84,6 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
 
 
     fun initPopWindow(){
-
-        binding.layoutPopWindow.apply {
-            binding.tvChooseTitle.setOnClickListener {
-                if (visibility == View.VISIBLE) visibility = View.INVISIBLE
-                else visibility = View.VISIBLE
-            }
-        }
-
         binding.layoutPopWindow.apply {
             setOnClickListener {
                 if (visibility == View.VISIBLE) visibility = View.INVISIBLE

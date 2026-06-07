@@ -14,17 +14,6 @@ import com.example.more.databinding.MoreActivitySettingBinding
 class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>() {
     override fun initData(savedInstanceState: Bundle?) {
         addClickEvent()
-        binding.tvJumpResult.setOnClickListener {
-            if (binding.etLeftName.text.toString().isEmpty() || binding.etLeftName.text.toString()
-                    .isEmpty()
-            )
-                return@setOnClickListener
-            Intent(this, ResultActivity::class.java).let {
-                it.putExtra(TEAM_LEFT_NAME, binding.etLeftName.text.toString())
-                it.putExtra(TEAM_RIGHT_NAME, binding.etRightName.text.toString())
-                startActivity(it)
-            }
-        }
     }
 
     fun addClickEvent() {
@@ -50,10 +39,20 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
         }
 
         //点击复制
-        binding.tvCopyQuestion.setOnClickListener {
-            binding.etAiQuestion.text.let {
-                if (it.isEmpty()) return@setOnClickListener
+        binding.tvCopyQuestionAndJumpResult.setOnClickListener {
+            binding.etAiQuestion.text.let { it ->
+                if (it.isEmpty()){
+                    showToast(this,"生成问题后才能复制并跳转")
+                    return@setOnClickListener
+                }
+                //复制
                 copyTextToSystem(it.toString())
+                //跳转
+                Intent(this, ResultActivity::class.java).let {mIntent ->
+                    mIntent.putExtra(TEAM_LEFT_NAME, binding.etLeftName.text.toString())
+                    mIntent.putExtra(TEAM_RIGHT_NAME, binding.etRightName.text.toString())
+                    startActivity(mIntent)
+                }
             }
         }
 
