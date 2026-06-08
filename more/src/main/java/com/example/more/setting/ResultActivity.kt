@@ -43,10 +43,11 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
             writeCache(binding.etAnalyseHead.text?.toString() ?: "请设置默认前缀")
             binding.etPreAnalyse.setText(
                 binding.etAnalyseHead.text.toString()
-                        + "，下面由我为大家带来" + left_team_name
+                        + "，下面我为大家带来" + left_team_name
                         + "VS"
                         + right_team_name
-                        + "的前瞻分析。"
+                        + "的前瞻分析，"
+                        + "支持的朋友请抓紧解锁！"
             )
         }
 
