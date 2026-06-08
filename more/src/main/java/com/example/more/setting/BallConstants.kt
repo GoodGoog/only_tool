@@ -6,7 +6,6 @@ import kotlin.math.abs
 const val TEAM_CUP_NAME = "TEAM_CUP_NAME"
 const val TEAM_LEFT_NAME = "TEAM_LEFT_NAME"
 const val TEAM_RIGHT_NAME = "TEAM_RIGHT_NAME"
-
 const val TEAM_LEFT_RAW_SCORE = "TEAM_LEFT_RAW_SCORE"
 
 //分析前瞻默认前缀缓存
@@ -24,13 +23,25 @@ fun splitStringToStrArray(raw: String, separator: String): ArrayList<String> {
 }
 
 //由分数判断是否受让
-fun judgeLeftTeamScoreTips(leftTeamName : String, rScore : Int) : String{
+fun judgeLeftTeamScoreTips(leftTeamName : String, rScore : Int,endSign: String = "") : String{
     var leftTeamRawScoreTips = ""
     leftTeamRawScoreTips.let { rawScore ->
         leftTeamRawScoreTips = "如果" + leftTeamName +
                 (if (rScore > 0) "受让" else "让") +
-                "${abs(rScore)}" + "分，"
+                "${abs(rScore)}" + "分" + endSign
     }
     return leftTeamRawScoreTips
 }
+
+fun judgeLeftTeamScoreTips2(leftTeamName : String, rScore : Int,endSign: String = "") : String{
+    var leftTeamRawScoreTips = ""
+    leftTeamRawScoreTips.let { rawScore ->
+        leftTeamRawScoreTips =  leftTeamName +
+                (if (rScore > 0) "受让" else "让") +
+                "${abs(rScore)}" + "分" + endSign
+    }
+    return leftTeamRawScoreTips
+}
+
+
 

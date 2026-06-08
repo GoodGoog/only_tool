@@ -19,7 +19,10 @@ import com.example.more.setting.ResultActivity
 import com.example.more.setting.SettingActivity
 import com.example.more.setting.TEAM_CUP_NAME
 import com.example.more.setting.TEAM_LEFT_NAME
+import com.example.more.setting.TEAM_LEFT_RAW_SCORE
 import com.example.more.setting.TEAM_RIGHT_NAME
+import com.example.more.setting.judgeLeftTeamScoreTips
+import com.example.more.setting.judgeLeftTeamScoreTips2
 import com.example.more.setting.splitStringToStrArray
 import com.example.more.third.retrofit.RetrofitActivity
 
@@ -43,7 +46,7 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
                 val beans = splitRawMatchStrToArray()
                 for (index in beans.indices ){
                     beans[index].let { bean ->
-                        builder.append("${index + 1}." + bean.cupName + "比赛中，" + bean.left_team_name + "对阵" + bean.right_team_name + "。")
+                        builder.append("${index + 1}." + bean.cupName + "比赛中，" + bean.left_team_name + "对阵" + bean.right_team_name + "，" + judgeLeftTeamScoreTips2(bean.left_team_name,bean.left_team_raw_score.toInt()),"。")
                     }
                 }
                 builder.append("回答限制在" + "${beans.size * 50}字以内，不需要分析。")
@@ -79,7 +82,7 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
                     splitStringToStrArray(singleStr, "\n").let { beans ->
                         array.add(
                             createTeamBean(
-                                beans[0], beans[1], beans[2]
+                                beans[0], beans[1], beans[2],beans[3]
                             )
                         )
                     }
@@ -102,16 +105,18 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
     private fun createTeamBean(
         cupName: String,
         left_team_name: String,
-        right_team_name: String
+        right_team_name: String,
+        left_name_raw_score : String
     ): TeamBean {
         return TeamBean(
-            cupName, left_team_name, right_team_name,
+            cupName, left_team_name, right_team_name,left_name_raw_score,
             View.OnClickListener { v: View? ->
                 //跳转
                 Intent(this, SettingActivity::class.java).let { mIntent ->
                     mIntent.putExtra(TEAM_CUP_NAME, cupName)
                     mIntent.putExtra(TEAM_LEFT_NAME, left_team_name)
                     mIntent.putExtra(TEAM_RIGHT_NAME, right_team_name)
+                    mIntent.putExtra(TEAM_LEFT_RAW_SCORE, left_name_raw_score)
                     startActivity(mIntent)
                 }
             })

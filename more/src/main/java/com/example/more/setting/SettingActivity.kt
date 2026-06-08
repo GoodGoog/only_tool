@@ -28,7 +28,6 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
         if (team_cup_name.isNotEmpty() && left_team_name.isNotEmpty() && right_team_name.isNotEmpty()) {
             //是从选球赛页面传来的，有数据
             binding.etQuickInputThree.setText(team_cup_name + "\n" + left_team_name + "\n" + right_team_name + "\n" + left_team_raw_score)
-            isNeedSplit()
         }
     }
 
@@ -56,19 +55,19 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
             }
             binding.etAiQuestion.setText(
                 "分析一下" + binding.etCupName.text + "赛事中，"
-                        + binding.etLeftName.text + "VS" + binding.etRightName.text
+                        + binding.etLeftName.text + "对阵" + binding.etRightName.text
                         + "各自的近况和优劣势，对每个球队的分析控制在一个大段之内，"
                         + "用（一、二、三、四、）分开大段，大段内用（1.2.3.4.）分开小段， "
                         + "全文不能有空白行，任意段之间都要换行。"
-                        + judgeLeftTeamScoreTips(binding.etLeftName?.text?.toString() ?: "",binding.etLeftTeamRawScore.text.toString()?.toInt() ?: 0) + "预测哪一队更有可能获胜。"
+                        + judgeLeftTeamScoreTips(binding.etLeftName?.text?.toString() ?: "",binding.etLeftTeamRawScore.text.toString()?.toInt() ?: 0,"，") + "预测哪一队更有可能获胜。"
                         + "答案控制在450字以内，结尾不要任何无关提醒！"
 
             )
         }
         binding.tvQuestionRude.setOnClickListener {
             binding.etAiQuestion.setText(
-                binding.etCupName.text.toString() + "赛事中，" + binding.etLeftName.text + "VS" + binding.etRightName.text + "，"
-                        + judgeLeftTeamScoreTips(binding.etLeftName.text.toString(),binding.etLeftTeamRawScore.text.toString().toInt())
+                binding.etCupName.text.toString() + "赛事中，" + binding.etLeftName.text + "对阵" + binding.etRightName.text + "，"
+                        + judgeLeftTeamScoreTips(binding.etLeftName.text.toString(),binding.etLeftTeamRawScore.text.toString().toInt(),"，")
                         + "预测哪一队更有可能获胜（50字以内，不需要分析）"
             )
         }
