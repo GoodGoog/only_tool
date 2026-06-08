@@ -1,8 +1,5 @@
 package com.example.more.setting
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.example.common.base.BaseActivity
@@ -47,27 +44,34 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
         }
 
         binding.tvQuestionDetail.setOnClickListener {
-            var leftTeamRawScoreTips = ""
-            binding.etLeftTeamRawScore.text?.toString()!!.toInt().let { rawScore ->
-                leftTeamRawScoreTips = "如果" + binding.etLeftName.text.toString() +
-                        (if (rawScore >= 0) "受让" else "让") +
-                        "${abs(rawScore)}" + "分，"
-            }
+            val rawScoreStr =  binding.etLeftTeamRawScore.text.toString()
             binding.etAiQuestion.setText(
-                "分析一下" + binding.etCupName.text + "赛事中，"
-                        + binding.etLeftName.text + "对阵" + binding.etRightName.text
-                        + "各自的近况和优劣势，对每个球队的分析控制在一个大段之内，"
-                        + "用（一、二、三、四、）分开大段，大段内用（1.2.3.4.）分开小段， "
-                        + "全文不能有空白行，任意段之间都要换行。"
-                        + judgeLeftTeamScoreTips(binding.etLeftName?.text?.toString() ?: "",binding.etLeftTeamRawScore.text.toString()?.toInt() ?: 0,"，") + "预测哪一队更有可能获胜。"
-                        + "答案控制在450字以内，结尾不要任何无关提醒！"
-
+                "在" + binding.etCupName.text + "赛事中，"
+                        + binding.etLeftName.text + "对阵" + binding.etRightName.text + "，"
+                        + "分析比赛双方各自的近况和优劣势。"
+                        + (if (rawScoreStr.toFloat() != 0.toFloat()) "如果" else "")
+                        + judgeLeftTeamScoreTips(
+                    binding.etLeftName.text.toString(),
+                    rawScoreStr.toFloat(),
+                    "，",
+                )
+                        + "最终预测哪个队伍更有可能获胜。"
+                        + "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，"
+//                        + "用（一、二、三、四、）分开大段，大段内用（1.2.3.4.）分开小段， "
+                        + "每一个大内容点内，小内容点用（1.2.3.4.）等标识， "
+                        + "全文不能有空白行，任意内容点之间都要换行。"
+                        + "答案控制在450字以内，结尾不要有任何无关提醒！"
+                + "单独再给一个回答，为刚刚生成的这篇文章取一个充满激情与吸引力的标题，标题控制在25字以内。"
             )
         }
         binding.tvQuestionRude.setOnClickListener {
             binding.etAiQuestion.setText(
                 binding.etCupName.text.toString() + "赛事中，" + binding.etLeftName.text + "对阵" + binding.etRightName.text + "，"
-                        + judgeLeftTeamScoreTips(binding.etLeftName.text.toString(),binding.etLeftTeamRawScore.text.toString().toInt(),"，")
+                        + judgeLeftTeamScoreTips(
+                    binding.etLeftName.text.toString(),
+                    binding.etLeftTeamRawScore.text.toString().toFloat(),
+                    "，",
+                )
                         + "预测哪一队更有可能获胜（50字以内，不需要分析）"
             )
         }
@@ -109,8 +113,8 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
 
     //检测是否需要一键解析
     fun isNeedSplit() {
-        binding.etQuickInputThree.text.toString().apply {
-            if (this.isEmpty()) return@apply
+        binding.etQuickInputThree.text.apply {
+            if (this.toString().isEmpty()) return@apply
             split("\n", limit = 4).let {
                 if (it.size == 4) {
                     binding.etCupName.setText(it[0])

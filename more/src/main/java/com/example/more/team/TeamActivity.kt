@@ -3,28 +3,22 @@ package com.example.more.team
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.common.base.BaseActivity
 import com.example.common.base.BaseViewModel
 import com.example.common.util.showToast
 import com.example.more.R
-import com.example.more.adapter.MoreAdapter
 import com.example.more.adapter.TeamAdapter
-import com.example.more.bean.MoreBean
 import com.example.more.bean.TeamBean
 import com.example.more.databinding.MoreActivityTeamChooseBinding
-import com.example.more.setting.ResultActivity
 import com.example.more.setting.SettingActivity
 import com.example.more.setting.TEAM_CUP_NAME
 import com.example.more.setting.TEAM_LEFT_NAME
 import com.example.more.setting.TEAM_LEFT_RAW_SCORE
 import com.example.more.setting.TEAM_RIGHT_NAME
 import com.example.more.setting.judgeLeftTeamScoreTips
-import com.example.more.setting.judgeLeftTeamScoreTips2
 import com.example.more.setting.splitStringToStrArray
-import com.example.more.third.retrofit.RetrofitActivity
 
 class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>() {
     override fun initData(savedInstanceState: Bundle?) {
@@ -44,9 +38,17 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
                 val builder = StringBuilder()
                 builder.append("分别预测以下比赛中哪一个队伍有可能获胜。")
                 val beans = splitRawMatchStrToArray()
-                for (index in beans.indices ){
+                for (index in beans.indices) {
                     beans[index].let { bean ->
-                        builder.append("${index + 1}." + bean.cupName + "比赛中，" + bean.left_team_name + "对阵" + bean.right_team_name + "，" + judgeLeftTeamScoreTips2(bean.left_team_name,bean.left_team_raw_score.toInt()),"。")
+                        builder.append(
+                            "${index + 1}." + bean.cupName + "比赛中，" + bean.left_team_name + "对阵" + bean.right_team_name
+                                    + if (bean.left_team_raw_score.toFloat() == 0.toFloat()) "。" else "，"
+                                    + judgeLeftTeamScoreTips(
+                                bean.left_team_name,
+                                bean.left_team_raw_score.toFloat(),
+                                "。"
+                            )
+                        )
                     }
                 }
                 builder.append("回答限制在" + "${beans.size * 50}字以内，不需要分析。")
@@ -57,9 +59,9 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
         binding.tvCopyQuestion.setOnClickListener {
             binding.etFinalQuestion.text.let {
                 if (it.isNotEmpty()) {
-                    copyTextToSystem(it.toString(),true)
-                }else{
-                    showToast(this,"复制内容不能为空")
+                    copyTextToSystem(it.toString(), true)
+                } else {
+                    showToast(this, "复制内容不能为空")
                 }
             }
         }
@@ -82,7 +84,7 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
                     splitStringToStrArray(singleStr, "\n").let { beans ->
                         array.add(
                             createTeamBean(
-                                beans[0], beans[1], beans[2],beans[3]
+                                beans[0], beans[1], beans[2], beans[3]
                             )
                         )
                     }
@@ -106,10 +108,10 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
         cupName: String,
         left_team_name: String,
         right_team_name: String,
-        left_name_raw_score : String
+        left_name_raw_score: String
     ): TeamBean {
         return TeamBean(
-            cupName, left_team_name, right_team_name,left_name_raw_score,
+            cupName, left_team_name, right_team_name, left_name_raw_score,
             View.OnClickListener { v: View? ->
                 //跳转
                 Intent(this, SettingActivity::class.java).let { mIntent ->

@@ -1,5 +1,7 @@
 package com.example.more.setting
 
+import android.util.Log
+import com.example.common.util.showToast
 import kotlin.let
 import kotlin.math.abs
 
@@ -23,25 +25,16 @@ fun splitStringToStrArray(raw: String, separator: String): ArrayList<String> {
 }
 
 //由分数判断是否受让
-fun judgeLeftTeamScoreTips(leftTeamName : String, rScore : Int,endSign: String = "") : String{
-    var leftTeamRawScoreTips = ""
-    leftTeamRawScoreTips.let { rawScore ->
-        leftTeamRawScoreTips = "如果" + leftTeamName +
-                (if (rScore > 0) "受让" else "让") +
-                "${abs(rScore)}" + "分" + endSign
-    }
-    return leftTeamRawScoreTips
+fun judgeLeftTeamScoreTips(
+    leftTeamName: String,
+    rScore: Float,
+    endSign: String
+): String {
+    //为0什么都不做
+    if (rScore == 0.toFloat()) return ""
+    Log.d("judgeLeftTeamScoreTips", "到底怎么回事啊!!!!!! rScore = ${rScore}: ")
+    return leftTeamName +
+            (if (rScore > 0) "受让" else "让") +
+            "${abs(rScore)}" + "分" + endSign
 }
-
-fun judgeLeftTeamScoreTips2(leftTeamName : String, rScore : Int,endSign: String = "") : String{
-    var leftTeamRawScoreTips = ""
-    leftTeamRawScoreTips.let { rawScore ->
-        leftTeamRawScoreTips =  leftTeamName +
-                (if (rScore > 0) "受让" else "让") +
-                "${abs(rScore)}" + "分" + endSign
-    }
-    return leftTeamRawScoreTips
-}
-
-
 
