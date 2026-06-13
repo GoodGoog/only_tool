@@ -19,8 +19,8 @@ public class RetrofitActivity extends BaseActivity<MoreActivityRetrofitBinding, 
     @Override
     protected void initData(@Nullable Bundle savedInstanceState) {
 
-        //requestQqInfo();
-        requestHotSearch();
+        requestQqInfo();
+        //requestHotSearch();
     }
 
     void requestQqInfo(){
@@ -29,18 +29,29 @@ public class RetrofitActivity extends BaseActivity<MoreActivityRetrofitBinding, 
             @Override
             public void onSuccess(QqInfoResponse qqInfoResponse) {
                 logD("success+++++" + qqInfoResponse.getData().getAvatar());
+                showToast("成功了");
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                super.onFailure(t);
+                showToast("失败了");
             }
         });
     }
 
     void requestHotSearch(){
-        HashMap<String, String> params = NetworkParams.createHotSearchParams("百度");
-        viewModel.request(NetworkBaseUrl.HOT_SEARCH_URL, params, HotSearchResponse.class, new NetworkCallBack<HotSearchResponse>() {
+        HashMap<String, String> params = NetworkParams.createHotSearchParams();
+        viewModel.request(NetworkBaseUrl.URL_MOVIE_MONEY, params, MovieMoney.class, new NetworkCallBack<MovieMoney>() {
             @Override
-            public void onSuccess(HotSearchResponse response) {
-                logD("success+++++" + response.getCode());
-                logD("success+++++" + response.getData().size());
-                logD("success+++++" + response.getTitle());
+            public void onSuccess(MovieMoney response) {
+                logD("success+++++" + response.toString());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                super.onFailure(t);
+                logD("这是失败的信息" + t.getMessage());
             }
         });
     }

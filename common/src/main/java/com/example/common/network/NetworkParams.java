@@ -24,11 +24,8 @@ public class NetworkParams {
      *  type = 百度/微博/知乎
      *  热搜榜查询
      */
-    public static HashMap<String,String> createHotSearchParams(String type){
+    public static HashMap<String,String> createHotSearchParams(){
         HashMap<String,String> map = new HashMap<>();
-        map.put("type",type);
-        //model = json / text
-        map.put("model","json");
         return map;
     }
 

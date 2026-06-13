@@ -13,4 +13,10 @@ public class NetworkBaseUrl {
     //ChatGpt3.5模型
     public static String CHAT_GPT_3_POINT_5_MODEL = "http://se.csnmb.com/API/gpt.php/";
 
+    //查询菜谱
+    public static String URL_FOOD_MENU_SEARCH = "URL_FOOD_MENU_SEARCH";
+
+    //指定平台热搜查询
+    public static String URL_MOVIE_MONEY = "http://shanhe.kim/api/za/lishi.php?format=json";
+
 }
