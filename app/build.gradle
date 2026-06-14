@@ -49,6 +49,8 @@ dependencies {
     api project(path: ':mine')
 
     annotationProcessor 'com.alibaba:arouter-compiler:1.5.2'
+//
+    implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'

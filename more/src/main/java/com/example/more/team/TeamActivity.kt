@@ -1,15 +1,15 @@
 package com.example.more.team
 
+import android.content.ComponentName
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.PixelFormat
+import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
+import android.os.IBinder
 import android.provider.Settings
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
+import androidx.annotation.Nullable
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.common.base.BaseActivity
@@ -18,26 +18,52 @@ import com.example.common.util.showToast
 import com.example.more.adapter.TeamAdapter
 import com.example.more.bean.TeamBean
 import com.example.more.databinding.MoreActivityTeamChooseBinding
+import com.example.more.setting.EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT
 import com.example.more.setting.SettingActivity
 import com.example.more.setting.TEAM_CUP_NAME
+import com.example.more.setting.TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO
 import com.example.more.setting.TEAM_LEFT_NAME
 import com.example.more.setting.TEAM_LEFT_RAW_SCORE
 import com.example.more.setting.TEAM_RIGHT_NAME
 import com.example.more.setting.judgeLeftTeamScoreTips
 import com.example.more.setting.splitStringToStrArray
+import com.jeremyliao.liveeventbus.LiveEventBus
 
 
 class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>() {
     override fun initData(savedInstanceState: Bundle?) {
 
+        //测试数据
+         binding.etTextFormatTrans.setText("测试数据")
+
+        LiveEventBus
+            .get<String?>(EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT, String::class.java)
+            .observe(this,object : Observer<String>{
+                override fun onChanged(p0: String?) {
+                    showToast("收到了确定按钮")
+                }
+            })
+//            .observe(this, object : Observer<String?> {
+//                public override fun onChanged(@Nullable s: String?) {
+//                }
+//            })
         initClickEvent()
     }
 
     fun initClickEvent() {
         binding.tvTest.setOnClickListener {
             // Check if permission is granted
+            if (binding.etTextFormatTrans.text.isEmpty()) {
+                showToast("原始信息不能为空")
+                return@setOnClickListener
+            }
             if (Settings.canDrawOverlays(this)) {
                 startService(Intent(this, FloatingWindowService::class.java))
+                Intent(this, FloatingWindowService::class.java).let { mIntent ->
+                    mIntent.putExtra(TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO, binding.etTextFormatTrans.text.toString())
+                    startService(mIntent)
+                    //bindService(mIntent,serviceConn, Context.BIND_AUTO_CREATE)
+                }
             } else {
                 // Ask for permission
                 val intent = Intent(
@@ -186,6 +212,6 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
             })
     }
 
-
     override fun getLayoutId() = com.example.more.R.layout.more_activity_team_choose
+
 }

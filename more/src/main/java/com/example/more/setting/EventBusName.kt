@@ -1,0 +1,4 @@
+package com.example.more.setting
+
+
+const val EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT = "EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT"

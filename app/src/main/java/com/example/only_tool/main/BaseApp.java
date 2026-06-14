@@ -3,6 +3,7 @@ package com.example.only_tool.main;
 import android.app.Application;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.jeremyliao.liveeventbus.LiveEventBus;
 
 /**
  * Created by zhangqy
@@ -17,6 +18,12 @@ public class BaseApp extends Application {
 //        ARouter.init(this);
 //        ARouter.openLog();
 //        ARouter.openDebug();
+
+        //配置
+        LiveEventBus
+                .config()
+                .autoClear(true)
+                .lifecycleObserverAlwaysActive(true);
     }
 
     @Override
