@@ -27,6 +27,47 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
     }
 
     fun initClickEvent() {
+        //输入原始数据
+        binding.tvParseRawMatchText.setOnClickListener {
+            binding.etTextFormatTrans.setText(parseTextFromSystem())
+        }
+
+        binding.tvTransRawMatchText.setOnClickListener {
+            var rawStr: String = binding.etTextFormatTrans.text.toString()
+            if (rawStr.isEmpty()) return@setOnClickListener
+            rawStr = rawStr.replace("[", "")
+            rawStr = rawStr.replace("]", "")
+            //删除数字
+            rawStr = rawStr.replace(Regex("[0-9]+"), "")
+
+//            //插入换行符
+            var aimStr = ""
+            splitStringToStrArray(rawStr, "\n").let {
+                for (index in 0..it.size - 1) {
+                    showToast(index.toString())
+                    //不是最后一行字符串
+                    if (index + 1 != it.size) {
+                        aimStr += it[index] + "\n"
+                    }
+                    //背三整除 且 不是最后一行字符串
+                    if ((index + 1) % 3 == 0 && index + 1 != it.size) {
+                        aimStr += "\n\n"
+                    }
+                }
+            }
+            binding.etTextFormatTrans.setText(aimStr)
+        }
+
+        binding.tvCopyTransformMatchText.setOnClickListener {
+            binding.etTextFormatTrans.text.let {
+                if (it.isNotEmpty()) {
+                    copyTextToSystem(it.toString(), true)
+                } else {
+                    showToast(this, "复制内容不能为空")
+                }
+            }
+        }
+
         binding.tvInputParse.setOnClickListener {
             binding.etMatchInput.setText(parseTextFromSystem())
         }
