@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PixelFormat
 import android.os.IBinder
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -31,7 +32,7 @@ class FloatingWindowService : Service() {
     private lateinit var layoutParams: WindowManager.LayoutParams
 
     //传递消息
-    private var dataStr : String = ""
+    private var dataStr: String = ""
 
     override fun onBind(intent: Intent?): IBinder? {
 
@@ -44,7 +45,7 @@ class FloatingWindowService : Service() {
         initView()
     }
 
-    fun initWindow(){
+    fun initWindow() {
         try {
             windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
@@ -57,9 +58,9 @@ class FloatingWindowService : Service() {
             layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT
             layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
             layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-//        layoutParams.format = PixelFormat.TRANSPARENT
-//            layoutParams.flags =
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL       // 2. 设置行为标志
+            layoutParams.format = PixelFormat.TRANSPARENT
+            layoutParams.flags =
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL       // 2. 设置行为标志
             //           layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             // 解释一些常用 flags:
             // FLAG_NOT_FOCUSABLE: 窗口不会获得输入焦点，点击事件会直接透传到下方的窗口。这对于不需要输入文本的悬浮窗非常有用，避免影响下层应用。
@@ -80,20 +81,18 @@ class FloatingWindowService : Service() {
 
     fun initView() {
         val array = ArrayList<WindowScoreBean>()
-//        array.add(WindowScoreBean("1","2","3",object : OnScoreItemClickListener {
-//            override fun onClick(msg : String) {
-//                showToast(this@FloatingWindowService,msg)
-//            }
-//        }))
-//        val mAdapter = WindowScoreAdapter(array)
-//        floatingView.findViewById<RecyclerView>(com.example.more.R.id.rv_score_input).apply {
-//            adapter = mAdapter
-//            val manager = LinearLayoutManager(this@FloatingWindowService, RecyclerView.VERTICAL, false)
-//            setLayoutManager(manager)
-//        }
-//        binding.teamRv.setAdapter(adapter)
-//        val manager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-//        binding.teamRv.setLayoutManager(manager)
+        array.add(WindowScoreBean("1", "2", "3", object : OnScoreItemClickListener {
+            override fun onClick(msg: String) {
+                showToast(this@FloatingWindowService, msg)
+            }
+        }))
+        val mAdapter = WindowScoreAdapter(array)
+        floatingView.findViewById<RecyclerView>(com.example.more.R.id.rv_score_input).apply {
+            adapter = mAdapter
+            val manager =
+                LinearLayoutManager(this@FloatingWindowService, RecyclerView.VERTICAL, false)
+            setLayoutManager(manager)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -108,9 +107,10 @@ class FloatingWindowService : Service() {
         }
 
         // 悬浮窗主体点击事件
-        floatingView.findViewById<View?>(com.example.more.R.id.layout_container_floating_window).setOnClickListener {
+        floatingView.findViewById<View?>(com.example.more.R.id.layout_container_floating_window)
+            .setOnClickListener {
 
-        }
+            }
 
         //确定按钮
         floatingView.findViewById<View?>(com.example.more.R.id.tv_sure).setOnClickListener {
@@ -119,7 +119,8 @@ class FloatingWindowService : Service() {
 
 
         // 实现拖拽逻辑
-        val dragArea = floatingView.findViewById<View?>(com.example.more.R.id.layout_container_floating_window) // 整个布局作为拖拽区域
+        val dragArea =
+            floatingView.findViewById<View?>(com.example.more.R.id.layout_container_floating_window) // 整个布局作为拖拽区域
 
         dragArea.setOnTouchListener(object : OnTouchListener {
             private var initialX = 0

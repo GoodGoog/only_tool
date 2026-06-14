@@ -2,9 +2,10 @@ package com.example.more.bean;
 
 import android.view.View;
 
+import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-public class WindowScoreBean {
+public class WindowScoreBean extends BaseObservable {
     private String cupName ;
 
     private String left_team_name;
