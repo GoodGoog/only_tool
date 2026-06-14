@@ -1,14 +1,20 @@
 package com.example.more.team
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PixelFormat
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.common.base.BaseActivity
 import com.example.common.base.BaseViewModel
 import com.example.common.util.showToast
-import com.example.more.R
 import com.example.more.adapter.TeamAdapter
 import com.example.more.bean.TeamBean
 import com.example.more.databinding.MoreActivityTeamChooseBinding
@@ -20,6 +26,7 @@ import com.example.more.setting.TEAM_RIGHT_NAME
 import com.example.more.setting.judgeLeftTeamScoreTips
 import com.example.more.setting.splitStringToStrArray
 
+
 class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>() {
     override fun initData(savedInstanceState: Bundle?) {
 
@@ -27,6 +34,20 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
     }
 
     fun initClickEvent() {
+        binding.tvTest.setOnClickListener {
+            // Check if permission is granted
+            if (Settings.canDrawOverlays(this)) {
+                startService(Intent(this, FloatingWindowService::class.java))
+            } else {
+                // Ask for permission
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:$packageName")
+                )
+                startActivityForResult(intent, 100)
+            }
+        }
+
         //输入原始数据
         binding.tvParseRawMatchText.setOnClickListener {
             binding.etTextFormatTrans.setText(parseTextFromSystem())
@@ -44,7 +65,7 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
             var aimStr = ""
             splitStringToStrArray(rawStr, "\n").let {
                 for (index in 0..it.size - 1) {
-                    showToast(index.toString())
+                    //showToast(index.toString())
                     //不是最后一行字符串
                     if (index + 1 != it.size) {
                         aimStr += it[index] + "\n"
@@ -166,5 +187,5 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
     }
 
 
-    override fun getLayoutId() = R.layout.more_activity_team_choose
+    override fun getLayoutId() = com.example.more.R.layout.more_activity_team_choose
 }
