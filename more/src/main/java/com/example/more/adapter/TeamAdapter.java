@@ -35,6 +35,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         TeamBean bean = data.get(position);
         holder.binding.setBean(bean);
+        holder.binding.tvCupName.setText(bean.getCupName());
         holder.binding.tvDoubleTeamName.setText(bean.getLeft_team_name() + "VS" + bean.getRight_team_name());
     }
 

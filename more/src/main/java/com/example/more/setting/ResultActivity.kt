@@ -19,7 +19,7 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
         right_team_name = (intent.getStringExtra(TEAM_RIGHT_NAME) ?: "") as String
 
         binding.tvRightWin.text = right_team_name
-        binding.tvLeftWin.setText(left_team_name)
+        binding.tvLeftWin.text = left_team_name
         binding.etAnalyseHead.setText(readCache())
 
         initPopWindow()
@@ -29,12 +29,15 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
 
     fun addClickEvent() {
         binding.tvChooseTitle.setOnClickListener {
-            isPopWindowShow()
+
         }
 
         //复制标题点击
         binding.tvCopyTitle.setOnClickListener {
-            if (binding.etTitle.text.isEmpty()) return@setOnClickListener
+            if (binding.etTitle.text.isEmpty()){
+                showToast(this,"标题为空")
+                return@setOnClickListener
+            }
             copyTextToSystem(binding.etTitle.text.toString(), true)
         }
 
@@ -53,13 +56,17 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
 
         //点击复制前瞻
         binding.tvCopyPreAnalyse.setOnClickListener {
-            if (binding.etPreAnalyse.text.isEmpty()) return@setOnClickListener
+            if (binding.etPreAnalyse.text.isEmpty()){
+                showToast(this,"前瞻为空")
+                return@setOnClickListener
+            }
             copyTextToSystem(binding.etPreAnalyse.text.toString(), true)
         }
 
         //点击复制最终结果
         binding.tvCopyAnswer.setOnClickListener { _ ->
             if (binding.etFinalAnswer.text.isEmpty()) {
+                showToast(this,"结果为空")
                 return@setOnClickListener
             }
             copyTextToSystem(binding.etFinalAnswer.text.toString(), true)
@@ -97,84 +104,7 @@ class ResultActivity : BaseActivity<MoreActivitySettingResultBinding, BaseViewMo
 
 
     fun initPopWindow() {
-        //拦截弹窗点击
-        binding.layoutPopWindow.setOnClickListener {
 
-        }
-
-        binding.tvTitle1.apply {
-            setAVSBMode(this, "胜利将花落谁家？")
-        }
-        binding.tvTitle2.apply {
-            setAVSBMode(this, "谁能卫冕荣耀？")
-        }
-        binding.tvTitle3.apply {
-            setAVSBMode(this, "昔日格局是否会被重塑？")
-        }
-        binding.tvTitle4.apply {
-            setAComeifBcoulde(this, "来势汹汹", "能否逆境翻盘")
-        }
-        binding.tvTitle5.apply {
-            setAComeifBcoulde(this, "来者不善", "能否抗住压力")
-        }
-        binding.tvTitle6.apply {
-            setAComeifBcoulde(this, "夺冠目标明确", "能否御敌于球场")
-        }
-        binding.tvTitle7.apply {
-            apply {
-                text = "势均力敌！" + "A和B谁能登临宝座?"
-                setOnClickListener {
-                    binding.etTitle.setText("势均力敌！" + left_team_name + "和" + right_team_name + "谁能登临王座？")
-                }
-            }
-        }
-        binding.tvTitle8.apply {
-            apply {
-                text = "难分高下！" + "A能否击败B?"
-                setOnClickListener {
-                    binding.etTitle.setText("难分高下！" + left_team_name + "能否击败" + right_team_name + "？")
-
-                }
-            }
-        }
-        binding.tvTitle9.apply {
-            text = "老对手球场再逢！" + "这次谁能笑道最后？"
-            setOnClickListener {
-                binding.etTitle.setText("老对手球场再逢！" + "这次谁能笑道最后？")
-            }
-        }
-        binding.tvTitle10.apply {
-            setAVSBMode(this, "结局可能超出预料？")
-        }
-        binding.tvTitleQuitChoose.setOnClickListener {
-            isPopWindowShow()
-        }
     }
 
-    fun setAVSBMode(tvTitle: TextView, tail: String) {
-        tvTitle.apply {
-            text = "AvsB，" + tail
-            setOnClickListener {
-                binding.etTitle.setText(left_team_name + "VS" + right_team_name + "，" + tail)
-            }
-        }
-    }
-
-    //A四字成语，B能否四字成语
-    fun setAComeifBcoulde(tvTitle: TextView, aWord: String, bWord: String) {
-        tvTitle.apply {
-            text = "A" + aWord + "，B能否" + bWord + "？"
-            setOnClickListener {
-                binding.etTitle.setText(left_team_name + aWord + "，" + right_team_name + bWord + "？")
-            }
-        }
-    }
-
-    //隐藏弹窗
-    fun isPopWindowShow() {
-        binding.layoutPopWindow.apply {
-            visibility = if (visibility == View.VISIBLE) View.INVISIBLE
-            else View.VISIBLE
-        }
-    }
 }

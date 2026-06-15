@@ -161,16 +161,6 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
         return array
     }
 
-
-    //拿到解析数据再显示列表
-    fun initView(beans: ArrayList<TeamBean>) {
-        val adapter = TeamAdapter(beans)
-        binding.teamRv.setAdapter(adapter)
-        val manager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.teamRv.setLayoutManager(manager)
-    }
-
-
     private fun createTeamBean(
         cupName: String,
         left_team_name: String,

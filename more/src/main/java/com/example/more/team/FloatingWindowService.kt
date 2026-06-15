@@ -74,6 +74,10 @@ class FloatingWindowService : Service() {
             layoutParams.x = 100
             layoutParams.y = 100
 
+            //悬浮窗透明度
+            layoutParams.alpha = 0.8f
+//            layoutParams.format = PixelFormat.TRANSPARENT
+
             windowManager.addView(floatingView, layoutParams)
             setupClickListeners()
         } catch (e: Exception) {

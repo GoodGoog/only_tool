@@ -10,183 +10,160 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/default_bg_color"
         tools:context=".setting.SettingActivity">
 
-        <EditText
-            android:id="@+id/et_quick_input_three"
+        <TextView
+            android:id="@+id/tv_match_info_parse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@null"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:hint="赛事名+队伍名+受让分，以换行符隔开"
+            android:text="粘贴插入赛程"
             android:textColor="@color/black"
-            android:textSize="14dp"
+            android:textSize="17dp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--            分割线-->
-        <TextView
+        <EditText
+            android:id="@+id/et_quick_input_three"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
-            android:background="#999999"
+            android:background="@drawable/bg_edit_text_border"
+            android:gravity="center"
+            android:hint="赛事名+队伍名+受让分，以换行符隔开"
+            android:padding="12dp"
+            android:lines="4"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_match_info_parse" />
+
+        <TextView
+            android:id="@+id/tv_match_info_split"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="解析上述赛程"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_quick_input_three" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_container_parse_and_split_raw_info"
+            android:id="@+id/layout_container_detail_info_show"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@id/et_quick_input_three">
-
-            <TextView
-                android:id="@+id/tv_match_info_parse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:text="粘贴插入赛程"
-                android:textColor="@color/black"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_match_info_split"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_match_info_split"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:gravity="center"
-                android:text="解析上述赛程"
-                android:textColor="@color/black"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_match_info_parse"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <EditText
-            android:id="@+id/et_cup_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@null"
-            android:gravity="center"
-            android:hint="赛事名"
-            android:textColor="@color/black"
-            android:textSize="14dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_container_parse_and_split_raw_info" />
-
-        <EditText
-            android:id="@+id/et_left_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@null"
-            android:gravity="center"
-            android:hint="左侧队伍名"
-            android:textColor="@color/black"
-            android:textSize="14dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_cup_name" />
-
-        <EditText
-            android:id="@+id/et_right_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@null"
-            android:gravity="center"
-            android:hint="右侧队伍名"
-            android:textColor="@color/black"
-            android:textSize="14dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_left_name" />
-
-        <!--        左侧队伍受让分-->
-        <EditText
-            android:id="@+id/et_left_team_raw_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@null"
-            android:gravity="center"
-            android:hint="左侧队伍受让分数"
-            android:textColor="@color/black"
-            android:textSize="14dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_right_name" />
-
-        <!--            分割线-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
-            android:background="#999999"
+            android:background="@drawable/bg_any_view_border_radius"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_left_team_raw_score" />
+            app:layout_constraintTop_toBottomOf="@id/tv_match_info_split">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_container_question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@id/et_left_team_raw_score">
-
-            <TextView
-                android:id="@+id/tv_question_detail"
+            <EditText
+                android:id="@+id/et_cup_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@null"
                 android:gravity="center"
-                android:text="提问为分析"
+                android:hint="赛事名"
                 android:textColor="@color/black"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_question_rude"
+                android:textSize="14dp"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_question_rude"
+            <EditText
+                android:id="@+id/et_left_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@null"
                 android:gravity="center"
-                android:text="提问为结果"
+                android:hint="左侧队伍名"
+                android:padding="12dp"
                 android:textColor="@color/black"
-                android:textSize="17dp"
-                android:textStyle="bold"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_cup_name" />
+
+            <EditText
+                android:id="@+id/et_right_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:gravity="center"
+                android:hint="右侧队伍名"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_left_name" />
+
+            <!--        左侧队伍受让分-->
+            <EditText
+                android:id="@+id/et_left_team_raw_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@null"
+                android:gravity="center"
+                android:padding="12dp"
+                android:hint="左侧队伍受让分数"
+                android:textColor="@color/black"
+                android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_question_detail"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_right_name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/tv_question_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="提问为分析"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tv_question_rude"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_container_detail_info_show" />
+
+        <TextView
+            android:id="@+id/tv_question_rude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:text="提问为结果"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_question_detail"
+            app:layout_constraintTop_toTopOf="@id/tv_question_detail" />
 
         <EditText
             android:id="@+id/et_ai_question"
@@ -195,65 +172,46 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
-            android:background="@null"
+            android:padding="12dp"
+            android:background="@drawable/bg_edit_text_border"
             android:gravity="center"
             android:hint="此处生成提问内容"
+            android:lines="4"
             android:textColor="@color/black"
             android:textSize="14dp"
-            app:layout_constraintTop_toBottomOf="@id/layout_container_question" />
+            app:layout_constraintTop_toBottomOf="@id/tv_question_detail" />
 
-        <!--            分割线-->
+        <!--        -->
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:id="@+id/tv_question_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
-            android:background="#999999"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:text="复制问题"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tv_question_copy_and_jump"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_ai_question" />
 
-        <!--        -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_container_copy_and_jump"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_question_copy_and_jump"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@id/et_ai_question">
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:text="复制并跳转"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_question_copy"
+            app:layout_constraintTop_toTopOf="@id/tv_question_copy" />
 
-            <TextView
-                android:id="@+id/tv_question_copy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:text="复制问题"
-                android:textColor="@color/black"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_question_copy_and_jump"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_question_copy_and_jump"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:gravity="center"
-                android:text="复制并跳转"
-                android:textColor="@color/black"
-                android:textSize="17dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_question_copy"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
