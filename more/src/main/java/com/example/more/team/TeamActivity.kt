@@ -1,14 +1,10 @@
 package com.example.more.team
 
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
 import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
 import android.provider.Settings
 import android.view.View
-import androidx.annotation.Nullable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,39 +29,48 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>() {
     override fun initData(savedInstanceState: Bundle?) {
 
-        //测试数据
-         binding.etTextFormatTrans.setText("测试数据")
-
-        LiveEventBus
-            .get<String?>(EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT, String::class.java)
-            .observe(this,object : Observer<String>{
-                override fun onChanged(p0: String?) {
-                    showToast("收到了确定按钮")
-                }
-            })
-//            .observe(this, object : Observer<String?> {
-//                public override fun onChanged(@Nullable s: String?) {
-//                }
-//            })
+        initObserver()
         initClickEvent()
     }
 
+    fun initObserver(){
+        LiveEventBus
+            .get<String?>(EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT, String::class.java)
+            .observe(this, object : Observer<String> {
+                override fun onChanged(dataString: String?) {
+                    binding.etMatchInput.setText(dataString)
+                }
+            })
+    }
+
     fun initClickEvent() {
-        binding.tvTest.setOnClickListener {
+        //弹窗输入分数
+        binding.tvInputMatchScore.setOnClickListener {
             // Check if permission is granted
             if (binding.etTextFormatTrans.text.isEmpty()) {
                 showToast("原始信息不能为空")
                 return@setOnClickListener
             }
+            splitStringToStrArray(binding.etTextFormatTrans.text.toString(), "\n").let { strArray ->
+                if (strArray.size % 3 != 0) {
+                    showToast(this, "数据格式不合规" + strArray.size)
+                    return@setOnClickListener
+                }
+            }
+            //是否有系统悬浮窗显示权限
             if (Settings.canDrawOverlays(this)) {
-                startService(Intent(this, FloatingWindowService::class.java))
+                //有
+                //startService(Intent(this, FloatingWindowService::class.java))
                 Intent(this, FloatingWindowService::class.java).let { mIntent ->
-                    mIntent.putExtra(TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO, binding.etTextFormatTrans.text.toString())
+                    mIntent.putExtra(
+                        TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO,
+                        binding.etTextFormatTrans.text.toString()
+                    )
                     startService(mIntent)
                     //bindService(mIntent,serviceConn, Context.BIND_AUTO_CREATE)
                 }
             } else {
-                // Ask for permission
+                // 没权限
                 val intent = Intent(
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:$packageName")
@@ -82,37 +87,40 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
         binding.tvTransRawMatchText.setOnClickListener {
             var rawStr: String = binding.etTextFormatTrans.text.toString()
             if (rawStr.isEmpty()) return@setOnClickListener
-            rawStr = rawStr.replace("[", "")
-            rawStr = rawStr.replace("]", "")
-            //删除数字
-            rawStr = rawStr.replace(Regex("[0-9]+"), "")
+//            val aimArray = ArrayList<String>()
+//            splitStringToStrArray(rawStr, "\n").let { strArray ->
+//                if (strArray.size % 3 != 0){
+//                    showToast(this,"数据格式不合规")
+//                }else {
+//                    //step - 隔两个元素 执行一次
+//                    for (index in 0 until strArray.size step 2){
+//                        if (index > strArray.size ) break
+//                        aimArray.add
+//                    }
+//
+//                }
+//            }
+//            rawStr = rawStr.replace("[", "")
+//            rawStr = rawStr.replace("]", "")
+//            //删除数字
+//            rawStr = rawStr.replace(Regex("[0-9]+"), "")
 
 //            //插入换行符
-            var aimStr = ""
-            splitStringToStrArray(rawStr, "\n").let {
-                for (index in 0..it.size - 1) {
-                    //showToast(index.toString())
-                    //不是最后一行字符串
-                    if (index + 1 != it.size) {
-                        aimStr += it[index] + "\n"
-                    }
-                    //背三整除 且 不是最后一行字符串
-                    if ((index + 1) % 3 == 0 && index + 1 != it.size) {
-                        aimStr += "\n\n"
-                    }
-                }
-            }
-            binding.etTextFormatTrans.setText(aimStr)
-        }
-
-        binding.tvCopyTransformMatchText.setOnClickListener {
-            binding.etTextFormatTrans.text.let {
-                if (it.isNotEmpty()) {
-                    copyTextToSystem(it.toString(), true)
-                } else {
-                    showToast(this, "复制内容不能为空")
-                }
-            }
+//            var aimStr = ""
+//            splitStringToStrArray(rawStr, "\n").let {
+//                for (index in 0..it.size - 1) {
+//                    //showToast(index.toString())
+//                    //不是最后一行字符串
+//                    if (index + 1 != it.size) {
+//                        aimStr += it[index] + "\n"
+//                    }
+//                    //背三整除 且 不是最后一行字符串
+//                    if ((index + 1) % 3 == 0 && index + 1 != it.size) {
+//                        aimStr += "\n\n"
+//                    }
+//                }
+//            }
+//            binding.etTextFormatTrans.setText(aimStr)
         }
 
         binding.tvInputParse.setOnClickListener {

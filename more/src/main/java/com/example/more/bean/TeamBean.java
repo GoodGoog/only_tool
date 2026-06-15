@@ -15,12 +15,30 @@ public class TeamBean extends BaseObservable {
     private String left_team_raw_score ;
     private View.OnClickListener onClickListener ;
 
+    private OnScoreEditTextChangeListener onScoreEditTextChangeListener ;
+
+    public TeamBean(String cupName, String left_team_name, String right_team_name,String left_team_raw_score) {
+        this.cupName = cupName;
+        this.left_team_name = left_team_name;
+        this.right_team_name = right_team_name;
+        this.left_team_raw_score = left_team_raw_score;
+    }
+
     public TeamBean(String cupName, String left_team_name, String right_team_name, View.OnClickListener onClickListener) {
         this.cupName = cupName;
         this.left_team_name = left_team_name;
         this.right_team_name = right_team_name;
         this.onClickListener = onClickListener;
     }
+
+    public TeamBean(String cupName, String left_team_name, String right_team_name, String left_team_raw_score, OnScoreEditTextChangeListener onScoreEditTextChangeListener) {
+        this.cupName = cupName;
+        this.left_team_name = left_team_name;
+        this.right_team_name = right_team_name;
+        this.left_team_raw_score = left_team_raw_score;
+        this.onScoreEditTextChangeListener = onScoreEditTextChangeListener;
+    }
+
 
     public TeamBean(String cupName, String left_team_name, String right_team_name,String left_team_raw_score, View.OnClickListener onClickListener) {
         this.cupName = cupName;
@@ -70,6 +88,14 @@ public class TeamBean extends BaseObservable {
 
     public void setOnClickListener(View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
+    }
+
+    public OnScoreEditTextChangeListener getOnScoreEditTextChangeListener() {
+        return onScoreEditTextChangeListener;
+    }
+
+    public void setOnScoreEditTextChangeListener(OnScoreEditTextChangeListener onScoreEditTextChangeListener) {
+        this.onScoreEditTextChangeListener = onScoreEditTextChangeListener;
     }
 }
 

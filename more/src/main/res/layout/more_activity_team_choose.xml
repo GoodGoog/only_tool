@@ -56,16 +56,16 @@
                 android:textSize="16dp"
                 android:textStyle="bold"
                 android:layout_marginTop="15dp"
-                app:layout_constraintEnd_toStartOf="@id/tv_copy_transform_match_text"
+                app:layout_constraintEnd_toStartOf="@id/tv_input_match_score"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_text_format_trans" />
 
             <TextView
-                android:id="@+id/tv_copy_transform_match_text"
+                android:id="@+id/tv_input_match_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="复制生成后文本"
+                android:text="弹窗输入分数"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/tv_copy_transform_match_text">
+                app:layout_constraintTop_toBottomOf="@id/tv_input_match_score">
 
 
                 <TextView
@@ -230,20 +230,6 @@
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/et_final_question" />
-
-            <TextView
-                android:id="@+id/tv_test"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:text="测试window"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/tv_split_to_single_match" />
 
             <FrameLayout
                 android:layout_width="match_parent"

@@ -3,33 +3,37 @@ package com.example.more.team
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.IBinder
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.WindowManager
+import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.common.util.showToast
 import com.example.more.adapter.WindowScoreAdapter
-import com.example.more.bean.OnScoreItemClickListener
+import com.example.more.bean.OnScoreEditTextChangeListener
 import com.example.more.bean.TeamBean
-import com.example.more.bean.WindowScoreBean
 import com.example.more.setting.EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT
 import com.example.more.setting.TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO
+import com.example.more.setting.splitStringToStrArray
 import com.jeremyliao.liveeventbus.LiveEventBus
+import kotlin.math.log
 
 
 class FloatingWindowService : Service() {
 
     private lateinit var windowManager: WindowManager
     private lateinit var floatingView: View
-
     private lateinit var layoutParams: WindowManager.LayoutParams
+
+    //列表数据
+    private val dataArray = ArrayList<TeamBean>()
 
     //传递消息
     private var dataStr: String = ""
@@ -42,7 +46,6 @@ class FloatingWindowService : Service() {
     override fun onCreate() {
         super.onCreate()
         initWindow()
-        initView()
     }
 
     fun initWindow() {
@@ -59,8 +62,7 @@ class FloatingWindowService : Service() {
             layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
             layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             layoutParams.format = PixelFormat.TRANSPARENT
-            layoutParams.flags =
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL       // 2. 设置行为标志
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL       // 2. 设置行为标志
             //           layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             // 解释一些常用 flags:
             // FLAG_NOT_FOCUSABLE: 窗口不会获得输入焦点，点击事件会直接透传到下方的窗口。这对于不需要输入文本的悬浮窗非常有用，避免影响下层应用。
@@ -79,14 +81,25 @@ class FloatingWindowService : Service() {
         }
     }
 
-    fun initView() {
-        val array = ArrayList<WindowScoreBean>()
-        array.add(WindowScoreBean("1", "2", "3", object : OnScoreItemClickListener {
-            override fun onClick(msg: String) {
-                showToast(this@FloatingWindowService, msg)
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        dataStr = intent?.getStringExtra(TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO).toString()
+        initRecycleView(dataStr)
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    fun initRecycleView(rawStr : String) {
+        splitStringToStrArray(rawStr,"\n").let { strArray ->
+            //step 隔开两个元素执行一次
+            for (index in 0 until strArray.size-1 step 3){
+                dataArray.add(TeamBean(strArray[index], strArray[index + 1], strArray[index + 2],"", object : OnScoreEditTextChangeListener {
+                    override fun onChange(bean: TeamBean,position : Int) {
+                        dataArray[position] = bean
+                    }
+                }))
             }
-        }))
-        val mAdapter = WindowScoreAdapter(array)
+        }
+
+        val mAdapter = WindowScoreAdapter(dataArray)
         floatingView.findViewById<RecyclerView>(com.example.more.R.id.rv_score_input).apply {
             adapter = mAdapter
             val manager =
@@ -95,15 +108,10 @@ class FloatingWindowService : Service() {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        dataStr = intent?.getStringExtra(TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO).toString()
-        return super.onStartCommand(intent, flags, startId)
-    }
-
     private fun setupClickListeners() {
         // 关闭按钮
         floatingView.findViewById<View?>(com.example.more.R.id.iv_close).setOnClickListener {
-            stopSelf()
+            finishFloatWindow()
         }
 
         // 悬浮窗主体点击事件
@@ -114,9 +122,46 @@ class FloatingWindowService : Service() {
 
         //确定按钮
         floatingView.findViewById<View?>(com.example.more.R.id.tv_sure).setOnClickListener {
-            LiveEventBus.get<String>(EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT).post("测试数据")
+            finishFloatWindow()
         }
 
+        moveWindow()
+    }
+
+    //退出窗口
+    private fun finishFloatWindow(){
+        obtainCursor()
+        dataArray.forEach { bean ->
+            if (bean.left_team_raw_score.isEmpty()){
+                bean.left_team_raw_score = "0"
+            }
+        }
+        //数据数组转化为有效的字符串
+        var dataStr = ""
+        for (index in 0 until dataArray.size){
+            val bean = dataArray[index]
+            dataStr += bean.cupName + "\n" + bean.left_team_name + "\n" + bean.right_team_name + "\n" + bean.left_team_raw_score
+            //最后一个行不用换行
+            if (index != dataArray.size -1){
+                dataStr += "\n\n"
+                showToast(this,dataArray.size.toString() + "来了几次" + index + "???" +(dataArray.size -1))
+            }
+        }
+        LiveEventBus.get<String>(EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT).post(dataStr)
+        stopSelf()
+    }
+
+    //结束时光标变化
+    private fun obtainCursor() {
+        floatingView.findViewById<EditText>(com.example.more.R.id.et_cursor_change).apply {
+            setFocusable(true);
+            setFocusableInTouchMode(true);
+            requestFocus();
+        }
+    }
+
+    //拖拽功能
+    private fun moveWindow(){
 
         // 实现拖拽逻辑
         val dragArea =
