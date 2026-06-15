@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.Gravity
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,7 +34,7 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
         initClickEvent()
     }
 
-    fun initObserver(){
+    fun initObserver() {
         LiveEventBus
             .get<String?>(EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT, String::class.java)
             .observe(this, object : Observer<String> {
@@ -87,40 +88,6 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
         binding.tvTransRawMatchText.setOnClickListener {
             var rawStr: String = binding.etTextFormatTrans.text.toString()
             if (rawStr.isEmpty()) return@setOnClickListener
-//            val aimArray = ArrayList<String>()
-//            splitStringToStrArray(rawStr, "\n").let { strArray ->
-//                if (strArray.size % 3 != 0){
-//                    showToast(this,"数据格式不合规")
-//                }else {
-//                    //step - 隔两个元素 执行一次
-//                    for (index in 0 until strArray.size step 2){
-//                        if (index > strArray.size ) break
-//                        aimArray.add
-//                    }
-//
-//                }
-//            }
-//            rawStr = rawStr.replace("[", "")
-//            rawStr = rawStr.replace("]", "")
-//            //删除数字
-//            rawStr = rawStr.replace(Regex("[0-9]+"), "")
-
-//            //插入换行符
-//            var aimStr = ""
-//            splitStringToStrArray(rawStr, "\n").let {
-//                for (index in 0..it.size - 1) {
-//                    //showToast(index.toString())
-//                    //不是最后一行字符串
-//                    if (index + 1 != it.size) {
-//                        aimStr += it[index] + "\n"
-//                    }
-//                    //背三整除 且 不是最后一行字符串
-//                    if ((index + 1) % 3 == 0 && index + 1 != it.size) {
-//                        aimStr += "\n\n"
-//                    }
-//                }
-//            }
-//            binding.etTextFormatTrans.setText(aimStr)
         }
 
         binding.tvInputParse.setOnClickListener {
@@ -163,10 +130,14 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
         }
 
         binding.tvSplitToSingleMatch.setOnClickListener {
-            if (binding.etMatchInput.text.isEmpty()) showToast(this, "先输入比赛信息")
-            else {
-                initView(splitRawMatchStrToArray())
-            }
+            //显示列表
+            //测试弹窗
+            val mWindow = ChoosePopupWindow(binding.layoutContainerAll,splitRawMatchStrToArray(),object : ChoosePopupWindow.OnClickListener{
+                override fun onClick() {
+
+                }
+            })
+            mWindow.showAtLocation(binding.root, Gravity.BOTTOM,0,0);
         }
     }
 

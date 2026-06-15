@@ -14,7 +14,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_container_all"
+            >
 
             <TextView
                 android:id="@+id/tv_parse_raw_match_text"

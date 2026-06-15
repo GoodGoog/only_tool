@@ -144,7 +144,6 @@ class FloatingWindowService : Service() {
             //最后一个行不用换行
             if (index != dataArray.size -1){
                 dataStr += "\n\n"
-                showToast(this,dataArray.size.toString() + "来了几次" + index + "???" +(dataArray.size -1))
             }
         }
         LiveEventBus.get<String>(EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT).post(dataStr)
