@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_any_view_border_radius"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_params_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="参数名称"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/view_separate_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="30dp"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_params_value"
+            app:layout_constraintBottom_toBottomOf="@id/et_params_value"
+            android:id="@+id/view_separate_line"
+            />
+
+        <EditText
+            android:id="@+id/et_params_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@null"
+            android:padding="1dp"
+            android:hint="数值"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="15dp"
+            android:textColor="#999999"
+            app:layout_constraintBottom_toBottomOf="@id/tv_params_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/view_separate_line"
+            app:layout_constraintTop_toTopOf="@id/tv_params_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

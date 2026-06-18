@@ -13,7 +13,7 @@ import com.example.more.databinding.MoreItemTeamChooseRvBinding;
 
 import java.util.ArrayList;
 
-public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.MyViewHolder> {
+public class  TeamAdapter extends RecyclerView.Adapter<TeamAdapter.MyViewHolder> {
 
     public ArrayList<TeamBean> data;
 

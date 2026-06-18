@@ -144,14 +144,13 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
 
         binding.tvTest.setOnClickListener {
             val params = NetworkParams.createLanZouYunDownloadParams()
-            logD("来这里了吗")
-            viewModel.request<LanZouYunDownloadBean>(
+            viewModel.request<Any>(
                 NetworkBaseUrl.URL_LANZOUYUN_DOWNLOAD_FILE,
                 params,
-                LanZouYunDownloadBean::class.java,
-                object : NetworkCallBack<LanZouYunDownloadBean>() {
-                    override fun onSuccess(qqInfoResponse: LanZouYunDownloadBean) {
-                        logD("success+++++" + qqInfoResponse.url)
+                Any::class.java,
+                object : NetworkCallBack<Any>() {
+                    override fun onSuccess(qqInfoResponse: Any) {
+                        logD("success+++++" + qqInfoResponse.toString())
                         showToast("成功了")
                     }
 

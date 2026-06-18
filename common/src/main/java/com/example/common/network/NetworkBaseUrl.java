@@ -20,6 +20,6 @@ public class NetworkBaseUrl {
     public static String URL_MOVIE_MONEY = "http://shanhe.kim/api/za/lishi.php?format=json";
 
     //蓝奏云接口 下拉数据
-    public static String URL_LANZOUYUN_DOWNLOAD_FILE = "https://api.mmp.cc/api/pcwallpaper";
+    public static String URL_LANZOUYUN_DOWNLOAD_FILE = "http://shanhe.kim/api/za/yzmv1.php";
 
 }

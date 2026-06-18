@@ -32,7 +32,7 @@ public class NetworkRequest{
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
 
-        //测试
+        //baseUrl需要以/结尾
          Retrofit retrofit = new Retrofit.Builder()
                  .baseUrl(getAimBaseUrl(baseUrl))
                  .addConverterFactory(GsonConverterFactory.create())
