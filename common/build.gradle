@@ -75,6 +75,11 @@ dependencies {
 
     //okhttp
     api 'com.squareup.okhttp3:okhttp:4.2.0'
+
+    //通过okHttp拦截Retrofit请求地址与返回结果
+    api 'com.squareup.okhttp3:logging-interceptor:3.1.2'
+
+
     //retrofit
     api 'com.squareup.retrofit2:retrofit:2.6.2'
     //使用gson解析json

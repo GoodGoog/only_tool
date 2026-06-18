@@ -29,6 +29,12 @@ public class NetworkParams {
         return map;
     }
 
+    public static HashMap<String,String> createLanZouYunDownloadParams(){
+        HashMap<String,String> map = new HashMap<>();
+        map.put("category","cartoon");
+        map.put("type","json");
+        return map;
+    }
 
 
 }

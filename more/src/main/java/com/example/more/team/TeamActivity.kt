@@ -7,12 +7,13 @@ import android.provider.Settings
 import android.view.Gravity
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.common.base.BaseActivity
 import com.example.common.base.BaseViewModel
+import com.example.common.network.NetworkBaseUrl
+import com.example.common.network.NetworkCallBack
+import com.example.common.network.NetworkParams
 import com.example.common.util.showToast
-import com.example.more.adapter.TeamAdapter
+import com.example.more.bean.LanZouYunDownloadBean
 import com.example.more.bean.TeamBean
 import com.example.more.databinding.MoreActivityTeamChooseBinding
 import com.example.more.setting.EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT
@@ -24,6 +25,7 @@ import com.example.more.setting.TEAM_LEFT_RAW_SCORE
 import com.example.more.setting.TEAM_RIGHT_NAME
 import com.example.more.setting.judgeLeftTeamScoreTips
 import com.example.more.setting.splitStringToStrArray
+import com.example.more.third.retrofit.QqInfoResponse
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 
@@ -138,6 +140,27 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
                 }
             })
             mWindow.showAtLocation(binding.root, Gravity.BOTTOM,0,0);
+        }
+
+        binding.tvTest.setOnClickListener {
+            val params = NetworkParams.createLanZouYunDownloadParams()
+            logD("来这里了吗")
+            viewModel.request<LanZouYunDownloadBean>(
+                NetworkBaseUrl.URL_LANZOUYUN_DOWNLOAD_FILE,
+                params,
+                LanZouYunDownloadBean::class.java,
+                object : NetworkCallBack<LanZouYunDownloadBean>() {
+                    override fun onSuccess(qqInfoResponse: LanZouYunDownloadBean) {
+                        logD("success+++++" + qqInfoResponse.url)
+                        showToast("成功了")
+                    }
+
+                    override fun onFailure(t: Throwable) {
+                        super.onFailure(t)
+                        logD("失败信息" + t.message)
+                        showToast("失败了")
+                    }
+                })
         }
     }
 

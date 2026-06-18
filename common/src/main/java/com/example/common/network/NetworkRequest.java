@@ -2,10 +2,15 @@ package com.example.common.network;
 
 import com.example.common.util.LogUtil;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,29 +31,25 @@ public class NetworkRequest{
     public <T> void execute(String baseUrl, HashMap<String,String> requestMsg,Class<T> tClass, NetworkCallBack<T> listener){
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-        //似乎查了一个拦截器
-        // 创建一个retrofit
-        Retrofit retrofit =(new Retrofit.Builder())
-                .client(builder.build())
-                // 设置基址
-                .baseUrl(baseUrl)
-                // 适配rxjava，目的在于使用观察者模式，分解上层请求的过程，便于我们横加干预（比如请求嵌套）
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                // 使用Gson框架解析请求返回的结果，因为返回的是xml，只有解析过后，才能将数据变为对象，放置到我们刚刚创建你的实体类当中，便于数据的传递使用
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+
+        //测试
+         Retrofit retrofit = new Retrofit.Builder()
+                 .baseUrl(getAimBaseUrl(baseUrl))
+                 .addConverterFactory(GsonConverterFactory.create())
+                 //.client(getOkHttpClient())
+                 .build();
 
         INetworkService request = retrofit.create(INetworkService.class);
 
         //无法返回Call<T>,故使用Object接收数据网络数据,后自行转换为目标类型
-        Call<Object> dataCall = request.postResult(requestMsg);
+        Call<Object> dataCall = request.getResult(getLastPath(baseUrl) ,requestMsg);
 
         dataCall.enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
                 Gson gson = new Gson();
-                LogUtil.d(NetworkRequest.class.getName(),gson.toJson(response.body()));
-                T t = gson.fromJson(gson.toJson(response.body()),tClass);
+                T t = gson.fromJson(gson.toJson(response.body()), tClass);
+                LogUtil.d("网络返回的原始Json数据：",response.toString());
                 listener.onSuccess(t);
             }
 
@@ -57,5 +58,30 @@ public class NetworkRequest{
                 listener.onFailure(t);
             }
         });
+
     }
+
+    //拆分字符串
+    String getAimBaseUrl(String baseUrl){
+        if (isEndWithLine(baseUrl)) return baseUrl;
+        String[] strArray = baseUrl.split("/");
+        String lastPath = strArray[strArray.length -1];
+        StringBuffer stringBuffer = new StringBuffer();
+        for(int i = 0; i < strArray.length - 1;i ++){
+            stringBuffer.append(strArray[i] + "/");
+        }
+        return stringBuffer.toString();
+    }
+
+    boolean isEndWithLine(String baseUrl){
+        //'/'结尾
+        return baseUrl.charAt(baseUrl.length() - 1) == '/';
+    }
+
+    String getLastPath(String baseUrl){
+        if (isEndWithLine(baseUrl)) return "";
+        String[] strArray = baseUrl.split("/");
+        return strArray[strArray.length -1];
+    }
+
 }

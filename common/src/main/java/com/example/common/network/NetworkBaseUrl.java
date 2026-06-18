@@ -19,4 +19,7 @@ public class NetworkBaseUrl {
     //指定平台热搜查询
     public static String URL_MOVIE_MONEY = "http://shanhe.kim/api/za/lishi.php?format=json";
 
+    //蓝奏云接口 下拉数据
+    public static String URL_LANZOUYUN_DOWNLOAD_FILE = "https://api.mmp.cc/api/pcwallpaper";
+
 }
