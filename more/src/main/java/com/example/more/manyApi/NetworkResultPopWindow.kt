@@ -1,4 +1,4 @@
-package com.example.more.OnEventChangeListener
+package com.example.more.manyApi
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -7,13 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.more.R
-import com.example.more.adapter.TeamAdapter
-import com.example.more.bean.TeamBean
 import com.example.more.databinding.MoreWindowNetworkResultBinding
-import com.example.more.databinding.MoreWindowPopShowBinding
 
 class NetworkResultPopWindow(container : View,any: Any) : PopupWindow(container.context) {
 

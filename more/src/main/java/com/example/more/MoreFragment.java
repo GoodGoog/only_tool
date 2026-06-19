@@ -15,7 +15,7 @@ import com.example.more.databinding.FragmentMoreBinding;
 import com.example.more.interestingApi.ChatGptActivity;
 import com.example.more.jetpack.room.RoomActivity;
 import com.example.more.kotlin.BaseKotlinActivity;
-import com.example.more.OnEventChangeListener.ManyApiActivity;
+import com.example.more.manyApi.ManyApiActivity;
 import com.example.more.setting.SettingActivity;
 import com.example.more.team.TeamActivity;
 import com.example.more.third.glide.GlideActivity;

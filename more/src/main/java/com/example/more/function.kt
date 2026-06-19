@@ -12,6 +12,10 @@ const val KEY_VALUE_SEPARATOR = "****"
 
 const val KEY_VALUE_LIST_SEPARATOR = "^^^^"
 
+const val API_BOX_USER_ID = "10018076"
+
+const val API_BOX_USER_KEY = "40a92afa2734bd53e5f91e8b37f4ee2e"
+
 fun createApiBeanList(): ArrayList<ApiBean> {
     val array = arrayListOf<ApiBean>().let { aimArray ->
         arrayListOf<String>().apply {
@@ -42,6 +46,32 @@ fun createApiBeanList(): ArrayList<ApiBean> {
         }.let { paramsMap ->
             aimArray.add(ApiBean("https://api.52vmy.cn/api/chat/spark", "纯货ai", paramsMap))
         }
+
+        arrayListOf<String>().apply {
+            add(createKeyValueMap("id", arrayOf(API_BOX_USER_ID)))
+            add(createKeyValueMap("key", arrayOf(API_BOX_USER_KEY)))
+        }.let { paramsMap ->
+            aimArray.add(ApiBean("https://cn.apihz.cn/api/xinwen/douyin.php", "抖音热榜", paramsMap))
+        }
+
+        //ai
+        arrayListOf<String>().apply {
+            add(createKeyValueMap("id", arrayOf(API_BOX_USER_ID)))
+            add(createKeyValueMap("key", arrayOf(API_BOX_USER_KEY)))
+            add(createKeyValueMap("words", arrayOf("预测世界杯冠军")))
+        }.let { paramsMap ->
+            aimArray.add(ApiBean("https://cn.apihz.cn/api/ai/xinghuolite.php", "讯飞星火AI", paramsMap))
+        }
+
+        //文心ai
+        arrayListOf<String>().apply {
+            add(createKeyValueMap("id", arrayOf(API_BOX_USER_ID)))
+            add(createKeyValueMap("key", arrayOf(API_BOX_USER_KEY)))
+            add(createKeyValueMap("words", arrayOf("预测世界杯冠军")))
+        }.let { paramsMap ->
+            aimArray.add(ApiBean("https://cn.apihz.cn/api/ai/wxlite.php", "文心AI", paramsMap))
+        }
+
 
         //最终数据再次返回
         aimArray

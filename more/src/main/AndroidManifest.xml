@@ -71,7 +71,7 @@
             android:name=".team.TeamActivity"
             android:exported="false" />
         <activity
-            android:name=".OnEventChangeListener.ManyApiActivity"
+            android:name=".manyApi.ManyApiActivity"
             android:exported="false" />
         <service
             android:name=".component.curProcess.CurProcessService"

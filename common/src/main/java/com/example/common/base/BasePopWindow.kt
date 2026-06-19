@@ -1,4 +1,4 @@
-package com.example.more.OnEventChangeListener
+package com.example.common.base
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -8,7 +8,7 @@ import android.widget.PopupWindow
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
-abstract class BasePopWindow<VB : ViewDataBinding,B>(container : View, data: B,mWidth : Int,mHeight : Int,layoutId : Int) : PopupWindow(container.context) {
+abstract class BasePopWindow<VB : ViewDataBinding,B>(container : View, data: B, mWidth : Int, mHeight : Int, layoutId : Int) : PopupWindow(container.context) {
 
     private var binding : VB
     private var data: B
@@ -20,7 +20,8 @@ abstract class BasePopWindow<VB : ViewDataBinding,B>(container : View, data: B,m
         isOutsideTouchable = true
         isFocusable = true
         setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        binding = DataBindingUtil.inflate(LayoutInflater.from(container.context)
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(container.context)
             , layoutId,null,false)
         // val contentView = LayoutInflater.from(context).inflate(R.layout.more_window_pop_show,null,false)
         setContentView(binding.root)
