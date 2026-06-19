@@ -142,25 +142,6 @@ class TeamActivity : BaseActivity<MoreActivityTeamChooseBinding, BaseViewModel>(
             mWindow.showAtLocation(binding.root, Gravity.BOTTOM,0,0);
         }
 
-        binding.tvTest.setOnClickListener {
-            val params = NetworkParams.createLanZouYunDownloadParams()
-            viewModel.request<Any>(
-                NetworkBaseUrl.URL_LANZOUYUN_DOWNLOAD_FILE,
-                params,
-                Any::class.java,
-                object : NetworkCallBack<Any>() {
-                    override fun onSuccess(qqInfoResponse: Any) {
-                        logD("success+++++" + qqInfoResponse.toString())
-                        showToast("成功了")
-                    }
-
-                    override fun onFailure(t: Throwable) {
-                        super.onFailure(t)
-                        logD("失败信息" + t.message)
-                        showToast("失败了")
-                    }
-                })
-        }
     }
 
     //解析原始比赛信息字符串
