@@ -6,4 +6,5 @@ package com.example.common.util;
  */
 public interface EventBusInfo {
     String TEST_EVENT = "TEST_EVENT";
+    String FLOAT_WINDOW_TEST_TOUCH = "FLOAT_WINDOW_TEST_TOUCH";
 }

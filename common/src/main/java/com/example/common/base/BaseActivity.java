@@ -57,7 +57,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, VM extends BaseVie
     protected abstract int getLayoutId();
 
     protected void logD(String msg) {
-        LogUtil.d(this.getClass().getName().toString() + "-打印信息", msg);
+        LogUtil.d(this.getClass().getName().toString() + "|++++++++++++++++++++++++++|", msg);
     }
 
     //复制功能

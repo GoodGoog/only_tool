@@ -3,6 +3,7 @@ package com.example.only_tool.main;
 import android.app.Application;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.example.more.touch_service.FastAccessibilityService;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 
 /**
@@ -24,6 +25,7 @@ public class BaseApp extends Application {
                 .config()
                 .autoClear(true)
                 .lifecycleObserverAlwaysActive(true);
+
     }
 
     @Override

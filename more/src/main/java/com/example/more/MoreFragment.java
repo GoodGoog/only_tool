@@ -23,6 +23,7 @@ import com.example.more.third.okHttp.OkHttpActivity;
 import com.example.more.third.retrofit.RetrofitActivity;
 import com.example.more.third.rxjava.RxJavaActivity;
 import com.example.more.thread.ThreadActivity;
+import com.example.more.touch.TouchActivity;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,7 @@ public class MoreFragment extends BaseFragment<FragmentMoreBinding, MoreViewMode
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "玩球", SettingActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "球员选择", TeamActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "许多api", ManyApiActivity.class));
+        beans.add(createMoreBean(R.drawable.more_icon_list_access, "自动点击", TouchActivity.class));
 
         //binding.moreRv.setBackgroundColor(Color.parseColor("#665544"));
         MoreAdapter adapter = new MoreAdapter(beans);

@@ -79,6 +79,8 @@ dependencies {
     //通过okHttp拦截Retrofit请求地址与返回结果
     api 'com.squareup.okhttp3:logging-interceptor:3.1.2'
 
+    //自动化测试 无障碍服务
+//    api 'https://github.com/coder-pig/CpFastAccessibility.git'
 
     //retrofit
     api 'com.squareup.retrofit2:retrofit:2.6.2'

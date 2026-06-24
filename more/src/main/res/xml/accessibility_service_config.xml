@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:packageNames="com.android.automeng, com.ss.android.ugc.aweme,com.tencent.mm,com.leisu.sports"
+    android:accessibilityEventTypes="typeAllMask"
+    android:accessibilityFlags="flagReportViewIds"
+    android:accessibilityFeedbackType="feedbackSpoken"
+    android:notificationTimeout="100"
+    android:canRetrieveWindowContent="true"
+    android:canPerformGestures="true"
+    android:settingsActivity="com.example.android.accessibility.ServiceSettingsActivity"
+    />
+
+<!--    android:packageNames服务要监控的应用的包名，如果有多个则用逗号连起来，空着表示监听所有的应用。-->
+<!-- 可以通过 手机端 —> 文件管理 -> 应用对应包名查找 。 亲测可行-->
+
+<!--    android:accessibilityEventTypes：指明要监听的事件类型，这里使用typeAllMask表示监听所有类型的辅助事件。-->
+<!--    android:accessibilityFlags：事件回调中报告视图ID，这样服务可以找到触发事件的具体视图。-->
+<!--    android:accessibilityFeedbackType：提供语音反馈。-->
+<!--    android:accessibilityFeedbackType服务反馈的方式，如语音、震动等等，feedbackAllMask代表所有类型。-->
+<!--    android:notificationTimeout：接受事件的时间间隔,通常将其设置为100即可.-->
+<!--    android:canRetrieveWindowContent：服务可以检索窗口内容，如果为false，onAccessibilityEvent()中的事件无法获取子View信息。-->
+<!--    android:canPerformGestures：服务可以执行手势操作，如双击、滑动等。-->
+<!--    android:settingsActivity服务的设置界面Activity,允许用户设置服务相关选项。-->
+
+<!--    TYPE_VIEW_CLICKED：当用户点击视图时触发，例如按钮点击。-->
+<!--    TYPE_VIEW_FOCUSED：当视图获得焦点时触发，例如文本框被选中。-->
+<!--    TYPE_WINDOW_STATE_CHANGED：当窗口状态发生变化时触发，例如切换到新活动或弹出对话框。-->
+<!--    TYPE_VIEW_SCROLLED：当视图发生滚动时触发，例如列表或页面滑动。-->
+<!--    TYPE_VIEW_TEXT_CHANGED：当视图中的文本内容发生变化时触发，例如用户输入文本。-->
+<!--    TYPE_NOTIFICATION_STATE_CHANGED：当通知栏状态发生变化时触发，例如收到新通知。-->
+<!--    TYPE_TOUCH_INTERACTION_START 和 TYPE_TOUCH_INTERACTION_END：当用户开始或结束触摸交互时触发。-->
+<!--    typeAllMask 所有事件-->
