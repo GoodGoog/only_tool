@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.Settings
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import com.example.common.base.BaseActivity
@@ -37,9 +38,10 @@ class TouchActivity: BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
         }
         binding.tvStartAccess.setOnClickListener {
             //initWindow()
-            startApp("com.tencent.mm", "com.tencent.mm.ui.LauncherUI", "未安装微信")
+            //startApp("com.tencent.mm", "com.tencent.mm.ui.LauncherUI", "未安装微信")
+            startApp("com.leisu.sports", "com.leisu.sports.ui.main.MainActivity", "未安装雷速")
         }
-
+        logD("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
         initListener()
     }
 

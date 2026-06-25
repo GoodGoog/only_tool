@@ -73,6 +73,8 @@ abstract class FastAccessibilityService : AccessibilityService() {
             val packageName = event.packageName.blankOrThis()
             val eventType = event.eventType
             if (className.isNotBlank() && packageName.isNotBlank())
+//                :: 双冒号操作符称为可调用引用操作符（Callable Reference Operator），用于获取函数、属性、构造函数等的引用，
+//                而不是直接调用它们。这让代码更简洁、类型安全，并且可与高阶函数、反射等配合使用。
                 analyzeSource(EventWrapper(packageName, className, eventType), ::analyzeCallBack)
         }
     }

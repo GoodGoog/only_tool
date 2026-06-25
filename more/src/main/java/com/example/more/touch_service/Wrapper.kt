@@ -36,5 +36,8 @@ data class NodeWrapper(
 
 
 data class AnalyzeSourceResult(
-    val nodes: ArrayList<NodeWrapper> = arrayListOf()
+    //此处2026-6-25 ， val ——> var ，后果不明
+    val nodes: ArrayList<NodeWrapper> = arrayListOf(),
+    //包含子视图的视图节点 ， 在RecyclerView中为对应的layout_container,用来响应点击item
+    val parentNode : NodeWrapper? = null
 )
