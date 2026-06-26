@@ -75,7 +75,13 @@ fun NodeWrapper?.click(gestureClick: Boolean = true, duration: Long = 200L) {
             val y = ((it.top + it.bottom) / 2).toFloat()
             FastAccessibilityService.require.dispatchGesture(
                 GestureDescription.Builder().apply {
-                    addStroke(GestureDescription.StrokeDescription(Path().apply { moveTo(x, y) }, 0L, duration))
+                    addStroke(
+                        GestureDescription.StrokeDescription(
+                            Path().apply { moveTo(x, y) },
+                            0L,
+                            duration
+                        )
+                    )
                 }.build(), object : AccessibilityService.GestureResultCallback() {
                     override fun onCompleted(gestureDescription: GestureDescription?) {
                         super.onCompleted(gestureDescription)
@@ -177,7 +183,10 @@ fun NodeWrapper?.input(content: String) {
                 if (tempNode.isEditable) {
                     tempNode.performAction(
                         AccessibilityNodeInfo.ACTION_SET_TEXT, Bundle().apply {
-                            putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, content)
+                            putCharSequence(
+                                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
+                                content
+                            )
                         }
                     )
                     break
@@ -197,15 +206,18 @@ fun NodeWrapper?.input(content: String) {
  * 3.获取item的layout包裹的子视图
  * 4.再通过item中对应控件的id，获取item控件的具体数值
  */
-fun NodeWrapper?.analyseRecyclerViewSubView(){
+fun NodeWrapper?.analyseRecyclerViewSubView() {
     if (this == null) return
     if (nodeInfo == null) return
     nodeInfo?.let { mNodeInfo ->
         val childCount = mNodeInfo.childCount
-        for (i in 0 until childCount){
+        for (i in 0 until childCount) {
             val childNodeInfo = mNodeInfo.getChild(i)
-            if (childNodeInfo != null){
-                Log.d("PostAccessibilityService", "analyseRecyclerViewSubView: " + childNodeInfo.className.toString())
+            if (childNodeInfo != null) {
+                Log.d(
+                    "PostAccessibilityService",
+                    "analyseRecyclerViewSubView: " + childNodeInfo.className.toString()
+                )
                 //也许child中还有child，需要递归
             }
         }
@@ -402,67 +414,18 @@ fun AnalyzeSourceResult.findAllTextNode(includeDesc: Boolean = false): AnalyzeSo
     return result
 }
 
-
-///**
-// * 查找RecyclerView所有的Item-Layout节点，与Item-Layout节点所包裹的第一层子视图
-// */
-//fun NodeWrapper?.analyzeRecyclerView() : ArrayList<AnalyzeSourceResult>?{
-//    if (this == null) return null
-//    if (nodeInfo == null) return null
-//    val rvResults = ArrayList<AnalyzeSourceResult>()
-//    //获取RecyclerView的所有ItemLayout对应节点
-//    analyzeNextLevelSubView().forEachIndexed { layoutIndex, layoutWrapper ->
-//        //获取当前ItemLayout包裹的子视图节点
-//        val subNodes = layoutWrapper.analyzeNextLevelSubView()
-//        rvResults.add(AnalyzeSourceResult(subNodes,layoutWrapper))
-//    }
-//    return rvResults
-//}
-//
-///**
-// * 只遍历当前节点的下一层子节点，不处理再往下的层次
-// * */
-//private fun NodeWrapper?.analyzeNextLevelSubView(): ArrayList<NodeWrapper> {
-//    val list = ArrayList<NodeWrapper>()
-//    if (this == null) return list
-//    nodeInfo?.let { it ->
-//        if (it.childCount > 0) {
-//            for (index in 0 until it.childCount) {
-//                val childNode = it.getChild(index) ?: return list
-//                val bounds = Rect()
-//                childNode.getBoundsInScreen(bounds)
-//                list.add(
-//                    NodeWrapper(
-//                        text = childNode.text.blankOrThis(),
-//                        id = childNode.viewIdResourceName.blankOrThis(),
-//                        bounds = bounds,
-//                        className = childNode.className.blankOrThis(),
-//                        description = childNode.contentDescription.blankOrThis(),
-//                        clickable = childNode.isClickable,
-//                        scrollable = childNode.isScrollable,
-//                        editable = childNode.isEditable,
-//                        nodeInfo = childNode
-//                    )
-//                )
-//            }
-//        }
-//    }
-//    return list
-//}
-
-
 /**
- * 查找RecyclerView所有的Item-Layout节点，与Item-Layout节点所包裹的第一层子视图
+ * 查找RecyclerView所有的Item-Layout节点，与Item-Layout节点所包裹的所有子视图
  */
-fun NodeWrapper?.analyzeRecyclerView() : ArrayList<AnalyzeSourceResult>?{
+fun NodeWrapper?.analyzeRecyclerView(): ArrayList<AnalyzeSourceResult>? {
     if (this == null) return null
     if (nodeInfo == null) return null
     val rvResults = ArrayList<AnalyzeSourceResult>()
     //获取RecyclerView的所有ItemLayout对应节点
     analyzeNextLevelSubView().forEachIndexed { layoutIndex, layoutWrapper ->
-        //获取当前ItemLayout包裹的子视图节点
-        val subNodes = layoutWrapper.analyzeNextLevelSubView()
-        rvResults.add(AnalyzeSourceResult(subNodes,layoutWrapper))
+        //获取当前ItemLayout包裹的所有子视图节点
+        rvResults.add(AnalyzeSourceResult(ArrayList<NodeWrapper>(),layoutWrapper))
+        analyzeAllSubNode(layoutWrapper.nodeInfo,rvResults[layoutIndex].nodes)
     }
     return rvResults
 }
@@ -501,7 +464,7 @@ private fun NodeWrapper?.analyzeNextLevelSubView(): ArrayList<NodeWrapper> {
 /**
  * 递归遍历结点的方法
  * */
-private fun analyzeNode(node: AccessibilityNodeInfo?, list: ArrayList<NodeWrapper>) {
+fun analyzeAllSubNode(node: AccessibilityNodeInfo?, list: ArrayList<NodeWrapper>) {
     if (node == null) return
     val bounds = Rect()
     node.getBoundsInScreen(bounds)
@@ -519,6 +482,6 @@ private fun analyzeNode(node: AccessibilityNodeInfo?, list: ArrayList<NodeWrappe
         )
     )
     if (node.childCount > 0) {
-        for (index in 0 until node.childCount) analyzeNode(node.getChild(index), list)
+        for (index in 0 until node.childCount) analyzeAllSubNode(node.getChild(index), list)
     }
 }

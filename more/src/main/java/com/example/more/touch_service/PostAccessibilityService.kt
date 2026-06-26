@@ -23,10 +23,11 @@ class PostAccessibilityService : FastAccessibilityService() {
 //        result.findNodeByText("我的").click()
         wrapper?.let { mWrapper ->
             //当前所在app
-            when(mWrapper.packageName){
+            when (mWrapper.packageName) {
                 app_packageName_lei_su -> {
-                    currentOnLeiSuApp(mWrapper,result)
+                    currentOnLeiSuApp(mWrapper, result)
                 }
+
                 else -> {}
             }
         }
@@ -36,22 +37,37 @@ class PostAccessibilityService : FastAccessibilityService() {
     /**
      * 当前在雷速app
      */
-    fun currentOnLeiSuApp(mWrapper: EventWrapper, result: AnalyzeSourceResult){
+    fun currentOnLeiSuApp(mWrapper: EventWrapper, result: AnalyzeSourceResult) {
+        Log.d(TAG, "currentOnLeiSuApp: 当前信息" + mWrapper)
         when (mWrapper.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 //窗口状态改变了
-                Log.d(TAG, "currentOnLeiSuApp: 窗口状态改变了一次")
+                //Log.d(TAG, "currentOnLeiSuApp: 窗口状态改变了一次")
                 //解析rv子视图
-                result.findNodeById(id_post_player_detail_action).analyzeRecyclerView()?.forEachIndexed { index, result ->
-                    result.nodes.forEach { node ->
-                        Log.d(TAG, "currentOnLeiSuApp: $index |||||| $node")
+                result.findNodeById(id_post_player_detail_action).analyzeRecyclerView()
+                    ?.forEachIndexed { index, mResult ->
+                        val itemTitle = mResult.findNodeById(id_post_prospect_item_title)?.text
+                        //Log.d(TAG, "currentOnLeiSuApp: 找到了：预测-让球----" + itemTitle)
+                        when (itemTitle) {
+                            "预测-让球" -> {
+//                                mResult.findNodeById(id_post_prospect_left_layout_container).click()
+                            }
+                            "预测-总进球" -> {
+                                //mResult.findNodeById(id_post_prospect_right_layout_container).click()
+                            }
+                            else -> {}
+                        }
+//                        result.nodes.forEach { node ->
+//                            Log.d(TAG, "currentOnLeiSuApp: $index |||||| $node")
+//                        }
                     }
-                }
             }
+
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
                 //点击事件
                 //result.findNodeById(id_post_submit_button).click()
             }
+
             else -> {}
         }
     }

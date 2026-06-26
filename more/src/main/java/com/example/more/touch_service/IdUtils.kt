@@ -40,7 +40,7 @@ const val id_post_player_detail_action = "com.leisu.sports:id/rv_player_detail"
 
 //预测item,分两种类型 1.预测-让球，2.预测-总进球,二者之间的差异为中间的 [上方总分+下方具体数字]两个TextView
 //预测-让球 预测-总进球 预测-奇偶，标题
-const val id_post_prospect_total_title = "com.leisu.sports:id/tv_title"
+const val id_post_prospect_item_title = "com.leisu.sports:id/tv_title"
 
 //左侧标签名称 [主胜 \ 大 \全场]
 const val id_post_prospect_left_title = "com.leisu.sports:id/tv_left"
