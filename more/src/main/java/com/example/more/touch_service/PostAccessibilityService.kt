@@ -17,15 +17,11 @@ class PostAccessibilityService : FastAccessibilityService() {
     override val enableListenApp = true
 
     override fun analyzeCallBack(wrapper: EventWrapper?, result: AnalyzeSourceResult) {
-//        result.findNodeByText("搜索").click()
-//        result.findAllTextNode(true).nodes.forEach { Log.d(TAG, "$wrapper | $it ") }
-//        logD("analyzeCallBack" + "事件过来")
-//        result.findNodeByText("我的").click()
-        wrapper?.let { mWrapper ->
+        wrapper?.let { it ->
             //当前所在app
-            when (mWrapper.packageName) {
+            when (it.packageName) {
                 app_packageName_lei_su -> {
-                    currentOnLeiSuApp(mWrapper, result)
+                    currentOnLeiSuApp(it, result)
                 }
 
                 else -> {}
@@ -38,32 +34,48 @@ class PostAccessibilityService : FastAccessibilityService() {
      * 当前在雷速app
      */
     fun currentOnLeiSuApp(mWrapper: EventWrapper, result: AnalyzeSourceResult) {
-        Log.d(TAG, "currentOnLeiSuApp: 当前信息" + mWrapper)
+//        result.findAllTextNode(true).nodes.forEach {
+//            Log.d(TAG, "$mWrapper | $it ")
+//        }
+        Log.d(TAG, "currentOnLeiSuApp: ----" + result.nodes)
+        //Log.d(TAG, "currentOnLeiSuApp: ----" + rootInActiveWindow?.transNodeInfoToNodeWrapper())
+        if (isInPostSinglePage(result)) {
+            onSinglePostPage(mWrapper, result)
+        }
+        if (isInPostMultiPage(result)) {
+            onMultiPostPage(mWrapper, result)
+        }
+
+    }
+
+    /**
+     * 在单关发布页
+     */
+    fun onSinglePostPage(mWrapper: EventWrapper, result: AnalyzeSourceResult) {
         when (mWrapper.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                //窗口状态改变了
-                //Log.d(TAG, "currentOnLeiSuApp: 窗口状态改变了一次")
                 //解析rv子视图
-                result.findNodeById(id_post_player_detail_action).analyzeRecyclerView()
-                    ?.forEachIndexed { index, mResult ->
-                        val itemTitle = mResult.findNodeById(id_post_prospect_item_title)?.text
-                        //Log.d(TAG, "currentOnLeiSuApp: 找到了：预测-让球----" + itemTitle)
+                result.findNodeById(id_single_post_player_detail_action).analyzeRecyclerView()
+                    ?.forEach { mResult ->
+                        val itemTitle =
+                            mResult.findNodeById(id_single_post_prospect_item_title)?.text.blankOrThis()
                         when (itemTitle) {
                             "预测-让球" -> {
 //                                mResult.findNodeById(id_post_prospect_left_layout_container).click()
                             }
+
                             "预测-总进球" -> {
                                 //mResult.findNodeById(id_post_prospect_right_layout_container).click()
                             }
+
                             else -> {}
                         }
-//                        result.nodes.forEach { node ->
-//                            Log.d(TAG, "currentOnLeiSuApp: $index |||||| $node")
-//                        }
+
                     }
             }
 
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+                //Log.d(TAG, "onSinglePostPage: 点击事件" + result)
                 //点击事件
                 //result.findNodeById(id_post_submit_button).click()
             }
@@ -72,9 +84,40 @@ class PostAccessibilityService : FastAccessibilityService() {
         }
     }
 
+    /**
+     * 在串关发布页
+     */
+    fun onMultiPostPage(mWrapper: EventWrapper, result: AnalyzeSourceResult) {
+
+    }
+
+
+    /**
+     * 单串
+     */
+    fun isInPostSinglePage(result: AnalyzeSourceResult): Boolean {
+        val remains = result.findNodeById(id_single_post_today_remains_times)?.text.blankOrThis()
+        val analyzeEt = result.findNodeById(id_single_post_analyse_edit)
+        return remains.isNotEmpty() && analyzeEt != null
+    }
+
+    /**
+     * 多串
+     */
+    fun isInPostMultiPage(result: AnalyzeSourceResult): Boolean {
+        val remains = result.findNodeById(id_multi_post_today_remains_times)?.text.blankOrThis()
+        val analyzeEt = result.findNodeById(id_single_post_analyse_edit)
+        return remains.isNotEmpty() && analyzeEt == null
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand: ")
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        Log.d(TAG, "onServiceConnected: ")
     }
 
     override fun onInterrupt() {

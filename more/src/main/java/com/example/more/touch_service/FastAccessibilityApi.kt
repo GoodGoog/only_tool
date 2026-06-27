@@ -424,8 +424,8 @@ fun NodeWrapper?.analyzeRecyclerView(): ArrayList<AnalyzeSourceResult>? {
     //获取RecyclerView的所有ItemLayout对应节点
     analyzeNextLevelSubView().forEachIndexed { layoutIndex, layoutWrapper ->
         //获取当前ItemLayout包裹的所有子视图节点
-        rvResults.add(AnalyzeSourceResult(ArrayList<NodeWrapper>(),layoutWrapper))
-        analyzeAllSubNode(layoutWrapper.nodeInfo,rvResults[layoutIndex].nodes)
+        rvResults.add(AnalyzeSourceResult(ArrayList<NodeWrapper>(), layoutWrapper))
+        analyzeAllSubNode(layoutWrapper.nodeInfo, rvResults[layoutIndex].nodes)
     }
     return rvResults
 }
@@ -440,21 +440,7 @@ private fun NodeWrapper?.analyzeNextLevelSubView(): ArrayList<NodeWrapper> {
         if (it.childCount > 0) {
             for (index in 0 until it.childCount) {
                 val childNode = it.getChild(index) ?: return list
-                val bounds = Rect()
-                childNode.getBoundsInScreen(bounds)
-                list.add(
-                    NodeWrapper(
-                        text = childNode.text.blankOrThis(),
-                        id = childNode.viewIdResourceName.blankOrThis(),
-                        bounds = bounds,
-                        className = childNode.className.blankOrThis(),
-                        description = childNode.contentDescription.blankOrThis(),
-                        clickable = childNode.isClickable,
-                        scrollable = childNode.isScrollable,
-                        editable = childNode.isEditable,
-                        nodeInfo = childNode
-                    )
-                )
+                list.add(childNode.transNodeInfoToNodeWrapper())
             }
         }
     }
@@ -466,22 +452,27 @@ private fun NodeWrapper?.analyzeNextLevelSubView(): ArrayList<NodeWrapper> {
  * */
 fun analyzeAllSubNode(node: AccessibilityNodeInfo?, list: ArrayList<NodeWrapper>) {
     if (node == null) return
-    val bounds = Rect()
-    node.getBoundsInScreen(bounds)
-    list.add(
-        NodeWrapper(
-            text = node.text.blankOrThis(),
-            id = node.viewIdResourceName.blankOrThis(),
-            bounds = bounds,
-            className = node.className.blankOrThis(),
-            description = node.contentDescription.blankOrThis(),
-            clickable = node.isClickable,
-            scrollable = node.isScrollable,
-            editable = node.isEditable,
-            nodeInfo = node
-        )
-    )
+    list.add(node.transNodeInfoToNodeWrapper())
     if (node.childCount > 0) {
         for (index in 0 until node.childCount) analyzeAllSubNode(node.getChild(index), list)
     }
+}
+
+/**
+ * nodeInfo转换为NodeWrapper
+ */
+fun AccessibilityNodeInfo.transNodeInfoToNodeWrapper() :NodeWrapper{
+    val bounds = Rect()
+    this.getBoundsInScreen(bounds)
+    return NodeWrapper(
+        text = text.blankOrThis(),
+        id = viewIdResourceName.blankOrThis(),
+        bounds = bounds,
+        className = className.blankOrThis(),
+        description = contentDescription.blankOrThis(),
+        clickable = isClickable,
+        scrollable = isScrollable,
+        editable = isEditable,
+        nodeInfo = this
+    )
 }

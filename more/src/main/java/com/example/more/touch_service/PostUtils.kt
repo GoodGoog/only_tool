@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
 import java.lang.Exception
+import kotlin.random.Random
 
 @SuppressLint("UseCompatLoadingForDrawables")
 fun Context.getDrawableRes(resId: Int): Drawable =
@@ -55,4 +56,12 @@ fun Context.startApp(packageName: String, activityName: String, errorTips: Strin
     } catch (e: Exception) {
         e.message?.let { logD(it) }
     }
+}
+
+/**
+ * 生成一个随机数
+ */
+fun getRandomInt(){
+    // [0~99] + 1 → [1~100]
+    val randomInRange = Random.nextInt(100) + 1
 }

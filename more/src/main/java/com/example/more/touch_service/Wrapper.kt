@@ -31,7 +31,7 @@ data class NodeWrapper(
     var editable: Boolean = false,
     var nodeInfo: AccessibilityNodeInfo? = null
 ) {
-    override fun toString() = "$className → $text → $id → $description → $bounds → $clickable → $scrollable → $editable"
+    override fun toString() = "$className → $text → $id → $description → $bounds → $clickable → $scrollable → $editable \n"
 }
 
 
