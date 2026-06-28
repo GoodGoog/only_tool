@@ -1,4 +1,4 @@
-package com.example.more.touch_service
+package com.example.more.accessibility
 
 import android.graphics.Rect
 import android.view.accessibility.AccessibilityNodeInfo
@@ -36,8 +36,7 @@ data class NodeWrapper(
 
 
 data class AnalyzeSourceResult(
-    //此处2026-6-25 ， val ——> var ，后果不明
     val nodes: ArrayList<NodeWrapper> = arrayListOf(),
-    //包含子视图的视图节点 ， 在RecyclerView中为对应的layout_container,用来响应点击item
+    //包含子视图的视图节点 ， 在RecyclerView中为对应的layout_container,用来响应点击item，nodes的父节点
     val parentNode : NodeWrapper? = null
 )

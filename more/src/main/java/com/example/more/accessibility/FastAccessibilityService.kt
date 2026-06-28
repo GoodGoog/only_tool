@@ -1,4 +1,4 @@
-package com.example.more.touch_service
+package com.example.more.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
@@ -7,7 +7,6 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-
 
 /**
  * Author: CoderPig

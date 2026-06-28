@@ -1,17 +1,42 @@
-package com.example.more.touch_service
+package com.example.more.accessibility
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
-import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
 import java.lang.Exception
-import kotlin.random.Random
+
+/**
+ * Author: CoderPig
+ * Date: 2023-03-24
+ * Desc: 工具代码
+ */
+
+/**
+ * 跳转无障碍服务设置页
+ * */
+fun jumpAccessibilityServiceSettings(
+    cls: Class<*> = FastAccessibilityService.specificServiceClass,
+    ctx: Context = FastAccessibilityService.appContext
+) {
+    ctx.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val cs = ComponentName(FastAccessibilityService.appContext.packageName, cls.name).flattenToString()
+        putExtra(":settings:fragment_args_key", cs)
+        putExtra(":settings:show_fragment_args", Bundle().apply { putString(":settings:fragment_args_key", cs) })
+    })
+}
+
+
+fun String?.blankOrThis() = if (this.isNullOrBlank()) "" else this
+
+fun CharSequence?.blankOrThis() = if (this.isNullOrBlank()) "" else this.toString()
 
 @SuppressLint("UseCompatLoadingForDrawables")
 fun Context.getDrawableRes(resId: Int): Drawable =
@@ -56,12 +81,4 @@ fun Context.startApp(packageName: String, activityName: String, errorTips: Strin
     } catch (e: Exception) {
         e.message?.let { logD(it) }
     }
-}
-
-/**
- * 生成一个随机数
- */
-fun getRandomInt(){
-    // [0~99] + 1 → [1~100]
-    val randomInRange = Random.nextInt(100) + 1
 }

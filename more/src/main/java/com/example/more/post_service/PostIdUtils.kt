@@ -1,4 +1,4 @@
-package com.example.more.touch_service
+package com.example.more.post_service
 
 //雷速的包名
 const val app_packageName_lei_su = "com.leisu.sports"

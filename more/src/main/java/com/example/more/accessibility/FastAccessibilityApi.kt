@@ -1,16 +1,20 @@
-package com.example.more.touch_service
+package com.example.more.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
-import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.RequiresApi
-import org.w3c.dom.Node
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 /**
  * Author: CoderPig
@@ -20,20 +24,20 @@ import org.w3c.dom.Node
 /**
  * 无障碍服务是否可用
  * */
-val isAccessibilityEnable get() = FastAccessibilityService.isServiceEnable
+val isAccessibilityEnable get() = FastAccessibilityService.Companion.isServiceEnable
 
 /**
  * 请求无障碍服务
  * @param autoJump 是否自动跳转无障碍设置页
  * */
-fun requireAccessibility() = FastAccessibilityService.requireAccessibility()
+fun requireAccessibility() = FastAccessibilityService.Companion.requireAccessibility()
 
 /**
  * 全局操作快速调用
  * performAction 是针对 具体界面控件（AccessibilityNodeInfo）执行操作，如点击按钮、输入文本
  * performGlobalAction 则是 系统级全局操作，不依赖于特定控件，作用范围更广
  * */
-fun performAction(action: Int) = FastAccessibilityService.require.performGlobalAction(action)
+fun performAction(action: Int) = FastAccessibilityService.Companion.require.performGlobalAction(action)
 
 // 返回
 fun back() = performAction(AccessibilityService.GLOBAL_ACTION_BACK)
@@ -73,7 +77,7 @@ fun NodeWrapper?.click(gestureClick: Boolean = true, duration: Long = 200L) {
         bounds?.let {
             val x = ((it.left + it.right) / 2).toFloat()
             val y = ((it.top + it.bottom) / 2).toFloat()
-            FastAccessibilityService.require.dispatchGesture(
+            FastAccessibilityService.Companion.require.dispatchGesture(
                 GestureDescription.Builder().apply {
                     addStroke(
                         GestureDescription.StrokeDescription(
@@ -110,6 +114,20 @@ fun NodeWrapper?.click(gestureClick: Boolean = true, duration: Long = 200L) {
                 } else break
             }
         }
+    }
+}
+
+
+/**
+ * 为避免连续模拟点击过快，影响数据显示,故在延时实现点击
+ */
+@OptIn(DelicateCoroutinesApi::class)
+fun NodeWrapper?.delayClick(delayTime: Long = 1500){
+    GlobalScope.launch(Dispatchers.IO) {
+        //协程非阻塞休眠，不用sleep
+        //避免系统检测，让间隔时间浮动
+        delay(delayTime + Random.nextInt(50))
+        click()
     }
 }
 
@@ -154,7 +172,7 @@ fun NodeWrapper?.swipe(
     endY: Int,
     duration: Long = 1000L
 ) {
-    FastAccessibilityService.require.dispatchGesture(
+    FastAccessibilityService.Companion.require.dispatchGesture(
         GestureDescription.Builder().apply {
             addStroke(GestureDescription.StrokeDescription(Path().apply {
                 moveTo(startX.toFloat(), startY.toFloat())
@@ -461,7 +479,7 @@ fun analyzeAllSubNode(node: AccessibilityNodeInfo?, list: ArrayList<NodeWrapper>
 /**
  * nodeInfo转换为NodeWrapper
  */
-fun AccessibilityNodeInfo.transNodeInfoToNodeWrapper() :NodeWrapper{
+fun AccessibilityNodeInfo.transNodeInfoToNodeWrapper() : NodeWrapper {
     val bounds = Rect()
     this.getBoundsInScreen(bounds)
     return NodeWrapper(

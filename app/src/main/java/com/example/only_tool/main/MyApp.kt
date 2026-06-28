@@ -2,8 +2,8 @@ package com.example.only_tool.main
 
 import android.app.Application
 import android.view.accessibility.AccessibilityEvent
-import com.example.more.touch_service.FastAccessibilityService
-import com.example.more.touch_service.PostAccessibilityService
+import com.example.more.accessibility.FastAccessibilityService
+import com.example.more.post_service.PostAccessibilityService
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 class MyApp : Application() {
