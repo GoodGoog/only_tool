@@ -34,7 +34,7 @@ class PostFreeSingleServiceHandle(val eventWrapper: EventWrapper, val result: An
 
     init {
         remainPostCount =
-            result.findNodeById(id_single_post_today_remains_times)?.text.filterNumberOrZero()
+            result.findNodeById(PostDoubleSingleId.id_single_post_today_remains_times)?.text.filterNumberOrZero()
     }
 
     fun execute() {
@@ -45,7 +45,7 @@ class PostFreeSingleServiceHandle(val eventWrapper: EventWrapper, val result: An
         when (eventWrapper.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 //解析rv子视图
-                result.findNodeById(id_single_post_player_detail_action).analyzeRecyclerView()
+                result.findNodeById(PostDoubleSingleId.id_single_post_player_detail_action).analyzeRecyclerView()
                     ?.let { results ->
                         if (results.isNotEmpty()) {
                             //默认执行第一种玩法
@@ -68,7 +68,7 @@ class PostFreeSingleServiceHandle(val eventWrapper: EventWrapper, val result: An
     //解析选中的玩法
     fun onAnalysePlayType(cResult: AnalyzeSourceResult) {
         val itemTitle =
-            cResult.findNodeById(id_single_post_prospect_item_title)?.text.blankOrThis()
+            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_item_title)?.text.blankOrThis()
         when (itemTitle) {
             PLAY_TYPE_HANDICAP -> {
                 //让分玩法
@@ -82,7 +82,7 @@ class PostFreeSingleServiceHandle(val eventWrapper: EventWrapper, val result: An
             else -> {}
         }
         //点击提交
-        result.findNodeById(id_single_post_submit_button).delayClick()
+        result.findNodeById(PostDoubleSingleId.id_single_post_submit_button).delayClick()
 
     }
 
@@ -92,9 +92,9 @@ class PostFreeSingleServiceHandle(val eventWrapper: EventWrapper, val result: An
     fun executeHandicapPlayType(cResult: AnalyzeSourceResult){
         //随机选择胜利
         if (getRandomInt() % 2 == 0){
-            cResult.findNodeById(id_single_post_prospect_left_layout_container).click()
+            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_left_layout_container).click()
         }else{
-            cResult.findNodeById(id_single_post_prospect_right_layout_container).click()
+            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_right_layout_container).click()
         }
     }
 
@@ -104,9 +104,9 @@ class PostFreeSingleServiceHandle(val eventWrapper: EventWrapper, val result: An
     fun executeTotalScorePlayType(cResult: AnalyzeSourceResult){
         //随机选择胜利
         if (getRandomInt() % 2 == 0){
-            cResult.findNodeById(id_single_post_prospect_left_layout_container).click()
+            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_left_layout_container).click()
         }else{
-            cResult.findNodeById(id_single_post_prospect_right_layout_container).click()
+            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_right_layout_container).click()
         }
     }
 

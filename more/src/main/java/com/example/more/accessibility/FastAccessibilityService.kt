@@ -20,7 +20,10 @@ abstract class FastAccessibilityService : AccessibilityService() {
         private var _appContext: Context? = null    // 幕后属性，对外表现为只读，对内表现为可读写
         val appContext get() = _appContext ?: throw NullPointerException("需要在Application的onCreate()中调用init()")
         lateinit var specificServiceClass: Class<*> // 具体无障碍服务实现类的类类型
-        private var listenEventTypeList = arrayListOf(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) // 监听的event类型列表
+        private var listenEventTypeList = arrayListOf(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+            AccessibilityEvent.TYPE_VIEW_CLICKED,
+            AccessibilityEvent.TYPE_VIEW_SCROLLED,
+            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) // 监听的event类型列表
         val currentEvent get() = instance?.currentEventWrapper  // 获取当前Event
 
         /**
@@ -67,14 +70,21 @@ abstract class FastAccessibilityService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (!enableListenApp || event == null) return
+        //默认不拦截任何事件
         if (event.eventType in listenEventTypeList) {
             val className = event.className.blankOrThis()
             val packageName = event.packageName.blankOrThis()
             val eventType = event.eventType
+            val eventWrapper = EventWrapper(packageName, className, eventType,event)
             if (className.isNotBlank() && packageName.isNotBlank())
+                //拦截不必要的滚动事件
+                if (eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED){
+                    if (ScrollUtils.instance().isScrollInvalid(eventWrapper) == ScrollDirection.DirectionInvalid)
+                        return
+                }
 //                :: 双冒号操作符称为可调用引用操作符（Callable Reference Operator），用于获取函数、属性、构造函数等的引用，
 //                而不是直接调用它们。这让代码更简洁、类型安全，并且可与高阶函数、反射等配合使用。
-                analyzeSource(EventWrapper(packageName, className, eventType), ::analyzeCallBack)
+                analyzeSource(eventWrapper, ::analyzeCallBack)
         }
     }
 

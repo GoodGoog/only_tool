@@ -1,6 +1,7 @@
 package com.example.more.accessibility
 
 import android.graphics.Rect
+import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
 /**
@@ -11,7 +12,8 @@ import android.view.accessibility.AccessibilityNodeInfo
 data class EventWrapper(
     var packageName: String,
     var className: String,
-    var eventType: Int
+    var eventType: Int,
+    var event: AccessibilityEvent
 ) {
     override fun toString() = "$packageName → $className → $eventType"
 }

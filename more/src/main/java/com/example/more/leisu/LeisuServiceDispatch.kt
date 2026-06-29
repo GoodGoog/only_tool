@@ -4,13 +4,10 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
-import com.example.more.accessibility.analyzeRecyclerView
+import com.example.more.accessibility.ScrollDirection
+import com.example.more.accessibility.ScrollUtils
 import com.example.more.accessibility.blankOrThis
-import com.example.more.accessibility.delayClick
-import com.example.more.accessibility.findAllTextNode
-import com.example.more.accessibility.findNodeByExpression
 import com.example.more.accessibility.findNodeById
-import com.example.more.accessibility.findNodeByText
 
 class LeisuServiceDispatch {
     companion object {
@@ -40,15 +37,20 @@ class LeisuServiceDispatch {
                 taskDispatch(result)
             }
 
-            AccessibilityEvent.TYPE_VIEW_CLICKED -> {}
-            else -> {}
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+
+            }
+            AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
+                if (ScrollUtils.instance().isValidScroll() == ScrollDirection.DirectionValid){
+                    Log.d(TAG, "refresh: 有效刷新")
+                }
+            }
         }
     }
 
 
     //业务分发
     fun taskDispatch(result: AnalyzeSourceResult) {
-        Log.d(TAG, "currentOnLeiSuApp: ----" + result.nodes)
         if (isInPostSinglePage(result)) {
             //在单关发布页
             wrapper?.let {
@@ -67,11 +69,12 @@ class LeisuServiceDispatch {
      * 在发布页的入口页,即比赛列表选择页
      */
     fun onPrePostPage(result: AnalyzeSourceResult) {
+        Log.d(TAG, "onPrePostPage: ----" + result.nodes)
         Log.d(TAG, "onPrePostPage: ------------------")
-        result.findNodeByExpression { nodeWrapper ->
-            nodeWrapper.text == "篮球"
-        }.delayClick()
-        result.findNodeByText("单关").delayClick(2000)
+//        result.findNodeByExpression { nodeWrapper ->
+//            nodeWrapper.text == "篮球"
+//        }.delayClick()
+//        result.findNodeByText("单关").delayClick(2000)
     }
 
     /**
@@ -85,7 +88,7 @@ class LeisuServiceDispatch {
      * 在发布页的前一页
      */
     fun isInPrePostPage(result: AnalyzeSourceResult): Boolean {
-        result.findNodeById(id_league_choose_info_filter)?.let {
+        result.findNodeById(PrePostHeaderId.id_filter_league_info)?.let {
             return true
         }
         return false
@@ -95,8 +98,9 @@ class LeisuServiceDispatch {
      * 单关发布页
      */
     fun isInPostSinglePage(result: AnalyzeSourceResult): Boolean {
-        val remains = result.findNodeById(id_single_post_today_remains_times)?.text.blankOrThis()
-        val analyzeEt = result.findNodeById(id_single_post_analyse_edit)
+        val remains =
+            result.findNodeById(PostDoubleSingleId.id_single_post_today_remains_times)?.text.blankOrThis()
+        val analyzeEt = result.findNodeById(PostDoubleSingleId.id_single_post_analyse_edit)
         return remains.isNotEmpty() && analyzeEt != null
     }
 
@@ -104,9 +108,10 @@ class LeisuServiceDispatch {
      * 多关发布页
      */
     fun isInPostMultiPage(result: AnalyzeSourceResult): Boolean {
-        val remains = result.findNodeById(id_multi_post_today_remains_times)?.text.blankOrThis()
-        val analyzeEt = result.findNodeById(id_single_post_analyse_edit)
-        return remains.isNotEmpty() && analyzeEt == null
+        val remains =
+            result.findNodeById(PostMultiDoubleId.id_multi_post_today_remains_times)?.text.blankOrThis()
+        //val analyzeEt = result.findNodeById(PostMultiDoubleId.)
+        return false
     }
 
 }

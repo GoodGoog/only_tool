@@ -1,5 +1,8 @@
 package com.example.more.leisu
 
+import android.R.attr.scrollX
+import android.R.attr.scrollY
+import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.blankOrThis
 import java.util.Calendar
 import kotlin.random.Random
@@ -40,3 +43,4 @@ fun getWeekDayByCalendar() : Int {
         else -> 0
     }
 }
+
