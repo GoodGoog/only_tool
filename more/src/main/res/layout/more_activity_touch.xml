@@ -6,42 +6,384 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@color/default_bg_color"
+        >
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/tv_is_enable"
+            android:layout_height="wrap_content"
             android:background="@color/default_bg_color"
-            android:text="检测服务是否开启"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/tv_show_access_window"
-            android:text="打开服务窗口"
-            android:background="@color/default_bg_color"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/tv_is_enable"
-            android:layout_marginTop="20dp"
-            />
+            <TextView
+                android:id="@+id/tv_tips_initial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="配置下列初始信息:"
+                android:textColor="@color/global_text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/tv_start_leisu"
-            android:background="@color/default_bg_color"
-            android:text="打开雷速"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/tv_show_access_window"
-            android:layout_marginTop="20dp"
-            />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/layout_container_initial_config"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/tv_tips_initial">
+
+                <!--                单关|篮球-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_any_view_border_radius">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:text="篮球|单关"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/tv_tips_free_single_basketball"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="是否收费:"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_is_free_single_basketball"
+                        app:layout_constraintEnd_toStartOf="@id/tv_is_free_single_basketball"
+                        app:layout_constraintTop_toTopOf="@id/tv_is_free_single_basketball" />
+
+                    <TextView
+                        android:id="@+id/tv_is_free_single_basketball"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:text="否"
+                        android:textColor="#999999"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="发文次数:"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/et_times_free_single_basketball"
+                        app:layout_constraintStart_toStartOf="@id/tv_tips_free_single_basketball"
+                        app:layout_constraintTop_toTopOf="@id/et_times_free_single_basketball" />
+
+                    <EditText
+                        android:id="@+id/et_times_free_single_basketball"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@null"
+                        android:padding="8dp"
+                        android:text="0"
+                        android:minEms="1"
+                        android:textColor="#999999"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/tv_is_free_single_basketball"
+                        app:layout_constraintStart_toStartOf="@id/tv_is_free_single_basketball" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--                单关|足球-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_any_view_border_radius">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:text="足球|单关"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/tv_tips_free_single_football"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="是否收费:"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_is_free_single_football"
+                        app:layout_constraintEnd_toStartOf="@id/tv_is_free_single_football"
+                        app:layout_constraintTop_toTopOf="@id/tv_is_free_single_football" />
+
+                    <TextView
+                        android:id="@+id/tv_is_free_single_football"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:text="否"
+                        android:textColor="#999999"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="发文次数:"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/et_times_free_single_football"
+                        app:layout_constraintStart_toStartOf="@id/tv_tips_free_single_football"
+                        app:layout_constraintTop_toTopOf="@id/et_times_free_single_football" />
+
+                    <EditText
+                        android:id="@+id/et_times_free_single_football"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@null"
+                        android:padding="8dp"
+                        android:text="0"
+                        android:textColor="#999999"
+                        android:textSize="16dp"
+                        android:minEms="1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/tv_is_free_single_football"
+                        app:layout_constraintStart_toStartOf="@id/tv_is_free_single_football" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--                串关|篮球-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_any_view_border_radius">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:text="蓝球|串关"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/tv_tips_free_multi_basketball"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="是否收费:"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_is_free_multi_basketball"
+                        app:layout_constraintEnd_toStartOf="@id/tv_is_free_multi_basketball"
+                        app:layout_constraintTop_toTopOf="@id/tv_is_free_multi_basketball" />
+
+                    <TextView
+                        android:id="@+id/tv_is_free_multi_basketball"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:text="否"
+                        android:textColor="#999999"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="发文次数:"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/et_times_free_multi_basketball"
+                        app:layout_constraintStart_toStartOf="@id/tv_tips_free_multi_basketball"
+                        app:layout_constraintTop_toTopOf="@id/et_times_free_multi_basketball" />
+
+                    <EditText
+                        android:id="@+id/et_times_free_multi_basketball"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@null"
+                        android:padding="8dp"
+                        android:text="0"
+                        android:minEms="1"
+                        android:textColor="#999999"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/tv_is_free_multi_basketball"
+                        app:layout_constraintStart_toStartOf="@id/tv_is_free_multi_basketball" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--                串关|足球-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_any_view_border_radius">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:text="足球|串关"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/tv_tips_free_multi_football"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="是否收费:"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_is_free_multi_football"
+                        app:layout_constraintEnd_toStartOf="@id/tv_is_free_multi_football"
+                        app:layout_constraintTop_toTopOf="@id/tv_is_free_multi_football" />
+
+                    <TextView
+                        android:id="@+id/tv_is_free_multi_football"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:text="否"
+                        android:textColor="#999999"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="发文次数:"
+                        android:textColor="@color/global_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/et_times_free_multi_football"
+                        app:layout_constraintStart_toStartOf="@id/tv_tips_free_multi_football"
+                        app:layout_constraintTop_toTopOf="@id/et_times_free_multi_football" />
+
+                    <EditText
+                        android:id="@+id/et_times_free_multi_football"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@null"
+                        android:padding="8dp"
+                        android:text="0"
+                        android:minEms="1"
+                        android:textColor="#999999"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/tv_is_free_multi_football"
+                        app:layout_constraintStart_toStartOf="@id/tv_is_free_multi_football" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_save_config"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:text="保存上述配置"
+                android:gravity="center"
+                android:background="@drawable/bg_any_view_border_radius"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/global_text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_container_initial_config" />
+
+            <TextView
+                android:id="@+id/tv_is_enable"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_any_view_border_radius"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:text="检测服务是否开启"
+                android:textColor="@color/global_text_color"
+                app:layout_constraintTop_toBottomOf="@id/tv_save_config" />
+
+            <TextView
+                android:id="@+id/tv_show_access_window"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_any_view_border_radius"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:textColor="@color/global_text_color"
+                android:text="打开服务窗口"
+                app:layout_constraintTop_toBottomOf="@id/tv_is_enable" />
+
+            <TextView
+                android:id="@+id/tv_start_leisu"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_any_view_border_radius"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:text="打开雷速"
+                android:textColor="@color/global_text_color"
+                app:layout_constraintTop_toBottomOf="@id/tv_show_access_window" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

@@ -3,7 +3,7 @@ package com.example.only_tool.main
 import android.app.Application
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.FastAccessibilityService
-import com.example.more.post_service.PostAccessibilityService
+import com.example.more.accessibility.AllAppService
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 class MyApp : Application() {
@@ -15,7 +15,7 @@ class MyApp : Application() {
         super.onCreate()
         instance = this
         FastAccessibilityService.init(
-            instance, PostAccessibilityService::class.java, arrayListOf(
+            instance, AllAppService::class.java, arrayListOf(
                 AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
                 AccessibilityEvent.TYPE_VIEW_CLICKED
             )

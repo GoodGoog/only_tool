@@ -1,6 +1,5 @@
-package com.example.more.post_service
+package com.example.more.leisu
 
-import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
@@ -9,19 +8,15 @@ import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.click
 import com.example.more.accessibility.delayClick
 import com.example.more.accessibility.findNodeById
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
- * 免费单关发布,传来的result为根节点解析出的节点集合
+ * 收费单关发布,传来的result为根节点解析出的节点集合
  */
-class PostFreeSingleServiceHandle(val eventWrapper: EventWrapper, val result: AnalyzeSourceResult) {
+class PostPaySingleServiceHandle(val eventWrapper: EventWrapper, val result: AnalyzeSourceResult) {
     var remainPostCount = 0
 
     companion object {
-        const val TAG = "PostFreeSingleServiceHandle"
+        const val TAG = "PostPaySingleServiceHandle"
         const val PLAY_TYPE_HANDICAP = "预测-让球"
         const val PLAY_TYPE_TOTAL_SCORE = "预测-总进球"
 
