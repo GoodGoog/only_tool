@@ -1,4 +1,4 @@
-package com.example.more.leisu
+package com.example.more.leisu.handle
 
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
@@ -8,15 +8,18 @@ import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.click
 import com.example.more.accessibility.delayClick
 import com.example.more.accessibility.findNodeById
+import com.example.more.leisu.data.PostDoubleSingleId
+import com.example.more.leisu.filterNumberOrZero
+import com.example.more.leisu.getRandomInt
 
 /**
- * 收费单关发布,传来的result为根节点解析出的节点集合
+ * 免费单关发布,传来的result为根节点解析出的节点集合
  */
-class PostPaySingleServiceHandle(val eventWrapper: EventWrapper, val result: AnalyzeSourceResult) {
+class PostFreeSingleBusiness(val eventWrapper: EventWrapper, val result: AnalyzeSourceResult) {
     var remainPostCount = 0
 
     companion object {
-        const val TAG = "PostPaySingleServiceHandle"
+        const val TAG = "PostFreeSingleBusiness"
         const val PLAY_TYPE_HANDICAP = "预测-让球"
         const val PLAY_TYPE_TOTAL_SCORE = "预测-总进球"
 
@@ -34,7 +37,7 @@ class PostPaySingleServiceHandle(val eventWrapper: EventWrapper, val result: Ana
 
     init {
         remainPostCount =
-            result.findNodeById(PostDoubleSingleId.id_single_post_today_remains_times)?.text.filterNumberOrZero()
+            result.findNodeById(PostDoubleSingleId.Companion.id_single_post_today_remains_times)?.text.filterNumberOrZero()
     }
 
     fun execute() {
@@ -45,7 +48,7 @@ class PostPaySingleServiceHandle(val eventWrapper: EventWrapper, val result: Ana
         when (eventWrapper.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 //解析rv子视图
-                result.findNodeById(PostDoubleSingleId.id_single_post_player_detail_action).analyzeRecyclerView()
+                result.findNodeById(PostDoubleSingleId.Companion.id_single_post_player_detail_action).analyzeRecyclerView()
                     ?.let { results ->
                         if (results.isNotEmpty()) {
                             //默认执行第一种玩法
@@ -68,7 +71,7 @@ class PostPaySingleServiceHandle(val eventWrapper: EventWrapper, val result: Ana
     //解析选中的玩法
     fun onAnalysePlayType(cResult: AnalyzeSourceResult) {
         val itemTitle =
-            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_item_title)?.text.blankOrThis()
+            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_item_title)?.text.blankOrThis()
         when (itemTitle) {
             PLAY_TYPE_HANDICAP -> {
                 //让分玩法
@@ -82,7 +85,7 @@ class PostPaySingleServiceHandle(val eventWrapper: EventWrapper, val result: Ana
             else -> {}
         }
         //点击提交
-        result.findNodeById(PostDoubleSingleId.id_single_post_submit_button).delayClick()
+        result.findNodeById(PostDoubleSingleId.Companion.id_single_post_submit_button).delayClick()
 
     }
 
@@ -92,9 +95,9 @@ class PostPaySingleServiceHandle(val eventWrapper: EventWrapper, val result: Ana
     fun executeHandicapPlayType(cResult: AnalyzeSourceResult){
         //随机选择胜利
         if (getRandomInt() % 2 == 0){
-            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_left_layout_container).click()
+            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_left_layout_container).click()
         }else{
-            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_right_layout_container).click()
+            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_right_layout_container).click()
         }
     }
 
@@ -104,9 +107,9 @@ class PostPaySingleServiceHandle(val eventWrapper: EventWrapper, val result: Ana
     fun executeTotalScorePlayType(cResult: AnalyzeSourceResult){
         //随机选择胜利
         if (getRandomInt() % 2 == 0){
-            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_left_layout_container).click()
+            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_left_layout_container).click()
         }else{
-            cResult.findNodeById(PostDoubleSingleId.id_single_post_prospect_right_layout_container).click()
+            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_right_layout_container).click()
         }
     }
 

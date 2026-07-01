@@ -1,4 +1,4 @@
-package com.example.more.leisu
+package com.example.more.leisu.data
 
 //雷速的包名
 const val app_packageName_lei_su = "com.leisu.sports"

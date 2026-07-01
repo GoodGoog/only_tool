@@ -1,13 +1,14 @@
 package com.example.more.leisu
 
-import android.util.Log
-import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
-import com.example.more.accessibility.ScrollDirection
-import com.example.more.accessibility.ScrollUtils
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
+import com.example.more.leisu.data.PostDoubleSingleId
+import com.example.more.leisu.data.PostMultiDoubleId
+import com.example.more.leisu.data.PrePostHeaderId
+import com.example.more.leisu.handle.PostFreeSingleBusiness
+import com.example.more.leisu.handle.PrePostSingleBusiness
 
 class LeisuServiceDispatch {
     companion object {
@@ -32,49 +33,35 @@ class LeisuServiceDispatch {
     fun refresh(wrapper: EventWrapper, result: AnalyzeSourceResult) {
         this.wrapper = wrapper
         this.result = result
-        when (wrapper.eventType) {
-            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                taskDispatch(result)
-            }
-
-            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
-
-            }
-            AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
-                if (ScrollUtils.instance().isValidScroll() == ScrollDirection.DirectionValid){
-                    Log.d(TAG, "refresh: 有效刷新")
-                }
-            }
-        }
+        taskDispatch(wrapper, result)
     }
 
 
     //业务分发
-    fun taskDispatch(result: AnalyzeSourceResult) {
+    fun taskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
         if (isInPostSinglePage(result)) {
             //在单关发布页
-            wrapper?.let {
-                PostFreeSingleServiceHandle(it, result).execute()
+            wrapper.let {
+                PostFreeSingleBusiness(it, result).execute()
             }
         }
         if (isInPostMultiPage(result)) {
             onMultiPostPage(result)
         }
         if (isInPrePostPage(result)) {
-            onPrePostPage(result)
+            onPrePostPage(wrapper, result)
         }
     }
 
     /**
      * 在发布页的入口页,即比赛列表选择页
      */
-    fun onPrePostPage(result: AnalyzeSourceResult) {
-        Log.d(TAG, "onPrePostPage: ----" + result.nodes)
-        Log.d(TAG, "onPrePostPage: ------------------")
+    fun onPrePostPage(wrapper: EventWrapper, result: AnalyzeSourceResult) {
 //        result.findNodeByExpression { nodeWrapper ->
 //            nodeWrapper.text == "篮球"
 //        }.delayClick()
 //        result.findNodeByText("单关").delayClick(2000)
+        PrePostSingleBusiness(wrapper, result).execute()
     }
 
     /**

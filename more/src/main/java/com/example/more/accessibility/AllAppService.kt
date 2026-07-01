@@ -2,7 +2,7 @@ package com.example.more.accessibility
 
 import android.util.Log
 import com.example.more.leisu.LeisuServiceDispatch
-import com.example.more.leisu.app_packageName_lei_su
+import com.example.more.leisu.data.app_packageName_lei_su
 
 class AllAppService : FastAccessibilityService() {
     companion object {
