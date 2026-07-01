@@ -9,11 +9,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.example.common.base.BaseActivity
 import com.example.common.base.BaseViewModel
-import com.example.common.network.NetworkBaseUrl
-import com.example.common.network.NetworkCallBack
-import com.example.common.network.NetworkParams
 import com.example.common.util.showToast
-import com.example.more.bean.LanZouYunDownloadBean
 import com.example.more.bean.TeamBean
 import com.example.more.databinding.MoreActivityTeamChooseBinding
 import com.example.more.setting.EVENT_BUS_RETURN_FLOAT_WINDOW_RESULT
@@ -25,7 +21,6 @@ import com.example.more.setting.TEAM_LEFT_RAW_SCORE
 import com.example.more.setting.TEAM_RIGHT_NAME
 import com.example.more.setting.judgeLeftTeamScoreTips
 import com.example.more.setting.splitStringToStrArray
-import com.example.more.third.retrofit.QqInfoResponse
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 

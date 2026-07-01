@@ -15,51 +15,6 @@
         android:theme="@style/Theme.Only_tool">
 
         <activity
-            android:name=".jetpack.room.RoomActivity"
-            android:exported="false" />
-        <activity
-            android:name=".thread.asyncTask.AsyncTaskActivity"
-            android:exported="false" />
-        <activity
-            android:name=".thread.handler.HandlerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".thread.ThreadActivity"
-            android:exported="false" />
-        <activity
-            android:name=".customView.clickEvent.ClickEventActivity"
-            android:exported="false" />
-        <activity
-            android:name=".customView.clock.ClockActivity"
-            android:exported="false" />
-        <activity
-            android:name=".customView.CustomActivity"
-            android:exported="false" />
-        <activity
-            android:name=".component.JumpAppServiceActivity"
-            android:exported="false" />
-        <activity
-            android:name=".component.curProcess.CurProcessServiceActivity"
-            android:exported="false" />
-        <activity
-            android:name=".interestingApi.ChatGptActivity"
-            android:exported="false" />
-        <activity
-            android:name=".kotlin.BaseKotlinActivity"
-            android:exported="false" />
-        <activity
-            android:name=".third.rxjava.RxJavaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".third.glide.GlideActivity"
-            android:exported="false" />
-        <activity
-            android:name=".third.okHttp.OkHttpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".third.retrofit.RetrofitActivity"
-            android:exported="false" />
-        <activity
             android:name=".setting.SettingActivity"
             android:exported="false" />
         <activity
@@ -78,16 +33,6 @@
             android:name=".touch.TouchActivity"
             android:exported="false" />
 
-        <service
-            android:name=".component.curProcess.CurProcessService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="AIDL.service" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
         <service android:name=".team.FloatingWindowService" />
         <service android:name=".touch.TouchWindowService" />
 
