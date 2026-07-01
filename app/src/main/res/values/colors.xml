@@ -7,4 +7,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- 页面背景 -->
+    <color name="default_bg_color">#FAF9F6</color>
+    <!-- 标题栏背景 -->
+    <color name="title_bar_bg">#FFFFFF</color>
+    <!-- 主标题：柔和深灰，纯黑太生硬 -->
+    <color name="text_title">#333333</color>
+    <!-- 次要图标文字 -->
+    <color name="text_sub">#757575</color>
+    <!-- 弱化分割线，浅到几乎不刺眼 -->
+    <color name="line_divider">#F1F1F1</color>
+    <!-- tab选中蓝色 -->
+    <color name="tab_select">#007AFF</color>
 </resources>

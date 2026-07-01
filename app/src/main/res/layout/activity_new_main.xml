@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/default_bg_color"
+        android:orientation="vertical">
+
+        <!-- 顶部标题栏 -->
+        <RelativeLayout
+            android:id="@+id/titleBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/title_bar_bg">
+
+            <!-- 中间标题 -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="服务盒子"
+                android:textColor="@color/text_title"
+                android:textSize="17sp"
+                />
+
+        </RelativeLayout>
+
+        <!-- 标题栏底部分割线 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_divider"/>
+
+        <!-- 页面容器 -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- 底部Tab导航 CommonTabLayout -->
+        <com.flyco.tablayout.CommonTabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/main_bottom_tab_bg"
+            app:tl_iconHeight="24dp"
+            app:tl_iconWidth="24dp"
+            app:tl_textsize="12sp"
+            app:tl_textSelectColor="#007AFF"
+            app:tl_textUnselectColor="#888888"/>
+
+
+    </LinearLayout>
+</layout>

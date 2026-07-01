@@ -30,8 +30,6 @@ class TouchActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
     override fun initData(savedInstanceState: Bundle?) {
 
         initUI()
-
-        
         initRecyclerView()
         initListener()
     }

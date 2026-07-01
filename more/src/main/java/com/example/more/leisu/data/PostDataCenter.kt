@@ -38,14 +38,14 @@ class PostDataCenter private constructor() {
                 true,
                 defaultTimes
             ))
-            add(PostConfigData(PostConfigData.ConfigType.MultiBasketball,
-                "篮球|串关",
+            add(PostConfigData(PostConfigData.ConfigType.SingleFootball,
+                "足球|单关",
                 true,
                 true,
                 defaultTimes
             ))
-            add(PostConfigData(PostConfigData.ConfigType.SingleFootball,
-                "足球|单关",
+            add(PostConfigData(PostConfigData.ConfigType.MultiBasketball,
+                "篮球|串关",
                 true,
                 true,
                 defaultTimes
