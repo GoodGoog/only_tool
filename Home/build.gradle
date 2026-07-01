@@ -40,6 +40,9 @@ android {
 
 dependencies {
 
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api project(path: ':more')
+
     api project(path: ':common')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     

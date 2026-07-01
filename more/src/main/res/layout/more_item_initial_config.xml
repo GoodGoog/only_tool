@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/bg_any_view_border_radius"
+        android:background="@drawable/bg_layout_container_radius"
         android:layout_marginTop="10dp"
         >
 

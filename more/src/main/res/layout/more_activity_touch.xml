@@ -49,399 +49,68 @@
                 android:focusableInTouchMode="true"
                 />
 
-
-<!--            <LinearLayout-->
-<!--                android:id="@+id/layout_container_initial_config"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:gravity="center_horizontal"-->
-<!--                android:orientation="vertical"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/tv_tips_initial">-->
-
-<!--                &lt;!&ndash;                单关|篮球&ndash;&gt;-->
-<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:background="@drawable/bg_any_view_border_radius">-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="50dp"-->
-<!--                        android:text="篮球|单关"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="120dp"-->
-<!--                        android:id="@+id/layout_tips_container"-->
-<!--                        app:layout_constraintTop_toTopOf="@id/layout_answer_container"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@id/layout_answer_container"-->
-<!--                        app:layout_constraintEnd_toStartOf="@id/layout_answer_container"-->
-<!--                        android:layout_marginEnd="30dp"-->
-<!--                        android:orientation="vertical"-->
-<!--                        >-->
-<!--                        <TextView-->
-<!--                            android:id="@+id/tv_post_tips_single_basketball"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="0dp"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:text="是否发文:"-->
-<!--                            android:gravity="center"-->
-<!--                            android:textColor="@color/global_text_color"-->
-<!--                            />-->
-
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/tv_tips_free_single_basketball"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="0dp"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:text="是否收费:"-->
-<!--                            android:gravity="center"-->
-<!--                            android:textColor="@color/global_text_color"-->
-<!--                             />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="0dp"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:text="发文次数:"-->
-<!--                            android:gravity="center"-->
-<!--                            android:textColor="@color/global_text_color"-->
-<!--                            />-->
-
-<!--                    </LinearLayout>-->
-
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="120dp"-->
-<!--                        android:id="@+id/layout_answer_container"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        android:layout_marginTop="10dp"-->
-<!--                        android:layout_marginBottom="10dp"-->
-<!--                        android:layout_marginEnd="30dp"-->
-<!--                        android:orientation="vertical"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        >-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/tv_is_post_single_basketball"-->
-<!--                            android:layout_width="40dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:gravity="center_horizontal"-->
-<!--                            android:padding="10dp"-->
-<!--                            android:text="否"-->
-<!--                            android:textColor="#999999"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/tv_is_free_single_basketball"-->
-<!--                            android:layout_width="40dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:gravity="center_horizontal"-->
-<!--                            android:padding="10dp"-->
-<!--                            android:text="否"-->
-<!--                            android:textColor="#999999" />-->
-
-<!--                        <EditText-->
-<!--                            android:id="@+id/et_times_free_single_basketball"-->
-<!--                            android:layout_width="40dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:background="@null"-->
-<!--                            android:padding="8dp"-->
-<!--                            android:text="0"-->
-<!--                            android:gravity="center"-->
-<!--                            android:minEms="1"-->
-<!--                            android:textColor="#999999"-->
-<!--                            android:textSize="16dp"-->
-<!--                          />-->
-
-<!--                    </LinearLayout>-->
-
-
-<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--                &lt;!&ndash;                单关|足球&ndash;&gt;-->
-<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="100dp"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:background="@drawable/bg_any_view_border_radius">-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="50dp"-->
-<!--                        android:text="足球|单关"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/tv_tips_free_single_football"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginEnd="10dp"-->
-<!--                        android:text="是否收费:"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@id/tv_is_free_single_football"-->
-<!--                        app:layout_constraintEnd_toStartOf="@id/tv_is_free_single_football"-->
-<!--                        app:layout_constraintTop_toTopOf="@id/tv_is_free_single_football" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/tv_is_free_single_football"-->
-<!--                        android:layout_width="40dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="10dp"-->
-<!--                        android:layout_marginEnd="50dp"-->
-<!--                        android:gravity="center_horizontal"-->
-<!--                        android:padding="10dp"-->
-<!--                        android:text="否"-->
-<!--                        android:textColor="#999999"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="发文次数:"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@id/et_times_free_single_football"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/tv_tips_free_single_football"-->
-<!--                        app:layout_constraintTop_toTopOf="@id/et_times_free_single_football" />-->
-
-<!--                    <EditText-->
-<!--                        android:id="@+id/et_times_free_single_football"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="10dp"-->
-<!--                        android:background="@null"-->
-<!--                        android:padding="8dp"-->
-<!--                        android:text="0"-->
-<!--                        android:textColor="#999999"-->
-<!--                        android:textSize="16dp"-->
-<!--                        android:minEms="1"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/tv_is_free_single_football"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/tv_is_free_single_football" />-->
-
-
-<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--                &lt;!&ndash;                串关|篮球&ndash;&gt;-->
-<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="100dp"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:background="@drawable/bg_any_view_border_radius">-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="50dp"-->
-<!--                        android:text="蓝球|串关"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/tv_tips_free_multi_basketball"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginEnd="10dp"-->
-<!--                        android:text="是否收费:"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@id/tv_is_free_multi_basketball"-->
-<!--                        app:layout_constraintEnd_toStartOf="@id/tv_is_free_multi_basketball"-->
-<!--                        app:layout_constraintTop_toTopOf="@id/tv_is_free_multi_basketball" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/tv_is_free_multi_basketball"-->
-<!--                        android:layout_width="40dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="10dp"-->
-<!--                        android:layout_marginEnd="50dp"-->
-<!--                        android:gravity="center_horizontal"-->
-<!--                        android:padding="10dp"-->
-<!--                        android:text="否"-->
-<!--                        android:textColor="#999999"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="发文次数:"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@id/et_times_free_multi_basketball"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/tv_tips_free_multi_basketball"-->
-<!--                        app:layout_constraintTop_toTopOf="@id/et_times_free_multi_basketball" />-->
-
-<!--                    <EditText-->
-<!--                        android:id="@+id/et_times_free_multi_basketball"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="10dp"-->
-<!--                        android:background="@null"-->
-<!--                        android:padding="8dp"-->
-<!--                        android:text="0"-->
-<!--                        android:minEms="1"-->
-<!--                        android:textColor="#999999"-->
-<!--                        android:textSize="16dp"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/tv_is_free_multi_basketball"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/tv_is_free_multi_basketball" />-->
-
-
-<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--                &lt;!&ndash;                串关|足球&ndash;&gt;-->
-<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="100dp"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:background="@drawable/bg_any_view_border_radius">-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="50dp"-->
-<!--                        android:text="足球|串关"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/tv_tips_free_multi_football"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginEnd="10dp"-->
-<!--                        android:text="是否收费:"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@id/tv_is_free_multi_football"-->
-<!--                        app:layout_constraintEnd_toStartOf="@id/tv_is_free_multi_football"-->
-<!--                        app:layout_constraintTop_toTopOf="@id/tv_is_free_multi_football" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/tv_is_free_multi_football"-->
-<!--                        android:layout_width="40dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="10dp"-->
-<!--                        android:layout_marginEnd="50dp"-->
-<!--                        android:gravity="center_horizontal"-->
-<!--                        android:padding="10dp"-->
-<!--                        android:text="否"-->
-<!--                        android:textColor="#999999"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="发文次数:"-->
-<!--                        android:textColor="@color/global_text_color"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@id/et_times_free_multi_football"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/tv_tips_free_multi_football"-->
-<!--                        app:layout_constraintTop_toTopOf="@id/et_times_free_multi_football" />-->
-
-<!--                    <EditText-->
-<!--                        android:id="@+id/et_times_free_multi_football"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="10dp"-->
-<!--                        android:background="@null"-->
-<!--                        android:padding="8dp"-->
-<!--                        android:text="0"-->
-<!--                        android:minEms="1"-->
-<!--                        android:textColor="#999999"-->
-<!--                        android:textSize="16dp"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="@id/tv_is_free_multi_football"-->
-<!--                        app:layout_constraintStart_toStartOf="@id/tv_is_free_multi_football" />-->
-
-
-<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
-<!--            </LinearLayout>-->
-
-            <TextView
-                android:id="@+id/tv_save_config"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:text="保存上述配置"
-                android:gravity="center"
-                android:background="@drawable/bg_any_view_border_radius"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:textColor="@color/global_text_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_initial_config" />
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/rv_initial_config"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/tv_save_config"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:text="保存上述配置"
+                    android:gravity="center"
+                    android:background="@drawable/bg_layout_container_radius"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/global_text_color" />
 
-            <TextView
-                android:id="@+id/tv_is_enable"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_any_view_border_radius"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:text="检测服务是否开启"
-                android:textColor="@color/global_text_color"
-                app:layout_constraintTop_toBottomOf="@id/tv_save_config" />
+                <TextView
+                    android:id="@+id/tv_is_enable"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_layout_container_radius"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:text="检测服务是否开启"
+                    android:textColor="@color/global_text_color" />
 
-            <TextView
-                android:id="@+id/tv_show_access_window"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_any_view_border_radius"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:textColor="@color/global_text_color"
-                android:text="打开服务窗口"
-                app:layout_constraintTop_toBottomOf="@id/tv_is_enable" />
+                <TextView
+                    android:id="@+id/tv_show_access_window"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_layout_container_radius"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/global_text_color"
+                    android:text="打开服务窗口" />
 
-            <TextView
-                android:id="@+id/tv_start_leisu"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_any_view_border_radius"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:gravity="center"
-                android:text="打开雷速"
-                android:textColor="@color/global_text_color"
-                app:layout_constraintTop_toBottomOf="@id/tv_show_access_window" />
+                <TextView
+                    android:id="@+id/tv_start_leisu"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_layout_container_radius"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:text="打开雷速"
+                    android:textColor="@color/global_text_color" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    />
+
+            </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
