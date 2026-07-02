@@ -41,12 +41,13 @@ android {
 
 dependencies {
 
-    api project(path: ':common')
+    implementation project(path: ':common')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(path: ':Home')
-    api project(path: ':mystery')
-    api project(path: ':more')
-    api project(path: ':mine')
+
+    implementation project(path: ':Home')
+    implementation project(path: ':mystery')
+    implementation project(path: ':more')
+    implementation project(path: ':mine')
 
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
 
