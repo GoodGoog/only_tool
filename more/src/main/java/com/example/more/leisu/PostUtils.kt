@@ -1,46 +1,55 @@
 package com.example.more.leisu
 
-import android.R.attr.scrollX
-import android.R.attr.scrollY
-import com.example.more.accessibility.EventWrapper
-import com.example.more.accessibility.blankOrThis
-import java.util.Calendar
-import kotlin.random.Random
+import com.example.more.accessibility.AnalyzeSourceResult
+import com.example.more.accessibility.delayClick
+import com.example.more.accessibility.findNodeByText
+import com.example.more.leisu.data.PostConfigData
 
-/**
- * 生成一个随机数
- */
-fun getRandomInt() :Int{
-    // [0~99] + 1 → [1~100]
-    return Random.nextInt(100) + 1
-}
+class PostUtils private constructor() {
+    companion object {
+        const val TAB_TITLE_BASKETBALL = "篮球"
+        const val TAB_TITLE_FOOTBALL = "足球"
+        const val SUB_TAB_TITLE_SINGLE = "单关"
+        const val SUB_TAB_TITLE_MULTI = "串关"
 
-/**
- * 提取字符串中数字
- */
-fun String?.filterNumberOrZero(): Int{
-    if (this == null) return 0
-    if (this.isEmpty()) return 0
-    return this.blankOrThis().filter {
-        it.isDigit()
-    }.toInt()
-}
+        private var instance: PostUtils? = null
 
-/**
- * 获取当前为周几
- */
-fun getWeekDayByCalendar() : Int {
-    val cal = Calendar.getInstance()
-    val day = cal.get(Calendar.DAY_OF_WEEK)
-    return when (day) {
-        Calendar.SUNDAY -> 7
-        Calendar.MONDAY -> 1
-        Calendar.TUESDAY -> 2
-        Calendar.WEDNESDAY -> 3
-        Calendar.THURSDAY -> 4
-        Calendar.FRIDAY -> 5
-        Calendar.SATURDAY -> 6
-        else -> 0
+        // synchronized 保证多线程安全
+        @Synchronized
+        fun instance(): PostUtils {
+            if (instance == null) {
+                instance = PostUtils()
+            }
+            return instance!!
+        }
+    }
+
+    //默认实在足球-单关页面
+    var curPageType = PostConfigData.ConfigType.SingleFootball
+
+    fun jumpSubPage(type: PostConfigData.ConfigType, result: AnalyzeSourceResult) {
+        when (type) {
+            PostConfigData.ConfigType.SingleBasketball -> {
+                result.jump(TAB_TITLE_BASKETBALL,SUB_TAB_TITLE_SINGLE)
+            }
+
+            PostConfigData.ConfigType.SingleFootball -> {
+                result.jump(TAB_TITLE_FOOTBALL,SUB_TAB_TITLE_SINGLE)
+            }
+
+            PostConfigData.ConfigType.MultiBasketball -> {
+                result.jump(TAB_TITLE_BASKETBALL,SUB_TAB_TITLE_MULTI)
+            }
+
+            PostConfigData.ConfigType.MultiFootball -> {
+                result.jump(TAB_TITLE_FOOTBALL,SUB_TAB_TITLE_MULTI)
+            }
+        }
+        curPageType = type
+    }
+
+    fun AnalyzeSourceResult.jump(title: String, subTitle : String){
+        findNodeByText(title).delayClick()
+        findNodeByText(subTitle).delayClick()
     }
 }
-

@@ -18,6 +18,7 @@ import com.example.more.databinding.MoreActivityTouchBinding
 import com.example.more.databinding.MoreItemInitialConfigBinding
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
+import com.example.more.showToast
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 
@@ -36,7 +37,7 @@ class TouchActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
     fun initRecyclerView() {
         val adapter = object : BaseAdapter<MoreItemInitialConfigBinding, PostConfigData>(
-            PostDataCenter.instance().postArray,
+            PostDataCenter.instance().initialArray,
             R.layout.more_item_initial_config
         ) {
             override fun bindViewHolder(
@@ -83,6 +84,27 @@ class TouchActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
         binding.rvInitialConfig.setAdapter(adapter)
         val manager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.rvInitialConfig.setLayoutManager(manager)
+
+        //保存时拿走光标,触发rv回调
+        binding.tvSaveConfig.setOnClickListener {
+            //先夺走光标，触发item中EditView的数据回调
+            //结束时光标变化
+            binding.etCursorHolder.apply {
+                requestFocus();
+            }
+            PostDataCenter.instance().apply {
+                initialArray = adapter.beans
+                filterUselessPostInfo{ hasData ->
+                    if (hasData){
+                        showToast("保存成功！")
+                    }else{
+                        //无可发布文章时
+                        showToast("先选择需要发布的内容！")
+                    }
+                }
+            }
+        }
+
     }
 
     fun initUI(){
@@ -90,15 +112,6 @@ class TouchActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
     }
 
     fun initListener() {
-        //拿走光标,触发rv回调
-        binding.tvSaveConfig.setOnClickListener {
-            //先夺走光标，触发item中EditView的数据回调
-            //结束时光标变化
-            binding.etCursorHolder.apply {
-                requestFocus();
-            }
-            Log.d(TAG, "initListener: msg ===" + PostDataCenter.instance().printMsg())
-        }
 
         LiveEventBus.get<Any?>(EventBusInfo.FLOAT_WINDOW_TEST_TOUCH)
             .observe(this) {
@@ -131,4 +144,5 @@ class TouchActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
 
     override fun getLayoutId() = R.layout.more_activity_touch
+
 }

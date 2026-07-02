@@ -37,21 +37,21 @@
         <service android:name=".touch.TouchWindowService" />
 
         <service
-        android:label="A雷速自动化"
-        android:name=".accessibility.AllAppService"
-        android:exported="true"
-        android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-        android:process=":BackgroundService">
-        <intent-filter>
-            <action android:name="android.accessibilityservice.AccessibilityService" />
-        </intent-filter>
-        <!--       通过xml文件完成辅助功能相关配置，也可以在onServiceConnected中动态配置-->
-        <meta-data
-            android:name="android.accessibilityservice"
-            android:resource="@xml/accessibility_service_config" />
+            android:name=".accessibility.AllAppService"
+            android:exported="true"
+            android:label="A雷速自动化"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <!--       android:process=":BackgroundService" 会开启新的进程，导致单例失效并再次创建！！！！！   -->
 
-    </service>
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <!--       通过xml文件完成辅助功能相关配置，也可以在onServiceConnected中动态配置-->
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
 
+        </service>
 
 
     </application>

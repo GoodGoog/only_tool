@@ -8,7 +8,7 @@ import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.click
 import com.example.more.accessibility.delayClick
 import com.example.more.accessibility.findNodeById
-import com.example.more.leisu.data.PostDoubleSingleId
+import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
 
@@ -37,7 +37,7 @@ class PostFreeSingleBusiness(val eventWrapper: EventWrapper, val result: Analyze
 
     init {
         remainPostCount =
-            result.findNodeById(PostDoubleSingleId.Companion.id_single_post_today_remains_times)?.text.filterNumberOrZero()
+            result.findNodeById(IDPostDoubleSingle.Companion.id_single_post_today_remains_times)?.text.filterNumberOrZero()
     }
 
     fun execute() {
@@ -48,7 +48,7 @@ class PostFreeSingleBusiness(val eventWrapper: EventWrapper, val result: Analyze
         when (eventWrapper.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 //解析rv子视图
-                result.findNodeById(PostDoubleSingleId.Companion.id_single_post_player_detail_action).analyzeRecyclerView()
+                result.findNodeById(IDPostDoubleSingle.Companion.id_single_post_player_detail_action).analyzeRecyclerView()
                     ?.let { results ->
                         if (results.isNotEmpty()) {
                             //默认执行第一种玩法
@@ -71,7 +71,7 @@ class PostFreeSingleBusiness(val eventWrapper: EventWrapper, val result: Analyze
     //解析选中的玩法
     fun onAnalysePlayType(cResult: AnalyzeSourceResult) {
         val itemTitle =
-            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_item_title)?.text.blankOrThis()
+            cResult.findNodeById(IDPostDoubleSingle.Companion.id_single_post_prospect_item_title)?.text.blankOrThis()
         when (itemTitle) {
             PLAY_TYPE_HANDICAP -> {
                 //让分玩法
@@ -85,7 +85,7 @@ class PostFreeSingleBusiness(val eventWrapper: EventWrapper, val result: Analyze
             else -> {}
         }
         //点击提交
-        result.findNodeById(PostDoubleSingleId.Companion.id_single_post_submit_button).delayClick()
+        result.findNodeById(IDPostDoubleSingle.Companion.id_single_post_submit_button).delayClick()
 
     }
 
@@ -95,9 +95,9 @@ class PostFreeSingleBusiness(val eventWrapper: EventWrapper, val result: Analyze
     fun executeHandicapPlayType(cResult: AnalyzeSourceResult){
         //随机选择胜利
         if (getRandomInt() % 2 == 0){
-            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_left_layout_container).click()
+            cResult.findNodeById(IDPostDoubleSingle.Companion.id_single_post_prospect_left_layout_container).click()
         }else{
-            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_right_layout_container).click()
+            cResult.findNodeById(IDPostDoubleSingle.Companion.id_single_post_prospect_right_layout_container).click()
         }
     }
 
@@ -107,9 +107,9 @@ class PostFreeSingleBusiness(val eventWrapper: EventWrapper, val result: Analyze
     fun executeTotalScorePlayType(cResult: AnalyzeSourceResult){
         //随机选择胜利
         if (getRandomInt() % 2 == 0){
-            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_left_layout_container).click()
+            cResult.findNodeById(IDPostDoubleSingle.Companion.id_single_post_prospect_left_layout_container).click()
         }else{
-            cResult.findNodeById(PostDoubleSingleId.Companion.id_single_post_prospect_right_layout_container).click()
+            cResult.findNodeById(IDPostDoubleSingle.Companion.id_single_post_prospect_right_layout_container).click()
         }
     }
 

@@ -26,6 +26,11 @@ public class PostConfigData {
         this.type = type;
     }
 
+    public PostConfigData() {
+
+    }
+
+
     public int getPostTimes() {
         return postTimes;
     }

@@ -19,7 +19,7 @@ const val id_post_entry_league_list_item_name = "com.leisu.sports:id/tv_league_n
 /**
  * 赛事选择页 ---头部信息，不在ViewPage内的id信息
  */
-class PrePostHeaderId {
+class IDPrePostHeader {
     companion object {
         //三1.头部信息
         //顶部 足球/篮球切换 由 HorizontalScrollView实现
@@ -41,7 +41,7 @@ class PrePostHeaderId {
 /**
  * 赛事选择页 ---单关赛事选择
  */
-class PrePostSingleDoubleId {
+class IDPrePostSingleBalls {
     companion object {
         //三2.足/蓝球的单关页
 
@@ -71,7 +71,7 @@ class PrePostSingleDoubleId {
 /**
  * 赛事选择页-------篮球串关页
  */
-class PrePostMultiBasketBallId{
+class IDPrePostMultiBasketBall{
     companion object{
 
         //比赛信息列表RecyclerView
@@ -125,7 +125,7 @@ class PrePostMultiBasketBallId{
 /**
  * 赛事选择页-------足球串关页
  */
-class PrePostMultiFootballId{
+class IDPrePostMultiFootball{
     companion object{
         //比赛信息列表RecyclerView
         const val id_multi_foot_league_list = "com.leisu.sports:id/recycler_view"
@@ -197,7 +197,7 @@ class PrePostMultiFootballId{
 /**
  * 一 ！！！！！！！！！！！！！！单关！！！！！！！！！！！！！发布页
  */
-class PostDoubleSingleId {
+class IDPostDoubleSingle {
     companion object {
         //今日剩余发布次数
         const val id_single_post_today_remains_times = "com.leisu.sports:id/tv_remain_times"
@@ -286,7 +286,7 @@ class PostDoubleSingleId {
 /**
  * ！！！！！！！！！！！！串关发布页
  */
-class PostMultiDoubleId{
+class IDPostMultiDouble{
     companion object{
 
         //今日剩余发布次数
