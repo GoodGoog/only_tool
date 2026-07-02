@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,11 +19,16 @@ import com.example.more.accessibility.requireAccessibility
 import com.example.more.accessibility.startApp
 import com.example.more.databinding.MoreActivityTouchBinding
 import com.example.more.databinding.MoreItemInitialConfigBinding
+import com.example.more.leisu.data.FLOAT_WINDOW_ALL_APP_TAG
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
+import com.example.more.leisu.dpToPx
 import com.example.more.setting.TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO
 import com.example.more.team.FloatingWindowService
 import com.jeremyliao.liveeventbus.LiveEventBus
+import com.yhao.floatwindow.FloatWindow
+import com.yhao.floatwindow.MoveType
+import com.yhao.floatwindow.Screen
 
 
 class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
@@ -136,26 +142,28 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
     }
 
     fun showFloatWindow(){
-        //是否有系统悬浮窗显示权限
-        if (Settings.canDrawOverlays(this)) {
-            //有
-            //startService(Intent(this, FloatingWindowService::class.java))
-            Intent(this, PostFloatWindow::class.java).let { mIntent ->
-//                mIntent.putExtra(
-//                    TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO,
-//                    binding.etTextFormatTrans.text.toString()
-//                )
-                startService(mIntent)
-                //bindService(mIntent,serviceConn, Context.BIND_AUTO_CREATE)
-            }
-        } else {
-            // 没权限
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:$packageName")
-            )
-            startActivityForResult(intent, 100)
-        }
+        val floatView = LayoutInflater.from(this).inflate(R.layout.more_window_float_post, null)
+        FloatWindow.with(applicationContext)
+            .setTag(FLOAT_WINDOW_ALL_APP_TAG)
+            .setView(floatView)
+            // false=应用内浮窗；true=全局跨应用浮窗
+            //.setSystemWindow(false)
+            // 拖拽松手自动贴边
+            .setMoveType(MoveType.slide)
+            // 初始坐标（屏幕宽高百分比）
+            .setDesktopShow(false)
+//            //按屏幕的百分比大小设置
+//            .setWidth(Screen.width, 0.3f)
+//            .setHeight(Screen.width, 0.3f)
+            //指定大小
+            // 宽 200dp，高200dp
+            .setWidth(dpToPx(200f))
+            .setHeight(dpToPx(200f))
+            .setX(Screen.width, 0.8f)
+            .setY(Screen.height, 0.6f)
+            .build()
+
+        FloatWindow.get(FLOAT_WINDOW_ALL_APP_TAG).show()
     }
 
     fun getRemainsCount(tv: TextView): Int {
@@ -170,5 +178,10 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
 
     override fun getLayoutId() = R.layout.more_activity_touch
+
+    override fun onDestroy() {
+        super.onDestroy()
+        FloatWindow.destroy(FLOAT_WINDOW_ALL_APP_TAG)
+    }
 
 }

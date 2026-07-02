@@ -1,5 +1,10 @@
 package com.example.more.leisu.data
 
+/**
+ * FloatWindow 悬浮窗标识
+ */
+const val FLOAT_WINDOW_ALL_APP_TAG = "FLOAT_WINDOW_ALL_APP_TAG"
+
 //雷速的包名
 const val app_packageName_lei_su = "com.leisu.sports"
 
