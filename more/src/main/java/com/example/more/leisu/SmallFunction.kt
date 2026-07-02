@@ -1,7 +1,9 @@
 package com.example.more.leisu
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.TypedValue
+import com.example.more.R
 import com.example.more.accessibility.blankOrThis
 import java.util.Calendar
 import kotlin.random.Random
@@ -44,20 +46,25 @@ fun getWeekDayByCalendar() : Int {
 }
 
 /** dp转px */
-fun Context.dpToPx(dpValue: Float): Int {
+fun Context.dpToPx(dpValue: Float): Float {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         dpValue,
         resources.displayMetrics
-    ).toInt()
+    )
 }
 
 /** sp转px（文字专用） */
-fun Context.spToPx(spValue: Float): Int {
+fun Context.spToPx(spValue: Float): Float {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_SP,
         spValue,
         resources.displayMetrics
-    ).toInt()
+    )
 }
+
+/**
+ * 获取dimens中的尺寸，并 dp -> px]
+ */
+fun Context.getPxFromDimens(resourceId : Int) = dpToPx(resources.getDimensionPixelSize(resourceId).toFloat())
 

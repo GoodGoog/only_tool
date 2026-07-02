@@ -13,7 +13,7 @@ import com.example.more.databinding.FragmentMoreBinding;
 import com.example.more.manyApi.ManyApiActivity;
 import com.example.more.setting.SettingActivity;
 import com.example.more.team.TeamActivity;
-import com.example.more.touch.PostActivity;
+import com.example.more.psot.PostActivity;
 
 import java.util.ArrayList;
 

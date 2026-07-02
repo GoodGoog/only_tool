@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.more.touch.PostActivity;
+import com.example.more.psot.PostActivity;
 
 public class HomeFragment extends Fragment {
 

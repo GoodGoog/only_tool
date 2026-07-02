@@ -1,39 +1,39 @@
-package com.example.more.touch
+package com.example.more.psot
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.common.base.BaseActivity
 import com.example.common.base.BaseAdapter
 import com.example.common.base.BaseViewModel
 import com.example.common.util.EventBusInfo
+import com.example.more.ACCESSIBILITY_SERVICE_START_OR_DESTROY
+import com.example.more.FLOAT_WINDOW_ALL_APP_TAG
 import com.example.more.R
 import com.example.more.accessibility.isAccessibilityEnable
 import com.example.more.accessibility.requireAccessibility
 import com.example.more.accessibility.startApp
 import com.example.more.databinding.MoreActivityTouchBinding
 import com.example.more.databinding.MoreItemInitialConfigBinding
-import com.example.more.leisu.data.FLOAT_WINDOW_ALL_APP_TAG
+import com.example.more.databinding.MoreWindowFloatPostBinding
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
-import com.example.more.leisu.dpToPx
-import com.example.more.setting.TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO
-import com.example.more.team.FloatingWindowService
+import com.example.more.showToast
 import com.jeremyliao.liveeventbus.LiveEventBus
-import com.yhao.floatwindow.FloatWindow
-import com.yhao.floatwindow.MoveType
-import com.yhao.floatwindow.Screen
+import com.lzf.easyfloat.EasyFloat
+import com.lzf.easyfloat.enums.ShowPattern
+import com.lzf.easyfloat.enums.SidePattern
 
 
 class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
-    companion object{
+    companion object {
         const val TAG = "TouchActivity"
     }
 
@@ -62,19 +62,19 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
                     etPostTimes.setText(data.postTimes.toString())
                     //交互事件
                     tvIsPost.setOnClickListener {
-                        tvIsPost.text = if (data.isPost){
+                        tvIsPost.text = if (data.isPost) {
                             datas[position].isPost = false
                             "否"
-                        }else{
+                        } else {
                             datas[position].isPost = true
                             "是"
                         }
                     }
                     tvIsFree.setOnClickListener {
-                        tvIsFree.text = if (data.isFree){
+                        tvIsFree.text = if (data.isFree) {
                             datas[position].isFree = false
                             "否"
-                        }else{
+                        } else {
                             datas[position].isFree = true
                             "是"
                         }
@@ -103,10 +103,10 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             }
             PostDataCenter.instance().apply {
                 initialArray = adapter.beans
-                filterUselessPostInfo{ hasData ->
-                    if (hasData){
+                filterUselessPostInfo { hasData ->
+                    if (hasData) {
                         showToast("保存成功！")
-                    }else{
+                    } else {
                         //无可发布文章时
                         showToast("先选择需要发布的内容！")
                     }
@@ -116,7 +116,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
     }
 
-    fun initUI(){
+    fun initUI() {
 
     }
 
@@ -138,37 +138,56 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             //startApp("com.tencent.mm", "com.tencent.mm.ui.LauncherUI", "未安装微信")
             startApp("com.leisu.sports", "com.leisu.sports.ui.main.MainActivity", "未安装雷速")
         }
-        
+
     }
 
-    fun showFloatWindow(){
-        val floatView = LayoutInflater.from(this).inflate(R.layout.more_window_float_post, null)
-        FloatWindow.with(applicationContext)
-            .setTag(FLOAT_WINDOW_ALL_APP_TAG)
-            .setView(floatView)
-            // false=应用内浮窗；true=全局跨应用浮窗
-            //.setSystemWindow(false)
-            // 拖拽松手自动贴边
-            .setMoveType(MoveType.slide)
-            // 初始坐标（屏幕宽高百分比）
-            .setDesktopShow(false)
-//            //按屏幕的百分比大小设置
-//            .setWidth(Screen.width, 0.3f)
-//            .setHeight(Screen.width, 0.3f)
-            //指定大小
-            // 宽 200dp，高200dp
-            .setWidth(dpToPx(200f))
-            .setHeight(dpToPx(200f))
-            .setX(Screen.width, 0.8f)
-            .setY(Screen.height, 0.6f)
-            .build()
+    fun showFloatWindow() {
+        // 先销毁旧窗口
+        if (EasyFloat.isShow(FLOAT_WINDOW_ALL_APP_TAG)) {
+            EasyFloat.dismiss(FLOAT_WINDOW_ALL_APP_TAG)
+        }
 
-        FloatWindow.get(FLOAT_WINDOW_ALL_APP_TAG).show()
+        //EasyFloat.getFloatView(FLOAT_WINDOW_ALL_APP_TAG)
+        val mbinding = DataBindingUtil.inflate(
+            LayoutInflater.from(this),
+            R.layout.more_window_float_post, window.decorView as ViewGroup?, false
+        ) as MoreWindowFloatPostBinding
+//        mbinding.tvSure.setOnClickListener {
+//            showToast("tvSure")
+//        }
+//        mbinding.tvTestTouch.setOnClickListener {
+//            showToast("tvTestTouch")
+//        }
+
+        EasyFloat.with(this)
+            .setTag(FLOAT_WINDOW_ALL_APP_TAG)
+            .setLayout(mbinding.root){ rootView ->
+
+            }
+            // 关键：禁止窗口铺满全屏，空白区域自动穿透点击底层
+            .setMatchParent(widthMatch = false, heightMatch = false)
+            // 开启拖动
+            .setDragEnable(true)
+            // 水平自动贴左右边缘（替代失效的setAutoEdge）
+            .setSidePattern(SidePattern.RESULT_HORIZONTAL)
+            // 对齐右侧垂直居中，横向偏移20px，纵向0
+            .setGravity(Gravity.END or Gravity.CENTER_VERTICAL, 0, 0)
+            // 仅当前页面显示，应用内浮窗无需悬浮权限
+            .setShowPattern(ShowPattern.ALL_TIME)
+            .show()
+
+        LiveEventBus.get<Boolean>(ACCESSIBILITY_SERVICE_START_OR_DESTROY).observe(this){ isStart ->
+            if (isStart) {
+                EasyFloat.show(FLOAT_WINDOW_ALL_APP_TAG)
+            }else{
+                EasyFloat.hide(FLOAT_WINDOW_ALL_APP_TAG)
+            }
+        }
     }
 
     fun getRemainsCount(tv: TextView): Int {
         tv.text.toString().let {
-            if (it.isEmpty()){
+            if (it.isEmpty()) {
                 showToast("请输入有效可发布次数")
                 return 0
             }
@@ -181,7 +200,10 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        FloatWindow.destroy(FLOAT_WINDOW_ALL_APP_TAG)
+        //销毁
+        if (EasyFloat.isShow(FLOAT_WINDOW_ALL_APP_TAG)) {
+            EasyFloat.dismiss(FLOAT_WINDOW_ALL_APP_TAG)
+        }
     }
 
 }
