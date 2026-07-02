@@ -451,7 +451,7 @@ fun NodeWrapper?.analyzeRecyclerView(): ArrayList<AnalyzeSourceResult>? {
 /**
  * 只遍历当前节点的下一层子节点，不处理再往下的层次
  * */
-private fun NodeWrapper?.analyzeNextLevelSubView(): ArrayList<NodeWrapper> {
+fun NodeWrapper?.analyzeNextLevelSubView(): ArrayList<NodeWrapper> {
     val list = ArrayList<NodeWrapper>()
     if (this == null) return list
     nodeInfo?.let { it ->

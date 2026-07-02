@@ -1,5 +1,7 @@
 package com.example.more.leisu.data;
 
+import androidx.annotation.NonNull;
+
 public class PostConfigData {
     public enum ConfigType {
         SingleBasketball,
@@ -18,7 +20,7 @@ public class PostConfigData {
 
     private int postTimes;
 
-    public PostConfigData(ConfigType type, String title, Boolean isPost, Boolean isFree,int postTimes) {
+    public PostConfigData(ConfigType type, String title, Boolean isPost, Boolean isFree, int postTimes) {
         this.postTimes = postTimes;
         this.isFree = isFree;
         this.isPost = isPost;
@@ -69,5 +71,11 @@ public class PostConfigData {
 
     public void setType(ConfigType type) {
         this.type = type;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "type=" + type.toString() + "--->title=" + title + "--->isPost=" + isPost + "--->isFree=" + isFree + "--->postTimes" + postTimes + "\n";
     }
 }

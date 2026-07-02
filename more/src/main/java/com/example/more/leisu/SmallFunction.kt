@@ -1,5 +1,7 @@
 package com.example.more.leisu
 
+import android.content.Context
+import android.util.TypedValue
 import com.example.more.accessibility.blankOrThis
 import java.util.Calendar
 import kotlin.random.Random
@@ -39,5 +41,23 @@ fun getWeekDayByCalendar() : Int {
         Calendar.SATURDAY -> 6
         else -> 0
     }
+}
+
+/** dp转px */
+fun Context.dpToPx(dpValue: Float): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dpValue,
+        resources.displayMetrics
+    ).toInt()
+}
+
+/** sp转px（文字专用） */
+fun Context.spToPx(spValue: Float): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_SP,
+        spValue,
+        resources.displayMetrics
+    ).toInt()
 }
 

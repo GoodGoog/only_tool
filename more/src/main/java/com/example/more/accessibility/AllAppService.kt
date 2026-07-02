@@ -1,11 +1,8 @@
 package com.example.more.accessibility
 
-import android.provider.ContactsContract
 import android.util.Log
 import com.example.more.leisu.LeisuServiceDispatch
-import com.example.more.leisu.data.PostDataCenter
 import com.example.more.leisu.data.app_packageName_lei_su
-import com.example.more.touch.TouchActivity
 
 class AllAppService : FastAccessibilityService() {
     companion object {
@@ -32,6 +29,7 @@ class AllAppService : FastAccessibilityService() {
 
     override fun onServiceConnected() {
         super.onServiceConnected()
+        Log.d(TAG, "onServiceConnected: ")
     }
 
     override fun onDestroy() {

@@ -13,7 +13,7 @@ import com.example.more.databinding.FragmentMoreBinding;
 import com.example.more.manyApi.ManyApiActivity;
 import com.example.more.setting.SettingActivity;
 import com.example.more.team.TeamActivity;
-import com.example.more.touch.TouchActivity;
+import com.example.more.touch.PostActivity;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ public class MoreFragment extends BaseFragment<FragmentMoreBinding, MoreViewMode
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "玩球", SettingActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "球员选择", TeamActivity.class));
         beans.add(createMoreBean(R.drawable.more_icon_list_access, "许多api", ManyApiActivity.class));
-        beans.add(createMoreBean(R.drawable.more_icon_list_access, "自动点击", TouchActivity.class));
+        beans.add(createMoreBean(R.drawable.more_icon_list_access, "自动点击", PostActivity.class));
 
         //binding.moreRv.setBackgroundColor(Color.parseColor("#665544"));
         MoreAdapter adapter = new MoreAdapter(beans);

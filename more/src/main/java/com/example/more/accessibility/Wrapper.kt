@@ -33,6 +33,7 @@ data class NodeWrapper(
     var editable: Boolean = false,
     var nodeInfo: AccessibilityNodeInfo? = null
 ) {
+    //直接打印某个类的对象时，系统会自动调用这个类对应的toString方法
     override fun toString() = "$className → $text → $id → $description → $bounds → $clickable → $scrollable → $editable \n"
 }
 

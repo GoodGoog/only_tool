@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.more.touch.TouchActivity;
+import com.example.more.touch.PostActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -24,7 +24,7 @@ public class HomeFragment extends Fragment {
         tvStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireContext(),TouchActivity.class);
+                Intent intent = new Intent(requireContext(), PostActivity.class);
                 startActivity(intent);
             }
         });

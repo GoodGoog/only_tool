@@ -34,7 +34,20 @@ class IDPrePostHeader {
         //筛选按钮
         const val id_filter_league_info = "com.leisu.sports:id/iv_filter"
 
-        const val id__list_page = "com.leisu.sports:id/view_page"
+        const val id_first_level_view_pager = "com.leisu.sports:id/view_page"
+
+        const val id_second_level_view_pager = "com.leisu.sports:id/view_page"
+
+        const val id_league_lsit_rv = "com.leisu.sports:id/recycler_view"
+
+        /**
+         *   1个ViewPager2
+         *       2个ViewPger2
+         *          2个RecyclerView
+         *             单个比赛信息列表
+         *
+         */
+
     }
 }
 

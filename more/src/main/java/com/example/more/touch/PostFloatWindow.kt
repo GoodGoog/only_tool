@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.IBinder
-import android.os.SystemClock
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -17,7 +16,7 @@ import com.example.common.util.showToast
 import com.example.more.R
 import com.jeremyliao.liveeventbus.LiveEventBus
 
-class TouchWindowService : Service() {
+class PostFloatWindow : Service() {
 
     private lateinit var windowManager: WindowManager
     private lateinit var floatingView: View
@@ -43,30 +42,12 @@ class TouchWindowService : Service() {
         }
     }
 
-    private fun setSimulateClick(view: View, x: Float, y: Float) {
-        var downTime = SystemClock.uptimeMillis()
-        val downEvent = MotionEvent.obtain(
-            downTime, downTime,
-            MotionEvent.ACTION_DOWN, x, y, 0
-        )
-        downTime += 1000
-        val upEvent = MotionEvent.obtain(
-            downTime, downTime,
-            MotionEvent.ACTION_UP, x, y, 0
-        )
-        view.onTouchEvent(downEvent)
-        view.onTouchEvent(upEvent)
-        downEvent.recycle()
-        upEvent.recycle()
-    }
-
-
     fun initWindow() {
         try {
             windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
             val inflater = LayoutInflater.from(this)
-            floatingView = inflater.inflate(R.layout.more_window_touch, null)
+            floatingView = inflater.inflate(R.layout.more_window_float_post, null)
 
             layoutParams = WindowManager.LayoutParams()
 //          layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT

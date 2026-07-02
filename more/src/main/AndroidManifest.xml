@@ -30,11 +30,11 @@
             android:name=".manyApi.ManyApiActivity"
             android:exported="false" />
         <activity
-            android:name=".touch.TouchActivity"
+            android:name=".touch.PostActivity"
             android:exported="false" />
 
         <service android:name=".team.FloatingWindowService" />
-        <service android:name=".touch.TouchWindowService" />
+        <service android:name=".touch.PostFloatWindow" />
 
         <service
             android:name=".accessibility.AllAppService"

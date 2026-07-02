@@ -1,7 +1,9 @@
 package com.example.more.touch
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.provider.Settings
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,11 +20,12 @@ import com.example.more.databinding.MoreActivityTouchBinding
 import com.example.more.databinding.MoreItemInitialConfigBinding
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
-import com.example.more.showToast
+import com.example.more.setting.TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO
+import com.example.more.team.FloatingWindowService
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 
-class TouchActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
+class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
     companion object{
         const val TAG = "TouchActivity"
@@ -122,7 +125,7 @@ class TouchActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             else requireAccessibility()
         }
         binding.tvShowAccessWindow.setOnClickListener {
-
+            showFloatWindow()
         }
         binding.tvStartLeisu.setOnClickListener {
             //initWindow()
@@ -130,6 +133,29 @@ class TouchActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             startApp("com.leisu.sports", "com.leisu.sports.ui.main.MainActivity", "未安装雷速")
         }
         
+    }
+
+    fun showFloatWindow(){
+        //是否有系统悬浮窗显示权限
+        if (Settings.canDrawOverlays(this)) {
+            //有
+            //startService(Intent(this, FloatingWindowService::class.java))
+            Intent(this, PostFloatWindow::class.java).let { mIntent ->
+//                mIntent.putExtra(
+//                    TEAM_FLOAT_WINDOW_TRAM_MATCH_INFO,
+//                    binding.etTextFormatTrans.text.toString()
+//                )
+                startService(mIntent)
+                //bindService(mIntent,serviceConn, Context.BIND_AUTO_CREATE)
+            }
+        } else {
+            // 没权限
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:$packageName")
+            )
+            startActivityForResult(intent, 100)
+        }
     }
 
     fun getRemainsCount(tv: TextView): Int {

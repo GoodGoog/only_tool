@@ -3,9 +3,12 @@ package com.example.more.leisu
 import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
+import com.example.more.accessibility.analyseRecyclerViewSubView
+import com.example.more.accessibility.analyzeNextLevelSubView
 import com.example.more.accessibility.analyzeRecyclerView
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
+import com.example.more.accessibility.findNodesById
 import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.data.IDPostMultiDouble
 import com.example.more.leisu.data.IDPrePostHeader
@@ -72,47 +75,67 @@ class LeisuServiceDispatch {
         PostDataCenter.instance().postArray.let {
             if (it.isEmpty()) {
                 //所有文章发布结束
+                //do something
                 return
             }
             //从第一大类开始发布
-            //跳转对应页面
-            //PostUtils.instance().jumpSubPage(it[0].type, result)
-            //在对应页面中办事
+            //-->!!跳转对应页面
+            PostUtils.instance().jumpSubPage(it[0].type, result)
+//            result.findNodeById(IDPrePostHeader.id_first_level_view_pager).analyzeNextLevelSubView()
+//                .forEach { viewPageNode ->
+//                    //遍历两个ViewPager
+//                    viewPageNode.analyzeNextLevelSubView().let { recyclerViewNode ->
+//                        //遍历单个ViewPage包含的RecyclerView
+//                        recyclerViewNode.
+//                    }
+//                }
+//
+            result.findNodesById(IDPrePostHeader.id_league_lsit_rv).nodes.let { rvNodes ->
+                Log.d(TAG, "onPrePostPage: -------------------------------------------------------------\n")
+                Log.d(TAG, "onPrePostPage: ==================" + rvNodes)
+
+            }
+
+            //-->!!在对应页面中办事
             when (it[0].type) {
                 PostConfigData.ConfigType.SingleBasketball -> {
-                    result.findNodeById(IDPrePostSingleBalls.id_single_league_list_rv).analyzeRecyclerView().let { itemArray ->
-                        Log.d(TAG, "onPrePostPage: 来了一次----")
-                        itemArray?.forEach { it ->
-                            //Log.d(TAG, "SingleBasketball: 但应单篮数据-" + it.nodes)
+                    result.findNodeById(IDPrePostSingleBalls.id_single_league_list_rv)
+                        .analyzeRecyclerView().let { itemArray ->
+                            //Log.d(TAG, "onPrePostPage: 来了一次----")
+                            itemArray?.forEach { it ->
+                                //Log.d(TAG, "SingleBasketball: 但应单篮数据-" + it.nodes)
+                            }
                         }
-                    }
                 }
 
                 PostConfigData.ConfigType.SingleFootball -> {
-                    result.findNodeById(IDPrePostSingleBalls.id_single_league_list_rv).analyzeRecyclerView().let { itemArray ->
-                        Log.d(TAG, "onPrePostPage: 来了一次----")
-                        itemArray?.forEach { it ->
-                            //Log.d(TAG, "SingleFootball: 但应单篮数据-" + it.nodes)
+                    result.findNodeById(IDPrePostSingleBalls.id_single_league_list_rv)
+                        .analyzeRecyclerView().let { itemArray ->
+                            //Log.d(TAG, "onPrePostPage: 来了一次----")
+                            itemArray?.forEach { it ->
+                                //Log.d(TAG, "SingleFootball: 但应单篮数据-" + it.nodes)
+                            }
                         }
-                    }
                 }
 
                 PostConfigData.ConfigType.MultiBasketball -> {
-                    result.findNodeById(IDPrePostMultiBasketBall.id_multi_basket_league_list).analyzeRecyclerView().let { itemArray ->
-                        Log.d(TAG, "onPrePostPage: 来了一次----")
-                        itemArray?.forEach { it ->
-                            //Log.d(TAG, "MultiBasketball: 但应单篮数据-" + it.nodes)
+                    result.findNodeById(IDPrePostMultiBasketBall.id_multi_basket_league_list)
+                        .analyzeRecyclerView().let { itemArray ->
+                            //Log.d(TAG, "onPrePostPage: 来了一次----")
+                            itemArray?.forEach { it ->
+                                //Log.d(TAG, "MultiBasketball: 但应单篮数据-" + it.nodes)
+                            }
                         }
-                    }
                 }
 
                 PostConfigData.ConfigType.MultiFootball -> {
-                    result.findNodeById(IDPrePostMultiFootball.id_multi_foot_league_list).analyzeRecyclerView().let { itemArray ->
-                        Log.d(TAG, "onPrePostPage: 来了一次----")
-                        itemArray?.forEach { it ->
-                            //Log.d(TAG, "MultiFootball: 但应单篮数据-" + it.nodes)
+                    result.findNodeById(IDPrePostMultiFootball.id_multi_foot_league_list)
+                        .analyzeRecyclerView().let { itemArray ->
+                            //Log.d(TAG, "onPrePostPage: 来了一次----")
+                            itemArray?.forEach { it ->
+                                //Log.d(TAG, "MultiFootball: 但应单篮数据-" + it.nodes)
+                            }
                         }
-                    }
                 }
             }
         }

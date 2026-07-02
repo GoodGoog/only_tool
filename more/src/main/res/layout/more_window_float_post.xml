@@ -6,45 +6,46 @@
 
     </data>
 
+    <!--    悬浮窗根布局的宽高 layout_width / layout_height 不生效，
+    悬浮窗真实尺寸由 WindowManager.LayoutParams 的 width/px 决定；
+    XML 只能控制内部子控件，不能限制悬浮窗外层窗口大小。-->
+    <!--    即xml文件中第一个布局无用，其子控件才能决定大小布局！-->
     <FrameLayout
         android:id="@+id/layout_container_touch_window"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
+        <!--        决定布局-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="170dp"
             android:layout_height="200dp"
-            android:background="@drawable/bg_float_window_border_radius"
-            >
+            android:background="@drawable/bg_float_window_border_radius">
 
             <TextView
                 android:id="@+id/tv_sure"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="取消"
                 android:textColor="@android:color/black"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:gravity="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!--            测试点击事件-->
             <TextView
                 android:id="@+id/tv_test_touch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="测试点击事件"
                 android:textColor="@android:color/black"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/tv_sure"
-                />
+                app:layout_constraintTop_toBottomOf="@id/tv_sure" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
