@@ -1,15 +1,24 @@
 pluginManagement {
     repositories {
+        // 插件/AGP下载仓库
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         gradlePluginPortal()
         google()
         mavenCentral()
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
+        // 业务依赖下载仓库（EasyFloat、AndroidX等都走这里）
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
         google()
         mavenCentral()
+        // jitpack第三方库必须写在此处
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "only_tool"

@@ -67,6 +67,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     annotationProcessor 'com.alibaba:arouter-compiler:1.5.2'
 
+    //implementation 作用域隔离，只有 common 内部能使用，more、app 依赖 common 也拿不到这个库。
+    //api = 当前模块能用 + 所有依赖 common 的子模块（more/app/mine）都能使用该第三方库。
+
     //Room数据库
     def room_version = "2.4.3"
 
@@ -93,6 +96,9 @@ dependencies {
     api 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
     // RxAndroid
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+// common/build.gradle
+    api 'com.github.princekin-f:EasyFloat:2.0.4'
 
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     api "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"

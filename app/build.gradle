@@ -51,6 +51,8 @@ dependencies {
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
 
     annotationProcessor 'com.alibaba:arouter-compiler:1.5.2'
+
+
 //
     implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
 
