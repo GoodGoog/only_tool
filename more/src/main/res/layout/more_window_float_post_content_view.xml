@@ -6,37 +6,117 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- 顶部绿色对勾+定位图标 -->
+    <LinearLayout
+        android:id="@+id/layout_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.5"
-        android:background="@drawable/bg_float_window_border_radius">
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:alpha="0.7"
+        android:background="@drawable/bg_float_window_border_radius"
+        >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerInside"
+            android:id="@+id/iv_tips_access"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_access_status_red"
+            />
 
         <TextView
-            android:id="@+id/tv_sure"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="取消"
-            android:textColor="@android:color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/tv_tips_access"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:textColor="@color/post_float_window_tips_color_red"
+            android:text="@string/float_access_tips_green_text"
+            />
 
-        <!--            测试点击事件-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/bottom_line_bg_color"
+            />
+
         <TextView
-            android:id="@+id/tv_test_touch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
-            android:text="测试点击事件"
-            android:textColor="@android:color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/tv_sure" />
+            android:text="正在执行任务:"
+            android:textColor="@color/global_text_color"
+            />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/tv_cur_execute_task"
+            android:gravity="center"
+            android:text="篮球 | 串关 | 免费"
+            android:textColor="@color/global_text_color"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="剩余发布次数:9次"
+            android:id="@+id/tv_task_remains_times"
+            android:gravity="center"
+            android:textColor="@color/global_text_color"
+            />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/bottom_line_bg_color"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="→可视化功能←"
+            android:id="@+id/tv_task_visualize"
+            android:textColor="@color/global_text_color"
+            android:gravity="center"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="→退出窗口←"
+            android:id="@+id/tv_quit_window"
+            android:textColor="@color/global_text_color"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
 </layout>

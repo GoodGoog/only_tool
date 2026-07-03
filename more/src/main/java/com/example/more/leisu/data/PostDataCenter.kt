@@ -24,6 +24,8 @@ class PostDataCenter private constructor() {
     //必须被强引用，否则切换app时可能被销毁
     var postArray = ArrayList<PostConfigData>()
 
+    var isTaskVisualized = true
+
 
     init {
         var defaultTimes = 0
@@ -109,6 +111,10 @@ class PostDataCenter private constructor() {
             }
         }
         return msg
+    }
+
+    fun changeTaskVisualized(){
+        isTaskVisualized = !isTaskVisualized
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.more.psot
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -152,13 +153,14 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             LayoutInflater.from(this),
             R.layout.more_window_float_post, window.decorView as ViewGroup?, false
         ) as MoreWindowFloatPostBinding
-//        mbinding.tvSure.setOnClickListener {
-//            showToast("tvSure")
-//        }
-//        mbinding.tvTestTouch.setOnClickListener {
-//            showToast("tvTestTouch")
-//        }
-
+        mbinding.pvWindowContentView.apply {
+            quitWindowClicked {
+                EasyFloat.dismiss(FLOAT_WINDOW_ALL_APP_TAG)
+            }
+            taskVisualizeClicked {
+                PostDataCenter.instance().changeTaskVisualized()
+            }
+        }
         EasyFloat.with(this)
             .setTag(FLOAT_WINDOW_ALL_APP_TAG)
             .setLayout(mbinding.root){ rootView ->
@@ -177,12 +179,28 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             .show()
 
         LiveEventBus.get<Boolean>(ACCESSIBILITY_SERVICE_START_OR_DESTROY).observe(this){ isStart ->
-            if (isStart) {
-                EasyFloat.show(FLOAT_WINDOW_ALL_APP_TAG)
-            }else{
-                EasyFloat.hide(FLOAT_WINDOW_ALL_APP_TAG)
-            }
+//            if (isStart) {
+//                EasyFloat.show(FLOAT_WINDOW_ALL_APP_TAG)
+//            }else{
+//                EasyFloat.hide(FLOAT_WINDOW_ALL_APP_TAG)
+//            }
+            upDateFloatWindowContent(isStart)
         }
+    }
+
+    /**
+     * 即时更新悬浮窗子控件内容
+     */
+    fun upDateFloatWindowContent(isAccess: Boolean){
+        // 先判断浮窗是否存在
+        if (!EasyFloat.isShow(FLOAT_WINDOW_ALL_APP_TAG)) return
+        // 获取浮窗根布局
+        val root = EasyFloat.getFloatView(FLOAT_WINDOW_ALL_APP_TAG) ?: return
+
+        root.findViewById<PostFloatView>(R.id.pv_window_content_view).apply {
+            setIsStartAccess(isAccess)
+        }
+
     }
 
     fun getRemainsCount(tv: TextView): Int {

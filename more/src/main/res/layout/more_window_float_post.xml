@@ -10,7 +10,6 @@
         android:id="@+id/pv_window_content_view"
         android:layout_width="@dimen/float_window_post_width"
         android:layout_height="@dimen/float_window_post_height"
-        android:alpha="0.5"
-        android:background="@drawable/bg_float_window_border_radius"/>
+        />
 
 </layout>

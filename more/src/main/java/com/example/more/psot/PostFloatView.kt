@@ -3,15 +3,17 @@ package com.example.more.psot
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
+import com.example.more.R
 import com.example.more.databinding.MoreWindowFloatPostContentViewBinding
-import com.example.more.showToast
 
 class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyleAttr: Int) :
-    ConstraintLayout(mContext, attrs, defStyleAttr) {
+    FrameLayout(mContext, attrs, defStyleAttr) {
 
-    private val binding : MoreWindowFloatPostContentViewBinding
+    private val binding: MoreWindowFloatPostContentViewBinding
+
+    var isStart: Boolean = false
 
     companion object {
 
@@ -21,20 +23,47 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
     constructor(mContext: Context, attrs: AttributeSet) : this(mContext, attrs, 0)
 
     init {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
-            com.example.more.R.layout.more_window_float_post_content_view,this,false)
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(mContext),
+            com.example.more.R.layout.more_window_float_post_content_view, this, false
+        )
         addView(binding.root)
         initClick()
     }
 
-    fun initClick(){
-        binding.tvSure.setOnClickListener {
-            mContext.showToast("tvSure")
-        }
-        binding.tvTestTouch.setOnClickListener {
-            mContext.showToast("tvTestTouch")
+    fun initClick() {
+//        binding.tvSure.setOnClickListener {
+//            mContext.showToast("tvSure")
+//        }
+//        binding.tvTestTouch.setOnClickListener {
+//            mContext.showToast("tvTestTouch")
+//        }
+    }
+
+    fun setIsStartAccess(isStart: Boolean){
+        binding.apply {
+            if (isStart) {
+                ivTipsAccess.setImageResource(R.drawable.ic_access_status_green)
+                tvTipsAccess.text = mContext.getText(R.string.float_access_tips_green_text)
+                tvTipsAccess.setTextColor(mContext.getColor(R.color.post_float_window_tips_color_green))
+            } else {
+                ivTipsAccess.setImageResource(R.drawable.ic_access_status_red)
+                tvTipsAccess.text = mContext.getText(R.string.float_access_tips_red_text)
+                tvTipsAccess.setTextColor(mContext.getColor(R.color.post_float_window_tips_color_red))
+            }
         }
     }
 
+    fun quitWindowClicked(quit : () -> Unit){
+        binding.tvQuitWindow.setOnClickListener {
+            quit.invoke()
+        }
+    }
+
+    fun taskVisualizeClicked(quit : () -> Unit){
+        binding.tvTaskVisualize.setOnClickListener {
+            quit.invoke()
+        }
+    }
 
 }
