@@ -1,11 +1,14 @@
 package com.example.more.psot
 
-import android.graphics.Color
+import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.WindowManager
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +19,7 @@ import com.example.common.base.BaseViewModel
 import com.example.common.util.EventBusInfo
 import com.example.more.ACCESSIBILITY_SERVICE_START_OR_DESTROY
 import com.example.more.FLOAT_WINDOW_ALL_APP_TAG
+import com.example.more.FLOAT_WINDOW_HIGH_LIGHT_BOX
 import com.example.more.R
 import com.example.more.accessibility.isAccessibilityEnable
 import com.example.more.accessibility.requireAccessibility
@@ -23,9 +27,9 @@ import com.example.more.accessibility.startApp
 import com.example.more.databinding.MoreActivityTouchBinding
 import com.example.more.databinding.MoreItemInitialConfigBinding
 import com.example.more.databinding.MoreWindowFloatPostBinding
+import com.example.more.databinding.MoreWindowHighLightBoxBinding
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
-import com.example.more.showToast
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.ShowPattern
@@ -132,7 +136,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             else requireAccessibility()
         }
         binding.tvShowAccessWindow.setOnClickListener {
-            showFloatWindow()
+             showFloatWindow()
         }
         binding.tvStartLeisu.setOnClickListener {
             //initWindow()
@@ -142,7 +146,59 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
     }
 
+    fun testWindow() {
+        // 先销毁旧窗口
+        if (EasyFloat.isShow(FLOAT_WINDOW_ALL_APP_TAG)) {
+            EasyFloat.dismiss(FLOAT_WINDOW_ALL_APP_TAG)
+        }
+
+        // 初始化全屏浮窗
+        EasyFloat.with(this)
+            .setTag(FLOAT_WINDOW_HIGH_LIGHT_BOX)
+            //试了几种方法,只有直接输入布局才能实现事件向底层传递
+            .setLayout(R.layout.more_window_high_light_box)
+            .setMatchParent(true, true)
+            .setShowPattern(ShowPattern.ALL_TIME)
+            .setDragEnable(false)
+            .setAnimator(null)
+            .registerCallback {
+                // 浮窗创建完成后，动态修改窗口参数
+                createResult { isCreated, msg, view ->
+                    if (isCreated && view != null) {
+                        view.post {
+                            enableTouchThrough(view)
+                        }
+                    }
+                }
+            }
+            .show()
+    }
+
+    // 开启点击穿透
+    private fun enableTouchThrough(view: View) {
+        try {
+            val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val params = view.layoutParams as WindowManager.LayoutParams
+
+            // 全套穿透标记
+            params.flags = params.flags or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+
+            // Android12+ 穿透必须透明度≤0.8
+            params.alpha = 0.5f
+
+            wm.updateViewLayout(view, params)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     fun showFloatWindow() {
+        testWindow()
         // 先销毁旧窗口
         if (EasyFloat.isShow(FLOAT_WINDOW_ALL_APP_TAG)) {
             EasyFloat.dismiss(FLOAT_WINDOW_ALL_APP_TAG)
@@ -155,15 +211,25 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
         ) as MoreWindowFloatPostBinding
         mbinding.pvWindowContentView.apply {
             quitWindowClicked {
+                EasyFloat.dismiss(FLOAT_WINDOW_HIGH_LIGHT_BOX)
                 EasyFloat.dismiss(FLOAT_WINDOW_ALL_APP_TAG)
             }
             taskVisualizeClicked {
-                PostDataCenter.instance().changeTaskVisualized()
+                PostDataCenter.instance().apply {
+                    changeTaskVisualized()
+                    if (isTaskVisualized) {
+                        //不可视 -> 可视
+                        testWindow()
+                    } else {
+                        //可视 -> 不可视
+                        EasyFloat.dismiss(FLOAT_WINDOW_HIGH_LIGHT_BOX)
+                    }
+                }
             }
         }
         EasyFloat.with(this)
             .setTag(FLOAT_WINDOW_ALL_APP_TAG)
-            .setLayout(mbinding.root){ rootView ->
+            .setLayout(mbinding.root) { rootView ->
 
             }
             // 关键：禁止窗口铺满全屏，空白区域自动穿透点击底层
@@ -178,12 +244,12 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             .setShowPattern(ShowPattern.ALL_TIME)
             .show()
 
-        LiveEventBus.get<Boolean>(ACCESSIBILITY_SERVICE_START_OR_DESTROY).observe(this){ isStart ->
-//            if (isStart) {
-//                EasyFloat.show(FLOAT_WINDOW_ALL_APP_TAG)
-//            }else{
-//                EasyFloat.hide(FLOAT_WINDOW_ALL_APP_TAG)
-//            }
+        LiveEventBus.get<Boolean>(ACCESSIBILITY_SERVICE_START_OR_DESTROY).observe(this) { isStart ->
+            if (isStart) {
+                EasyFloat.show(FLOAT_WINDOW_ALL_APP_TAG)
+            }else{
+                EasyFloat.hide(FLOAT_WINDOW_ALL_APP_TAG)
+            }
             upDateFloatWindowContent(isStart)
         }
     }
@@ -191,7 +257,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
     /**
      * 即时更新悬浮窗子控件内容
      */
-    fun upDateFloatWindowContent(isAccess: Boolean){
+    fun upDateFloatWindowContent(isAccess: Boolean) {
         // 先判断浮窗是否存在
         if (!EasyFloat.isShow(FLOAT_WINDOW_ALL_APP_TAG)) return
         // 获取浮窗根布局
@@ -221,6 +287,9 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
         //销毁
         if (EasyFloat.isShow(FLOAT_WINDOW_ALL_APP_TAG)) {
             EasyFloat.dismiss(FLOAT_WINDOW_ALL_APP_TAG)
+        }
+        if (EasyFloat.isShow(FLOAT_WINDOW_HIGH_LIGHT_BOX)) {
+            EasyFloat.dismiss(FLOAT_WINDOW_HIGH_LIGHT_BOX)
         }
     }
 
