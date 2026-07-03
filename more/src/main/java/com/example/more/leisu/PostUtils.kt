@@ -1,5 +1,6 @@
 package com.example.more.leisu
 
+import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.delayClick
 import com.example.more.accessibility.findNodeByText
@@ -49,7 +50,9 @@ class PostUtils private constructor() {
     }
 
     fun AnalyzeSourceResult.jump(title: String, subTitle : String){
-        findNodeByText(title).delayClick()
-        findNodeByText(subTitle).delayClick()
+        findNodeByText(title).delayClickAndShowHighLight(eventBusTag = EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX){
+            //连续点击时,需要等待上安妮执行完成,避免拥挤
+            findNodeByText(subTitle).delayClickAndShowHighLight(eventBusTag = EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX){}
+        }
     }
 }

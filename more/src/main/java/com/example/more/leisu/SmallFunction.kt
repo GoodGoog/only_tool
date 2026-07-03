@@ -1,17 +1,25 @@
 package com.example.more.leisu
 
 import android.content.Context
-import android.content.res.Resources
+import android.graphics.Rect
+import android.util.Log
 import android.util.TypedValue
-import com.example.more.R
+import com.example.more.accessibility.NodeWrapper
 import com.example.more.accessibility.blankOrThis
+import com.example.more.accessibility.click
+import com.jeremyliao.liveeventbus.LiveEventBus
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import kotlin.random.Random
 
 /**
  * 生成一个随机数
  */
-fun getRandomInt() :Int{
+fun getRandomInt(): Int {
     // [0~99] + 1 → [1~100]
     return Random.nextInt(100) + 1
 }
@@ -19,7 +27,7 @@ fun getRandomInt() :Int{
 /**
  * 提取字符串中数字
  */
-fun String?.filterNumberOrZero(): Int{
+fun String?.filterNumberOrZero(): Int {
     if (this == null) return 0
     if (this.isEmpty()) return 0
     return this.blankOrThis().filter {
@@ -30,7 +38,7 @@ fun String?.filterNumberOrZero(): Int{
 /**
  * 获取当前为周几
  */
-fun getWeekDayByCalendar() : Int {
+fun getWeekDayByCalendar(): Int {
     val cal = Calendar.getInstance()
     val day = cal.get(Calendar.DAY_OF_WEEK)
     return when (day) {
@@ -66,5 +74,35 @@ fun Context.spToPx(spValue: Float): Float {
 /**
  * 获取dimens中的尺寸，并 dp -> px]
  */
-fun Context.getPxFromDimens(resourceId : Int) = dpToPx(resources.getDimensionPixelSize(resourceId).toFloat())
+fun Context.getPxFromDimens(resourceId: Int) =
+    dpToPx(resources.getDimensionPixelSize(resourceId).toFloat())
 
+/**
+ * 为避免连续模拟点击过快，影响数据显示,故在延时实现点击
+ * 点击时给被点击区域实现高光
+ */
+@OptIn(DelicateCoroutinesApi::class)
+fun NodeWrapper?.delayClickAndShowHighLight(
+    delayTime: Long = 1000,
+    eventBusTag: String,
+    doAfterEnd: () -> Unit
+) {
+
+    Log.d("测试高光中", "delayClickAndPostEvent: ")
+    this?.bounds?.let {
+        LiveEventBus.get<Rect?>(eventBusTag).post(it)
+    }
+    GlobalScope.launch(Dispatchers.IO) {
+        //协程非阻塞休眠，不用sleep
+        //避免系统检测，让间隔时间浮动
+        delay(delayTime + Random.nextInt(50))
+        click()
+        //LiveEventBus.get<Rect?>(eventBusTag).post(null)
+        //本次事件执行完毕之后
+        doAfterEnd.invoke()
+    }
+}
+
+fun Rect.toNewString(): String {
+    return "Rect($left, $top , $right, $bottom)"
+}

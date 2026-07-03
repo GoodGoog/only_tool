@@ -1,6 +1,7 @@
 package com.example.more.leisu
 
 import android.util.Log
+import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.analyseRecyclerViewSubView
@@ -78,6 +79,9 @@ class LeisuServiceDispatch {
                 //do something
                 return
             }
+            Log.d(TAG, "====onPrePostPage: ")
+            if (wrapper.event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ) return
+            Log.d(TAG, "====onPrePostPage: 来了马")
             //从第一大类开始发布
             //-->!!跳转对应页面
             PostUtils.instance().jumpSubPage(it[0].type, result)

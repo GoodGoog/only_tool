@@ -1,14 +1,15 @@
 package com.example.more.psot
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowManager
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +18,7 @@ import com.example.common.base.BaseActivity
 import com.example.common.base.BaseAdapter
 import com.example.common.base.BaseViewModel
 import com.example.common.util.EventBusInfo
-import com.example.more.ACCESSIBILITY_SERVICE_START_OR_DESTROY
+import com.example.more.EventBusTag
 import com.example.more.FLOAT_WINDOW_ALL_APP_TAG
 import com.example.more.FLOAT_WINDOW_HIGH_LIGHT_BOX
 import com.example.more.R
@@ -27,9 +28,9 @@ import com.example.more.accessibility.startApp
 import com.example.more.databinding.MoreActivityTouchBinding
 import com.example.more.databinding.MoreItemInitialConfigBinding
 import com.example.more.databinding.MoreWindowFloatPostBinding
-import com.example.more.databinding.MoreWindowHighLightBoxBinding
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
+import com.example.more.leisu.toNewString
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.ShowPattern
@@ -131,12 +132,23 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             .observe(this) {
 
             }
+//        LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX)
+//            .observe(this) { rect ->
+//                //点击时的高光区域
+//                rect?.let {
+//                    //不为空
+//                    Log.d(TAG, "initListener: rect ==" + rect)
+//                    return@observe
+//                }
+//                //为空
+//                Log.d(TAG, "initListener: rect ==空")
+//            }
         binding.tvIsEnable.setOnClickListener {
             if (isAccessibilityEnable) showToast("无障碍服务已开启")
             else requireAccessibility()
         }
         binding.tvShowAccessWindow.setOnClickListener {
-             showFloatWindow()
+            showTaskWindow()
         }
         binding.tvStartLeisu.setOnClickListener {
             //initWindow()
@@ -146,7 +158,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
     }
 
-    fun testWindow() {
+    fun showHighLight() {
         // 先销毁旧窗口
         if (EasyFloat.isShow(FLOAT_WINDOW_ALL_APP_TAG)) {
             EasyFloat.dismiss(FLOAT_WINDOW_ALL_APP_TAG)
@@ -163,10 +175,28 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             .setAnimator(null)
             .registerCallback {
                 // 浮窗创建完成后，动态修改窗口参数
-                createResult { isCreated, msg, view ->
-                    if (isCreated && view != null) {
-                        view.post {
-                            enableTouchThrough(view)
+                createResult { isCreated, msg, windowRootView ->
+                    if (isCreated && windowRootView != null) {
+                        windowRootView.post {
+                            enableTouchThrough(windowRootView)
+                            // 2. 获取自定义方框视图并全局持有
+                            val hlv: HighLightView =
+                                windowRootView.findViewById(R.id.hv_high_light_box)
+                            //添加监听，开始进行点击事件时，传来被点击区域的Rect
+                            LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX)
+                                .observe(this@PostActivity) { rect ->
+                                    //点击时的高光区域
+                                    rect?.let { cRect ->
+                                        Log.d(TAG, "initListener: 打印自己的rect试试" + Rect(1,1,200,200).toNewString())
+                                        //不为空
+                                        Log.d(TAG, "initListener: rect ==" + cRect.toNewString())
+                                        hlv.setBackgroundColor(Color.BLUE)
+                                        hlv.setTargetRect(rect)
+                                        return@observe
+                                    }
+                                    //为空
+                                    Log.d(TAG, "initListener: rect ==空")
+                                }
                         }
                     }
                 }
@@ -197,8 +227,8 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
         }
     }
 
-    fun showFloatWindow() {
-        testWindow()
+    fun showTaskWindow() {
+        showHighLight()
         // 先销毁旧窗口
         if (EasyFloat.isShow(FLOAT_WINDOW_ALL_APP_TAG)) {
             EasyFloat.dismiss(FLOAT_WINDOW_ALL_APP_TAG)
@@ -219,7 +249,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
                     changeTaskVisualized()
                     if (isTaskVisualized) {
                         //不可视 -> 可视
-                        testWindow()
+                        showHighLight()
                     } else {
                         //可视 -> 不可视
                         EasyFloat.dismiss(FLOAT_WINDOW_HIGH_LIGHT_BOX)
@@ -244,14 +274,15 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             .setShowPattern(ShowPattern.ALL_TIME)
             .show()
 
-        LiveEventBus.get<Boolean>(ACCESSIBILITY_SERVICE_START_OR_DESTROY).observe(this) { isStart ->
-            if (isStart) {
-                EasyFloat.show(FLOAT_WINDOW_ALL_APP_TAG)
-            }else{
-                EasyFloat.hide(FLOAT_WINDOW_ALL_APP_TAG)
+        LiveEventBus.get<Boolean>(EventBusTag.ACCESSIBILITY_SERVICE_START_OR_DESTROY)
+            .observe(this) { isStart ->
+                if (isStart) {
+                    EasyFloat.show(FLOAT_WINDOW_ALL_APP_TAG)
+                } else {
+                    EasyFloat.hide(FLOAT_WINDOW_ALL_APP_TAG)
+                }
+                upDateFloatWindowContent(isStart)
             }
-            upDateFloatWindowContent(isStart)
-        }
     }
 
     /**
