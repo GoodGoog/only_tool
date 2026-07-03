@@ -7,6 +7,7 @@ package com.example.more
 class EasyFloatTag {
     companion object {
 
+        //操作信息窗口
         const val FLOAT_WINDOW_ALL_APP_TAG = "FLOAT_WINDOW_ALL_APP_TAG"
 
         //全屏高光提示窗口

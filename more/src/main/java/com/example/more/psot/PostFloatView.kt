@@ -28,16 +28,7 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
             com.example.more.R.layout.more_window_float_post_content_view, this, false
         )
         addView(binding.root)
-        initClick()
-    }
 
-    fun initClick() {
-//        binding.tvSure.setOnClickListener {
-//            mContext.showToast("tvSure")
-//        }
-//        binding.tvTestTouch.setOnClickListener {
-//            mContext.showToast("tvTestTouch")
-//        }
     }
 
     fun setIsStartAccess(isStart: Boolean){
@@ -65,5 +56,4 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
             quit.invoke()
         }
     }
-
 }

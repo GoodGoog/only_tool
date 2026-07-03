@@ -1,7 +1,6 @@
 package com.example.more.psot
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Rect
 import android.os.Handler
 import android.os.Looper
@@ -15,14 +14,13 @@ import androidx.databinding.DataBindingUtil
 import com.example.more.EasyFloatTag
 import com.example.more.R
 import com.example.more.databinding.MoreWindowFloatPostBinding
-import com.example.more.leisu.data.PostDataCenter
 import com.example.more.psot.PostActivity.Companion.TAG
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.ShowPattern
 import com.lzf.easyfloat.enums.SidePattern
 import com.lzf.easyfloat.utils.DisplayUtils.getStatusBarHeight
 
-class FloatUtils private constructor(){
+class FloatUtils private constructor() {
     companion object {
         private var instance: FloatUtils? = null
 
@@ -91,20 +89,15 @@ class FloatUtils private constructor(){
         ) as MoreWindowFloatPostBinding
         mbinding.pvWindowContentView.apply {
             quitWindowClicked {
-                EasyFloat.dismiss(EasyFloatTag.FLOAT_WINDOW_HIGH_LIGHT_BOX)
-                EasyFloat.dismiss(EasyFloatTag.FLOAT_WINDOW_ALL_APP_TAG)
+                instance().destroyAllLeisuWindow()
             }
             taskVisualizeClicked {
-                PostDataCenter.instance().apply {
-                    changeTaskVisualized()
-                    if (isTaskVisualized) {
-                        //不可视 -> 可视
-                        //showHighLightWindow()
-                    } else {
-                        //可视 -> 不可视
-                        //EasyFloat.dismiss(FLOAT_WINDOW_HIGH_LIGHT_BOX)
+                EasyFloat.getFloatView(EasyFloatTag.FLOAT_WINDOW_HIGH_LIGHT_BOX)
+                    ?.let { rootWindowView ->
+                        val hlv: HighLightView =
+                            rootWindowView.findViewById(R.id.hv_high_light_box)
+                        hlv.showOrHideWindow(false)
                     }
-                }
             }
         }
         EasyFloat.with(context)
@@ -167,7 +160,6 @@ class FloatUtils private constructor(){
             //点击时的高光区域
             if (rect != null) {
                 //不为空
-                hlv.setBackgroundColor(Color.BLUE)
                 hlv.setTargetRect(rect)
             } else {
                 //为空
@@ -226,7 +218,7 @@ class FloatUtils private constructor(){
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 
             // Android12+ 穿透必须透明度≤0.8
-            params.alpha = 0.5f
+            //params.alpha = 0.5f
 
             wm.updateViewLayout(view, params)
         } catch (e: Exception) {

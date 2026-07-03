@@ -9,7 +9,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/hv_high_light_box"
-        >
-
-    </com.example.more.psot.HighLightView>
+        />
 </layout>

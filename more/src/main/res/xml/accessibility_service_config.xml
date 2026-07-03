@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:packageNames="com.android.automeng, com.ss.android.ugc.aweme,com.tencent.mm,com.leisu.sports"
-    android:accessibilityEventTypes="typeViewClicked|typeWindowStateChanged|typeViewScrolled|typeWindowContentChanged"
+    android:accessibilityEventTypes="typeViewClicked|typeWindowStateChanged|typeViewScrolled"
     android:accessibilityFlags="flagReportViewIds"
     android:accessibilityFeedbackType="feedbackSpoken"
     android:notificationTimeout="200"
