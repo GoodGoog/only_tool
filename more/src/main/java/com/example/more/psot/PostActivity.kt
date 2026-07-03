@@ -35,6 +35,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.ShowPattern
 import com.lzf.easyfloat.enums.SidePattern
+import com.lzf.easyfloat.utils.DisplayUtils.getStatusBarHeight
 
 
 class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
@@ -179,6 +180,31 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
                     if (isCreated && windowRootView != null) {
                         windowRootView.post {
                             enableTouchThrough(windowRootView)
+
+                            val wlp = windowRootView.layoutParams as WindowManager.LayoutParams
+                            val statusBarH = getStatusBarHeight(this@PostActivity)
+                            val dm = resources.displayMetrics
+                            val screenFullHeight = dm.heightPixels + statusBarH
+
+                            // 1. 重置坐标原点，不向上偏移y=0
+                            wlp.y = 0
+                            // 2. 核心Flag组合：必须同时保留NO_LIMITS + LAYOUT_IN_SCREEN
+                            wlp.flags = wlp.flags or
+                                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+                                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                                    WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS or
+                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                            // 移除冲突的FLAG_FULLSCREEN
+                            wlp.flags = wlp.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN.inv()
+
+                            // 3. 宽度=屏幕宽，高度=屏幕高度+状态栏高度（底部不会裁切）
+                            wlp.width = dm.widthPixels
+                            wlp.height = screenFullHeight
+
+                            // 刷新窗口参数生效
+                            val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                            wm.updateViewLayout(windowRootView, wlp)
+
                             // 2. 获取自定义方框视图并全局持有
                             val hlv: HighLightView =
                                 windowRootView.findViewById(R.id.hv_high_light_box)
