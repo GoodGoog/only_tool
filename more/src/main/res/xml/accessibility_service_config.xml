@@ -29,4 +29,6 @@
 <!--    TYPE_VIEW_TEXT_CHANGED：当视图中的文本内容发生变化时触发，例如用户输入文本。-->
 <!--    TYPE_NOTIFICATION_STATE_CHANGED：当通知栏状态发生变化时触发，例如收到新通知。-->
 <!--    TYPE_TOUCH_INTERACTION_START 和 TYPE_TOUCH_INTERACTION_END：当用户开始或结束触摸交互时触发。-->
+<!--    TYPE_WINDOW_CONTENT_CHANGED 内容改变-->
+
 <!--    typeAllMask 所有事件-->

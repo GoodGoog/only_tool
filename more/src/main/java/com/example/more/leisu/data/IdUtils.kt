@@ -47,11 +47,11 @@ class IDPrePostHeader {
         const val id_league_lsit_rv = "com.leisu.sports:id/recycler_view"
 
         /**
-         *   1个ViewPager2
-         *       2个ViewPger2
-         *          2个RecyclerView
-         *             单个比赛信息列表
+         *       足球              篮球
+         *              单关 串关
+         *    列表1 列表2       列表3   列表4
          *
+         *    别搞错了，所有按钮中一共有两个单关 两个双关
          */
 
     }

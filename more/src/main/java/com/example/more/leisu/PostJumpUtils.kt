@@ -1,7 +1,9 @@
 package com.example.more.leisu
 
+import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.findNodeByText
+import com.example.more.accessibility.findNodesByText
 import com.example.more.leisu.data.PostConfigData
 import kotlin.Unit
 
@@ -56,8 +58,13 @@ class PostJumpUtils private constructor() {
     fun AnalyzeSourceResult.jump(title: String, subTitle : String,doAfterFinish : () -> Unit){
         findNodeByText(title).delayClickAndShowHighLight(){
             //连续点击时,需要等待上安妮执行完成,避免拥挤
-            findNodeByText(subTitle).delayClickAndShowHighLight(){
-                    doAfterFinish.invoke()
+//            findNodeByText(subTitle).delayClickAndShowHighLight(){
+//                    doAfterFinish.invoke()
+//            }
+            findNodesByText(subTitle).nodes.let {
+                it.forEach {
+                    Log.d("AnalyzeSourceResult.jump", "jump: " + it)
+                }
             }
         }
     }

@@ -93,7 +93,7 @@ fun NodeWrapper?.delayClickAndShowHighLight(
         //协程非阻塞休眠，不用sleep
         //避免系统检测，让间隔时间浮动
         delay(delayTime + Random.nextInt(50))
-        click(true)
+        click(gestureClick = true)
         //LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX).post(null)
         //本次事件执行完毕之后
         doAfterEnd.invoke()
