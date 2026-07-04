@@ -30,9 +30,16 @@ class IDPrePostHeader {
         //三1.头部信息
         //顶部 足球/篮球切换 由 HorizontalScrollView实现
         const val id_switch_basketball_football = "com.leisu.sports:id/tab_layout"
+        //足球/篮球的id
+        const val id_tab_basket_and_foot_ball = "com.leisu.sports:id/tv_tab_title"
 
-        //单关串关[TextView]选择
-        const val id_switch_single_or_multi = "com.leisu.sports:id/tv_tab_title"
+        /**
+         *  androidx.viewpager.widget.ViewPager →  → com.leisu.sports:id/view_page →  → Rect(0, 229 - 1080, 2400) → false → true → false
+         *  android.widget.TextView → 单关 →  →  → Rect(34, 237 - 506, 342) → true → false → false
+         *  android.widget.TextView → 串关 →  →  → Rect(540, 229 - 1080, 349) → true → false → false
+         *  androidx.viewpager.widget.ViewPager →  → com.leisu.sports:id/view_page →  → Rect(0, 349 - 1080, 2400) → false → true → false
+         *
+         */
 
         // 竞速/分析切换按钮
         //const val id_league_choose_match_switch = "com.leisu.sports:id/iv_switch"
@@ -44,14 +51,17 @@ class IDPrePostHeader {
 
         const val id_second_level_view_pager = "com.leisu.sports:id/view_page"
 
-        const val id_league_lsit_rv = "com.leisu.sports:id/recycler_view"
+        const val id_league_lsit_recycler_view = "com.leisu.sports:id/recycler_view"
 
         /**
-         *       足球              篮球
-         *              单关 串关
-         *    列表1 列表2       列表3   列表4
-         *
+         *            足球  篮球                                     [用来切换ViewPager]
+         *     单关1 串关1       单关2   串关2
+         *     列表1 列表2       列表3   列表4
          *    别搞错了，所有按钮中一共有两个单关 两个双关
+         *
+         *    第一层ViewPager包含  单关1和串关1 + 列表1和列表2所在的第二层ViewPager
+         *    同上,单关2和串关2 + 列表3和列表4所在在的第二层ViewPager，皆在同一层
+         *    故，共有分别有2个单关，2个串关按钮，共四个含有比赛列表的RecyclerView
          */
 
     }

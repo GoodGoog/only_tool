@@ -81,14 +81,16 @@ class PrePostDispatch {
             }
 
             AccessibilityEvent.TYPE_VIEW_CLICKED ->{
+                //如果只在足球页面，且不曾点开篮球页面，则只能找到2个单关+串关按钮，如果足球篮球页面都打开过，则能找到四个串关+单关按钮！！！！！！
                 // wrapper.event.source获取的时发生点击事件控件的 父视图 节点
-                Log.d(TAG, "dispatchTask: TYPE_VIEW_CLICKED" )
+
+                //Log.d(TAG, "dispatchTask: TYPE_VIEW_CLICKED"+ result.nodes )
                 wrapper.event.source.let { rootNode ->
-                    result.findNodesByExpression {
+                    val t = result.findNodesByExpression {
                         it.text == "单关" || it.text == "串关"
-                    }.nodes.forEach {
-                        Log.d(TAG, "dispatchTask: 点击事件" + it)
-                    }
+                    }.nodes
+
+                    Log.d(TAG, "dispatchTask: size===" + t.size)
                 }
 
             }
