@@ -1,4 +1,4 @@
-package com.example.more.leisu.handle
+package com.example.more.leisu.post_detail
 
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult

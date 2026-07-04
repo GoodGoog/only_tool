@@ -34,7 +34,7 @@
             android:layout_marginTop="5dp"
             android:layout_gravity="center"
             android:textColor="@color/post_float_window_tips_color_red"
-            android:text="@string/float_access_tips_green_text"
+            android:text="@string/float_access_tips_red_text"
             />
 
         <View

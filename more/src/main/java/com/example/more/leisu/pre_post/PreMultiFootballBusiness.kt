@@ -1,0 +1,31 @@
+package com.example.more.leisu.pre_post
+
+import com.example.more.accessibility.AnalyzeSourceResult
+import com.example.more.accessibility.EventWrapper
+
+class PreMultiFootballBusiness {
+    companion object {
+
+        private var instance: PreMultiFootballBusiness? = null
+
+        // synchronized 保证多线程安全
+        @Synchronized
+        fun instance(): PreMultiFootballBusiness {
+            if (instance == null) {
+                instance = PreMultiFootballBusiness()
+            }
+            return instance!!
+        }
+
+        const val TAG = "PreMultiFootballBusiness"
+    }
+
+    /**
+     * 来这里的只有
+     */
+    fun  onWindowStatusChange(eventWrapper: EventWrapper,result: AnalyzeSourceResult) {
+
+        //result.findNodeById(id_post_submit_button).click()
+
+    }
+}

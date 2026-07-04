@@ -69,6 +69,9 @@ fun sleep(millis: Long) = Thread.sleep(millis)
 
 /**
  * 结点操作快速调用
+ * gestureClick不会触发TYPE_VIEW_CLICKED
+ * performAction会触发TYPE_VIEW_CLICKED , 倒是节点信息更新，而如果和连续两次延时点击，第一次点击后刷新节点信息，
+ *        那么第二次延时点击就会报错
  * */
 // 结点点击，现在很多APP屏蔽了结点点击，默认采用手势模拟
 fun NodeWrapper?.click(gestureClick: Boolean = true, duration: Long = 200L) {
@@ -122,12 +125,12 @@ fun NodeWrapper?.click(gestureClick: Boolean = true, duration: Long = 200L) {
  * 为避免连续模拟点击过快，影响数据显示,故在延时实现点击
  */
 @OptIn(DelicateCoroutinesApi::class)
-fun NodeWrapper?.delayClick(delayTime: Long = 1500){
+fun NodeWrapper?.delayClick(gestureClick: Boolean = true,delayTime: Long = 1500){
     GlobalScope.launch(Dispatchers.IO) {
         //协程非阻塞休眠，不用sleep
         //避免系统检测，让间隔时间浮动
         delay(delayTime + Random.nextInt(50))
-        click()
+        click(gestureClick)
     }
 }
 

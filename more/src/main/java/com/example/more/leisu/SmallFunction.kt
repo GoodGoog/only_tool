@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.util.Log
 import android.util.TypedValue
+import com.example.more.EventBusTag
 import com.example.more.accessibility.NodeWrapper
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.click
@@ -80,24 +81,20 @@ fun Context.getPxFromDimens(resourceId: Int) =
 /**
  * 为避免连续模拟点击过快，影响数据显示,故在延时实现点击
  * 点击时给被点击区域实现高光
+ * 需要手势点击，不触发TYPE_VIEW_CLICKED
  */
 @OptIn(DelicateCoroutinesApi::class)
 fun NodeWrapper?.delayClickAndShowHighLight(
-    delayTime: Long = 1000,
-    eventBusTag: String,
+    delayTime: Long =500,
     doAfterEnd: () -> Unit
 ) {
-
-    Log.d("测试高光中", "delayClickAndPostEvent: ")
-    this?.bounds?.let {
-        LiveEventBus.get<Rect?>(eventBusTag).post(it)
-    }
+    LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX).post(this?.bounds)
     GlobalScope.launch(Dispatchers.IO) {
         //协程非阻塞休眠，不用sleep
         //避免系统检测，让间隔时间浮动
         delay(delayTime + Random.nextInt(50))
-        click()
-        //LiveEventBus.get<Rect?>(eventBusTag).post(null)
+        click(true)
+        //LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX).post(null)
         //本次事件执行完毕之后
         doAfterEnd.invoke()
     }

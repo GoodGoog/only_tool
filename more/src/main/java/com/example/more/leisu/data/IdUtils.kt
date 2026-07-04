@@ -11,6 +11,10 @@ const val id_layout_author_container = "com.leisu.sports:id/ll_predictor_layou"
 //首页 - 底部|我的按钮 id
 const val id_main_page_tab_mine = "com.leisu.sports:id/title"
 
+//我的 - 专家号 - 专家主页标题
+//android.widget.TextView → 专家主页 → com.leisu.sports:id/toolbar_title
+const val id_expert_home_page_title = "com.leisu.sports:id/toolbar_title"
+
 
 //发布页的上一页，赛事列表 RecyclerView
 const val id_post_entry_league_list = "com.leisu.sports:id/recycler_view"

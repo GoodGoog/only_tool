@@ -26,7 +26,6 @@ class PostDataCenter private constructor() {
 
     var isTaskVisualized = true
 
-
     init {
         var defaultTimes = 0
         val date = getWeekDayByCalendar()
@@ -85,6 +84,28 @@ class PostDataCenter private constructor() {
                 if (it.postTimes - 1 == 0) postArray.removeAt(index)
                 else postArray[index].postTimes -= 1
             }
+        }
+    }
+
+//    //待发布队列中删除当前正在发布的信息
+//    fun deleteCurPostingConfigData(postData: PostConfigData){
+//        postArray.forEachIndexed { index, it ->
+//            if (it.type == postData.type) {
+//                postArray.removeAt(index)
+//            }
+//        }
+//    }
+//
+    //获取当前正在发布的信息
+    fun getCurePostingData(): PostConfigData?{
+        postArray[0].let {
+            if (it.postTimes == 0){
+                //已发布此类型所有次数
+                //从任务队列中移除
+                postArray.removeAt(0)
+                return null
+            }
+            return postArray[0]
         }
     }
 

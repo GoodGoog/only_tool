@@ -1,4 +1,4 @@
-package com.example.more.leisu.handle
+package com.example.more.leisu.post_detail
 
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
@@ -85,7 +85,7 @@ class PostFreeSingleBusiness(val eventWrapper: EventWrapper, val result: Analyze
             else -> {}
         }
         //点击提交
-        result.findNodeById(IDPostDoubleSingle.Companion.id_single_post_submit_button).delayClick()
+        result.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).delayClick()
 
     }
 
