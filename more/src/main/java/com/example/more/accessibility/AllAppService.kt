@@ -26,7 +26,6 @@ class AllAppService : FastAccessibilityService(), LifecycleOwner {
             //当前所在app
             when (it.packageName) {
                 app_packageName_lei_su -> {
-                    LeisuServiceCenter.instance().result = result
                     LeisuServiceDispatch.instance().taskDispatch(it,result)
                 }
 

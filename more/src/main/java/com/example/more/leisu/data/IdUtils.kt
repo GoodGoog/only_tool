@@ -15,6 +15,12 @@ const val id_main_page_tab_mine = "com.leisu.sports:id/title"
 //android.widget.TextView → 专家主页 → com.leisu.sports:id/toolbar_title
 const val id_expert_home_page_title = "com.leisu.sports:id/toolbar_title"
 
+//我的 -专家主页 -编辑按钮
+const val id_expert_home_page_edit = "com.leisu.sports:id/btn_edt "
+
+//我的 -专家主页 -分享按钮
+const val id_expert_home_page_share = "com.leisu.sports:id/iv_share"
+
 
 //发布页的上一页，赛事列表 RecyclerView
 const val id_post_entry_league_list = "com.leisu.sports:id/recycler_view"

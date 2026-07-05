@@ -1,13 +1,17 @@
 package com.example.more.leisu
 
+import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
+import com.example.more.accessibility.LeisuServiceCenter
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.findNodesByExpression
 import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.data.IDPostMultiDouble
 import com.example.more.leisu.data.IDPrePostHeader
+import com.example.more.leisu.data.id_expert_home_page_edit
+import com.example.more.leisu.data.id_expert_home_page_share
 import com.example.more.leisu.data.id_expert_home_page_title
 import com.example.more.leisu.post_detail.PostFreeSingleBusiness
 import com.example.more.leisu.pre_post.PrePostDispatch
@@ -34,14 +38,15 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
      */
     //业务分发
     fun taskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        if (isInExpertHomePage(result)){
+        if (isInExpertHomePage(result)) {
             //在专家列表页
             //设置下一次进入比赛选择页 会自动跳转 tab
             PreJumpUtils.instance().hasJumpExpertHomeAction = true
+            Log.d(TAG, "taskDispatch: !!!!!!!!!在专家列表页")
         }
         if (isInPrePostPage(result)) {
             //在比赛信息选择页
-            PrePostDispatch.instance().dispatchTask(wrapper,result)
+            PrePostDispatch.instance().dispatchTask(wrapper, result)
         }
         if (isInPostSinglePage(result)) {
             //在单关发布页
@@ -63,7 +68,7 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         result.findNodesByExpression {
             it.id == IDPrePostHeader.id_filter_league_info || it.id == IDPrePostHeader.id_switch_speed || it.id == IDPrePostHeader.id_back
         }.nodes.let {
-            return it.size == 3
+            return it.size >= 3
         }
     }
 
@@ -90,11 +95,13 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
     /**
      * 在专家列表页面
      */
-    fun isInExpertHomePage(result: AnalyzeSourceResult): Boolean{
-        result.findNodeById(id_expert_home_page_title)?.let {
-            if (it.text == "专家主页") return true
-            return@let
+    fun isInExpertHomePage(result: AnalyzeSourceResult): Boolean {
+        result.findNodesByExpression {
+            it.text == "专家主页" || it.text == "编辑" || it.text == "达人分" || it.text == "总收益"
+        }.nodes.let {
+            return it.size >= 4
         }
+
         return false
     }
 
