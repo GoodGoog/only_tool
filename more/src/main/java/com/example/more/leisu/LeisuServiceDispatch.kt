@@ -1,5 +1,6 @@
 package com.example.more.leisu
 
+import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.blankOrThis
@@ -12,7 +13,7 @@ import com.example.more.leisu.data.id_expert_home_page_title
 import com.example.more.leisu.post_detail.PostFreeSingleBusiness
 import com.example.more.leisu.pre_post.PrePostDispatch
 
-class LeisuServiceDispatch private constructor(){
+class LeisuServiceDispatch private constructor() : BaseLifecycleOwner() {
     companion object {
 
         private var instance: LeisuServiceDispatch? = null
@@ -97,6 +98,14 @@ class LeisuServiceDispatch private constructor(){
             return@let
         }
         return false
+    }
+
+    override fun onStart() {
+        PrePostDispatch.instance().start()
+    }
+
+    override fun onDestroy() {
+        PrePostDispatch.instance().destroy()
     }
 
 }

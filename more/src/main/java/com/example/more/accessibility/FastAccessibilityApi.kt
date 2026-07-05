@@ -70,9 +70,13 @@ fun sleep(millis: Long) = Thread.sleep(millis)
 
 /**
  * 结点操作快速调用
- * gestureClick不会触发TYPE_VIEW_CLICKED
- * performAction会触发TYPE_VIEW_CLICKED , 倒是节点信息更新，而如果和连续两次延时点击，第一次点击后刷新节点信息，
- *        那么第二次延时点击就会报错
+ * 控件被设置clickable = false,故点击控件时，其本身不响应事件，并将事件传递给了父视图
+ * 只要最终有控件响应了点击事件，最终都会触发TYPE_VIEW_CLICKED，只不过此时event.source[实际点击事件响应控件]为父视图容器
+ *
+ * 若控件被设置clickable = true,故点击控件时，本身响应事件，并不会把事件传递给了父视图
+ * 则在TYPE_VIEW_CLICKED中，event.source为此控件
+ *
+ * 不论手势点击还是perAction，最终都会触发TYPE_VIEW_CLICKED
  * */
 // 结点点击，现在很多APP屏蔽了结点点击，默认采用手势模拟
 fun NodeWrapper?.click(gestureClick: Boolean = true, duration: Long = 200L) {
@@ -154,7 +158,7 @@ fun NodeWrapper?.delayClick(gestureClick: Boolean = true, delayTime: Long = 1500
     GlobalScope.launch(Dispatchers.IO) {
         //协程非阻塞休眠，不用sleep
         //避免系统检测，让间隔时间浮动
-        delay(delayTime + Random.nextInt(50))
+        delay(delayTime - Random.nextInt(50))
         click(gestureClick)
     }
 }

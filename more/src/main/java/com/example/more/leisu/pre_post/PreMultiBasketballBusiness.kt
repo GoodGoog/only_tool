@@ -2,8 +2,9 @@ package com.example.more.leisu.pre_post
 
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
+import com.example.more.leisu.BaseLifecycleOwner
 
-class PreMultiBasketballBusiness private constructor(){
+class PreMultiBasketballBusiness private constructor(): BaseLifecycleOwner(){
     companion object {
 
         private var instance: PreMultiBasketballBusiness? = null
@@ -28,4 +29,13 @@ class PreMultiBasketballBusiness private constructor(){
         //result.findNodeById(id_post_submit_button).click()
 
     }
+
+    override fun onStart() {
+
+    }
+
+    override fun onDestroy() {
+
+    }
+
 }

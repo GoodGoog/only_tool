@@ -42,6 +42,7 @@ class AllAppService : FastAccessibilityService(), LifecycleOwner {
         LeisuServiceCenter.instance().isAccessServiceConnect = true
         // 服务连接成功，标记为 ON_START
         lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        LeisuServiceDispatch.instance().start()
     }
 
     override fun onDestroy() {
@@ -49,6 +50,7 @@ class AllAppService : FastAccessibilityService(), LifecycleOwner {
         LiveEventBus.get<Boolean>(EventBusTag.ACCESSIBILITY_SERVICE_START_OR_DESTROY).post(false)
         // 服务销毁，标记为 DESTROYED
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        LeisuServiceDispatch.instance().destroy()
     }
 
 

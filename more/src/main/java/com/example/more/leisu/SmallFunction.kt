@@ -85,8 +85,9 @@ fun Context.getPxFromDimens(resourceId: Int) =
  */
 @OptIn(DelicateCoroutinesApi::class)
 fun NodeWrapper?.delayClickAndShowHighLight(
+    gestureClick : Boolean = true,
     delayTime: Long =1000,
-    doAfterEnd: () -> Unit
+    doAfterEnd: (() -> Unit)? = null
 ) {
     if (this == null) return
     //需要提前判断位置是否合法，可能会有异常地址 Rect(1654, 237 - 1080, 342) | Rect(1080, 229 - 1080, 349)
@@ -95,36 +96,12 @@ fun NodeWrapper?.delayClickAndShowHighLight(
     GlobalScope.launch(Dispatchers.IO) {
         //协程非阻塞休眠，不用sleep
         //避免系统检测，让间隔时间浮动
-        delay(delayTime + Random.nextInt(50))
-        //click(gestureClick = true)
-        click()
-        //LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX).post(null)
+        delay(delayTime - Random.nextInt(50))
+        click(gestureClick)
         //本次事件执行完毕之后
-        doAfterEnd.invoke()
+        doAfterEnd?.invoke()
     }
 }
-
-@OptIn(DelicateCoroutinesApi::class)
-fun Rect?.delayClickAndShowHighLight(
-    delayTime: Long =1000,
-    doAfterEnd: () -> Unit
-) {
-    if (this == null) return
-    //需要提前判断位置是否合法，可能会有异常地址 Rect(1654, 237 - 1080, 342) | Rect(1080, 229 - 1080, 349)
-    if (!isLegal()) return
-    LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX).post(this)
-    GlobalScope.launch(Dispatchers.IO) {
-        //协程非阻塞休眠，不用sleep
-        //避免系统检测，让间隔时间浮动
-        delay(delayTime + Random.nextInt(50))
-        //click(gestureClick = true)
-        click()
-        //LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX).post(null)
-        //本次事件执行完毕之后
-        doAfterEnd.invoke()
-    }
-}
-
 
 fun Rect?.isLegal() : Boolean{
     this?.let {

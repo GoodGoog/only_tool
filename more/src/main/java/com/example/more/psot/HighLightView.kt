@@ -8,6 +8,8 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.RectF
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -25,6 +27,16 @@ class HighLightView @JvmOverloads constructor(
 
     companion object {
         const val TAG = "HighLightView"
+    }
+
+    @get:JvmName("getViewHandler")
+    val handler = Handler(Looper.getMainLooper())
+    // 把延时任务保存成变量
+    val delayTask = Runnable {
+        // 延迟执行代码
+        // 显示时间已足够，清除高光框
+        setTargetRect(Rect(0,0,1,1))
+        invalidate()
     }
 
     var isShowCurWindow = true
@@ -66,8 +78,16 @@ class HighLightView @JvmOverloads constructor(
     }
 
     fun setTargetRect(rect: Rect) {
+        // 需要终止时调用
+        handler.removeCallbacks(delayTask)
+
+        //直接画
         targetRect.set(rect)
         invalidate()
+        //特定时间之后擦除已经画好的框
+        // 提交延时任务
+
+        handler.postDelayed(delayTask, 1000)
     }
 
     fun clearRect() {

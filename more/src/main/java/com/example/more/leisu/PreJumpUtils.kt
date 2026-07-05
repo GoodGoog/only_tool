@@ -8,6 +8,7 @@ import com.example.more.accessibility.NodeWrapper
 import com.example.more.accessibility.findNodeByText
 import com.example.more.accessibility.findNodesByExpression
 import com.example.more.accessibility.findNodesByText
+import com.example.more.accessibility.logD
 import com.example.more.leisu.data.PostConfigData
 import kotlin.Unit
 import kotlin.math.log
@@ -65,7 +66,10 @@ class PreJumpUtils private constructor() {
     }
 
     fun AnalyzeSourceResult.jump(result: AnalyzeSourceResult,title: String, subTitle: String, doAfterFinish: () -> Unit) {
-        findNodeByText(title).delayClickAndShowHighLight() {
+        //篮球/足球控件被设置clickable = → false,故点击蓝球/足球，其本身TextView不响应事件，并将事件传递给了父视图RelativeLayout
+        //只要最终有控件响应了点击事件，最终都会触发TYPE_VIEW_CLICKED，只不过此时event.source[点击事件响应按钮]为篮球/足球的父视图RelativeLayout
+        //不论手势点击还是perAction，最终都会触发TYPE_VIEW_CLICKED
+        findNodeByText(title).delayClickAndShowHighLight(true) {
             result.findNodesByExpression {
                 subTitle == it.text && it.bounds.isLegal()
             }.nodes.let {
@@ -81,7 +85,7 @@ class PreJumpUtils private constructor() {
                     }
                 }
                 aimNode?.let { lastNode ->
-                    lastNode.delayClickAndShowHighLight { }
+                    lastNode.delayClickAndShowHighLight(false) { }
                 }
             }
         }

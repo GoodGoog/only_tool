@@ -1,5 +1,6 @@
 package com.example.more.leisu.pre_post
 
+import android.graphics.Rect
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.EventBusTag
@@ -7,12 +8,14 @@ import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.LeisuServiceCenter
 import com.example.more.accessibility.findNodesByExpression
+import com.example.more.accessibility.transNodeInfoToNodeWrapper
+import com.example.more.leisu.BaseLifecycleOwner
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
 import com.jeremyliao.liveeventbus.LiveEventBus
 
-class PrePostDispatch private constructor(){
+class PrePostDispatch private constructor() : BaseLifecycleOwner() {
     companion object {
 
         private var instance: PrePostDispatch? = null
@@ -34,33 +37,37 @@ class PrePostDispatch private constructor(){
         // 或者用 Application 的 lifecycle
         if (LeisuServiceCenter.instance().isAccessServiceConnect) {
             LiveEventBus.get<Int>(EventBusTag.TEST_PRE_POST_PAGE_SWITCH)
-                .observeForever {
-                    val type = when(it){
+                .observe(this) {
+                    val type = when (it) {
                         1 -> {
                             PostConfigData.ConfigType.SingleFootball
                         }
+
                         2 -> {
                             PostConfigData.ConfigType.MultiFootball
                         }
+
                         3 -> {
                             PostConfigData.ConfigType.SingleBasketball
                         }
+
                         else -> {
                             PostConfigData.ConfigType.MultiBasketball
                         }
                     }
-                    PreJumpUtils.instance().jumpSubPage(type, LeisuServiceCenter.instance().result){
-                        //PostJumpUtils.instance().hasJumpExpertHomeAction = false
-                    }
+                    PreJumpUtils.instance()
+                        .jumpSubPage(type, LeisuServiceCenter.instance().result) {
+                            //PostJumpUtils.instance().hasJumpExpertHomeAction = false
+                        }
 
                 }
         }
     }
 
     fun dispatchTask(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        when(wrapper.event.eventType){
+        when (wrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                PostDataCenter.instance().postArray.let { postArray->
+                PostDataCenter.instance().postArray.let { postArray ->
                     if (postArray.isEmpty()) {
                         //所有文章发布结束
                         //do something
@@ -70,61 +77,84 @@ class PrePostDispatch private constructor(){
                     //UI分配
                     postArray[0].let { configData ->
                         //从专家主页进入比赛选择页，而不是从其他子页面退回赛事选择页，也要执行跳转
-//                        if (PreJumpUtils.instance().hasJumpExpertHomeAction){
-//                            PreJumpUtils.instance().jumpSubPage(configData.type, result){
-//                                PreJumpUtils.instance().hasJumpExpertHomeAction = false
-//                            }
-//                        }
+                        if (PreJumpUtils.instance().hasJumpExpertHomeAction) {
+                            PreJumpUtils.instance().jumpSubPage(configData.type, result) {
+                                PreJumpUtils.instance().hasJumpExpertHomeAction = false
+                            }
+                        }
                     }
 
                     //业务分配
-                    when(PreJumpUtils.instance().curPageType){
+                    when (PreJumpUtils.instance().curPageType) {
                         PostConfigData.ConfigType.SingleBasketball -> {
-                            PreSingleBasketballBusiness.instance().onWindowStatusChange(wrapper,result)
+                            PreSingleBasketballBusiness.instance()
+                                .onWindowStatusChange(wrapper, result)
                         }
 
                         PostConfigData.ConfigType.SingleFootball -> {
-                            PreSingleFootballBusiness.instance().onWindowStatusChange(wrapper,result)
+                            PreSingleFootballBusiness.instance()
+                                .onWindowStatusChange(wrapper, result)
                         }
 
                         PostConfigData.ConfigType.MultiBasketball -> {
-                            PreMultiBasketballBusiness.instance().onWindowStatusChange(wrapper,result)
+                            PreMultiBasketballBusiness.instance()
+                                .onWindowStatusChange(wrapper, result)
                         }
 
                         PostConfigData.ConfigType.MultiFootball -> {
-                            PreMultiFootballBusiness.instance().onWindowStatusChange(wrapper,result)
+                            PreMultiFootballBusiness.instance()
+                                .onWindowStatusChange(wrapper, result)
                         }
                     }
 
                     //测试数据
                     //获取当前的recyclerView信息
-                    Log.d(TAG, "dispatchTask: ==================" + result)
+                    //Log.d(TAG, "dispatchTask: ==================" + result)
                 }
             }
 
-            AccessibilityEvent.TYPE_VIEW_CLICKED ->{
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
                 //如果只在足球页面，且不曾点开篮球页面，则只能找到2个单关+串关按钮，如果足球篮球页面都打开过，则能找到四个串关+单关按钮！！！！！！
                 // wrapper.event.source获取的时发生点击事件控件的 父视图 节点
 
-                //Log.d(TAG, "dispatchTask: TYPE_VIEW_CLICKED"+ result.nodes )
-                wrapper.event.source.let { rootNode ->
-                    val t = result.findNodesByExpression {
-                        it.text == "单关" || it.text == "串关"
-                    }.nodes
-
-                    Log.d(TAG, "dispatchTask: size===" + t.size)
+                Log.d(TAG, "dispatchTask: dispatchTask进入了clicked")
+                // 【核心】同步读取，立刻打印，不丢线程池、不存全局变量
+                val node = wrapper.event.source ?: return
+                try {
+                    Log.d(TAG,"=== 原生事件打印 ===")
+                    Log.d(TAG,"事件时间戳：${wrapper.event.eventTime}")
+                    Log.d(TAG,"节点文本：${node.text}")
+                    Log.d(TAG,"节点ID：${node.viewIdResourceName}")
+                    Log.d(TAG,"节点包名：${node.packageName}")
+                } finally {
+                    // 立刻回收，不持有
+                    node.recycle()
                 }
 
             }
 
             AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
-                Log.d(TAG, "dispatchTask: TYPE_VIEW_SCROLLED---")
+                //Log.d(TAG, "dispatchTask: TYPE_VIEW_SCROLLED---")
             }
 
             else -> {
-                Log.d(TAG, "dispatchTask: else")
+                //Log.d(TAG, "dispatchTask: else")
             }
         }
+    }
+
+    override fun onStart() {
+        PreSingleBasketballBusiness.instance().start()
+        PreSingleFootballBusiness.instance().start()
+        PreMultiBasketballBusiness.instance().start()
+        PreMultiFootballBusiness.instance().start()
+    }
+
+    override fun onDestroy() {
+        PreSingleBasketballBusiness.instance().destroy()
+        PreSingleFootballBusiness.instance().destroy()
+        PreMultiBasketballBusiness.instance().destroy()
+        PreMultiFootballBusiness.instance().destroy()
     }
 
 }

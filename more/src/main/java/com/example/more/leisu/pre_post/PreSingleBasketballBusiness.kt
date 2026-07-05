@@ -5,10 +5,11 @@ import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.analyzeRecyclerView
 import com.example.more.accessibility.findNodeById
+import com.example.more.leisu.BaseLifecycleOwner
 import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.data.IDPrePostSingleBalls
 
-class PreSingleBasketballBusiness private constructor(){
+class PreSingleBasketballBusiness private constructor() : BaseLifecycleOwner(){
 
     companion object {
 
@@ -39,6 +40,14 @@ class PreSingleBasketballBusiness private constructor(){
                 Log.d(TAG, "onWindowStatusChange: ------------------------------------------------------")
             }
         }
+
+    }
+
+    override fun onStart() {
+
+    }
+
+    override fun onDestroy() {
 
     }
 
