@@ -5,11 +5,10 @@ import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.analyzeRecyclerView
 import com.example.more.accessibility.findNodeById
-import com.example.more.leisu.BaseLifecycleOwner
-import com.example.more.leisu.data.IDPostDoubleSingle
+import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.IDPrePostSingleBalls
 
-class PreSingleBasketballBusiness private constructor() : BaseLifecycleOwner(){
+class PreSingleBasketballBusiness private constructor() : BaseLeisuDispatch(){
 
     companion object {
 

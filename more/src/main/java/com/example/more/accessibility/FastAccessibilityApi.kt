@@ -151,6 +151,85 @@ fun Rect?.click(duration: Long = 200L) {
 }
 
 /**
+ * 手势点击并回调结果
+ */
+fun NodeWrapper?.clickGestureWithResult(
+    duration: Long = 200L,
+    clickResult: (Boolean) -> Unit
+) {
+    if (this == null) {
+        //回调点击失败结果
+        clickResult(false)
+        return
+    }
+    bounds?.let {
+        val x = ((it.left + it.right) / 2).toFloat()
+        val y = ((it.top + it.bottom) / 2).toFloat()
+        FastAccessibilityService.Companion.require.dispatchGesture(
+            GestureDescription.Builder().apply {
+                addStroke(
+                    GestureDescription.StrokeDescription(
+                        Path().apply { moveTo(x, y) },
+                        0L,
+                        duration
+                    )
+                )
+            }.build(), object : AccessibilityService.GestureResultCallback() {
+                override fun onCompleted(gestureDescription: GestureDescription?) {
+                    super.onCompleted(gestureDescription)
+                    //这里时异步调用，可能外部事件继续执行了，但是此处结果还没传出去导致报错
+                    // 手势执行完成回调
+                    clickResult(true)
+                    Log.d(TAG, "onCompletedtttttttttt: success" + gestureDescription)
+                }
+
+                override fun onCancelled(gestureDescription: GestureDescription?) {
+                    super.onCancelled(gestureDescription)
+                    //回调点击失败结果
+                    clickResult(false)
+                    Log.d(TAG, "onCompletedtttttttttt: failure" + gestureDescription)
+                }
+
+            }, null
+        )
+    }
+}
+
+/**
+ * performAction点击并回调结果
+ */
+fun NodeWrapper?.clickPerformWithResult(
+    duration: Long = 200L,
+): Boolean {
+    if (this == null) {
+        //点击失败结果
+        return false
+    }
+    var isSuccess = false
+    nodeInfo?.let {
+        var depthCount = 0  // 查找最大深度
+        var tempNode = it
+        while (true) {
+            if (depthCount < 10) {
+                if (tempNode.isClickable) {
+                    if (duration >= 1000L) {
+                        isSuccess = tempNode.performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK)
+                    } else {
+                        isSuccess = tempNode.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                    }
+                    break
+                } else {
+                    tempNode = tempNode.parent
+                    depthCount++
+                }
+            } else break
+        }
+    }
+    return isSuccess
+}
+
+
+/**
  * 为避免连续模拟点击过快，影响数据显示,故在延时实现点击
  */
 @OptIn(DelicateCoroutinesApi::class)

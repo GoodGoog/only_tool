@@ -134,7 +134,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
         }
 
         //添加监听，开始进行点击事件时，传来被点击区域的Rect
-        LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX)
+        LiveEventBus.get<Rect>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX)
             .observe(this) { rect ->
                 //点击时的高光区域
                 FloatUtils.instance().setHighLightRect(rect)

@@ -1,6 +1,5 @@
 package com.example.more.leisu
 
-import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.blankOrThis
@@ -13,7 +12,7 @@ import com.example.more.leisu.data.id_expert_home_page_title
 import com.example.more.leisu.post_detail.PostFreeSingleBusiness
 import com.example.more.leisu.pre_post.PrePostDispatch
 
-class LeisuServiceDispatch private constructor() : BaseLifecycleOwner() {
+class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
     companion object {
 
         private var instance: LeisuServiceDispatch? = null
@@ -25,7 +24,6 @@ class LeisuServiceDispatch private constructor() : BaseLifecycleOwner() {
                 instance = LeisuServiceDispatch()
             }
             return instance!!
-            //return LeisuServiceDispatch()
         }
 
         const val TAG = "LeisuServiceDispatch"

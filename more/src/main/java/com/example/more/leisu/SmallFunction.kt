@@ -2,12 +2,12 @@ package com.example.more.leisu
 
 import android.content.Context
 import android.graphics.Rect
-import android.util.Log
 import android.util.TypedValue
 import com.example.more.EventBusTag
 import com.example.more.accessibility.NodeWrapper
 import com.example.more.accessibility.blankOrThis
-import com.example.more.accessibility.click
+import com.example.more.accessibility.clickGestureWithResult
+import com.example.more.accessibility.clickPerformWithResult
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -85,25 +85,40 @@ fun Context.getPxFromDimens(resourceId: Int) =
  */
 @OptIn(DelicateCoroutinesApi::class)
 fun NodeWrapper?.delayClickAndShowHighLight(
-    gestureClick : Boolean = true,
-    delayTime: Long =1000,
-    doAfterEnd: (() -> Unit)? = null
+    gestureClick: Boolean = true,
+    delayTime: Long = 1000,
+    clickResult: ((Boolean) -> Unit)? = null
 ) {
-    if (this == null) return
+    if (this == null){
+        clickResult?.invoke(false)
+        return
+    }
     //需要提前判断位置是否合法，可能会有异常地址 Rect(1654, 237 - 1080, 342) | Rect(1080, 229 - 1080, 349)
-    if (!bounds.isLegal()) return
-    LiveEventBus.get<Rect?>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX).post(this.bounds)
+    if (!bounds.isLegal()){
+        clickResult?.invoke(false)
+        return
+    }
+    LiveEventBus.get<Rect>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX).post(this.bounds)
     GlobalScope.launch(Dispatchers.IO) {
         //协程非阻塞休眠，不用sleep
         //避免系统检测，让间隔时间浮动
         delay(delayTime - Random.nextInt(50))
-        click(gestureClick)
-        //本次事件执行完毕之后
-        doAfterEnd?.invoke()
+        if (gestureClick) {
+            //手势点击
+            clickGestureWithResult { isSuccess ->
+                clickResult?.invoke(isSuccess)
+            }
+        } else {
+            //perform点击
+            val isSuccess = clickPerformWithResult()
+            clickResult?.invoke(isSuccess)
+        }
     }
 }
 
-fun Rect?.isLegal() : Boolean{
+
+
+fun Rect?.isLegal(): Boolean {
     this?.let {
         return left < right && top < bottom
     }

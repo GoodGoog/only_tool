@@ -2,9 +2,9 @@ package com.example.more.leisu.pre_post
 
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
-import com.example.more.leisu.BaseLifecycleOwner
+import com.example.more.leisu.BaseLeisuDispatch
 
-class PreMultiBasketballBusiness private constructor(): BaseLifecycleOwner(){
+class PreMultiBasketballBusiness private constructor(): BaseLeisuDispatch(){
     companion object {
 
         private var instance: PreMultiBasketballBusiness? = null

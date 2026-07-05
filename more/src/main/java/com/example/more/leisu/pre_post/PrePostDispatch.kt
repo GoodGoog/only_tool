@@ -1,21 +1,18 @@
 package com.example.more.leisu.pre_post
 
-import android.graphics.Rect
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.LeisuServiceCenter
-import com.example.more.accessibility.findNodesByExpression
-import com.example.more.accessibility.transNodeInfoToNodeWrapper
-import com.example.more.leisu.BaseLifecycleOwner
+import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
 import com.jeremyliao.liveeventbus.LiveEventBus
 
-class PrePostDispatch private constructor() : BaseLifecycleOwner() {
+class PrePostDispatch private constructor() : BaseLeisuDispatch() {
     companion object {
 
         private var instance: PrePostDispatch? = null

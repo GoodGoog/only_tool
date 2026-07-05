@@ -157,19 +157,13 @@ class FloatUtils private constructor() {
     /**
      * 外部传来了需要高光的按钮Rect
      */
-    fun setHighLightRect(rect: Rect?) {
+    fun setHighLightRect(rect: Rect) {
         EasyFloat.getFloatView(EasyFloatTag.FLOAT_WINDOW_HIGH_LIGHT_BOX)?.let { rootWindowView ->
             // 2. 获取自定义方框视图并全局持有
             val hlv: HighLightView =
                 rootWindowView.findViewById(R.id.hv_high_light_box)
             //点击时的高光区域
-            if (rect != null) {
-                //不为空
-                hlv.setTargetRect(rect)
-            } else {
-                //为空
-                Log.d(TAG, "initListener: rect ==空")
-            }
+            hlv.setTargetRect(rect)
         }
     }
 

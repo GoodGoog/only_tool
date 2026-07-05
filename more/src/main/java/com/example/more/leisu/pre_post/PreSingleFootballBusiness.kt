@@ -1,13 +1,10 @@
 package com.example.more.leisu.pre_post
 
-import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
-import com.example.more.accessibility.logD
-import com.example.more.leisu.BaseLifecycleOwner
-import kotlin.math.log
+import com.example.more.leisu.BaseLeisuDispatch
 
-class PreSingleFootballBusiness private constructor() : BaseLifecycleOwner(){
+class PreSingleFootballBusiness private constructor() : BaseLeisuDispatch(){
     companion object {
 
         private var instance: PreSingleFootballBusiness? = null
