@@ -3,7 +3,7 @@ package com.example.more.leisu.pre_post
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 
-class PreSingleFootballBusiness {
+class PreSingleFootballBusiness private constructor(){
     companion object {
 
         private var instance: PreSingleFootballBusiness? = null

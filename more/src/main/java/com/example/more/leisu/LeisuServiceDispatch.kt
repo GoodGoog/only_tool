@@ -12,7 +12,7 @@ import com.example.more.leisu.data.id_expert_home_page_title
 import com.example.more.leisu.post_detail.PostFreeSingleBusiness
 import com.example.more.leisu.pre_post.PrePostDispatch
 
-class LeisuServiceDispatch {
+class LeisuServiceDispatch private constructor(){
     companion object {
 
         private var instance: LeisuServiceDispatch? = null

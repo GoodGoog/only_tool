@@ -4,7 +4,7 @@ import android.graphics.Path
 import android.view.accessibility.AccessibilityEvent
 import kotlin.math.abs
 
-class ScrollUtils {
+class ScrollUtils private constructor(){
     companion object {
 
         private var instance: ScrollUtils? = null

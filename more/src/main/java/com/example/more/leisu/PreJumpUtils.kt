@@ -47,32 +47,32 @@ class PreJumpUtils private constructor() {
         curPageType = type
         when (type) {
             PostConfigData.ConfigType.SingleBasketball -> {
-                result.jump(TAB_TITLE_BASKETBALL, SUB_TAB_TITLE_SINGLE, doAfterFinish)
+                result.jump(result,TAB_TITLE_BASKETBALL, SUB_TAB_TITLE_SINGLE, doAfterFinish)
             }
 
             PostConfigData.ConfigType.SingleFootball -> {
-                result.jump(TAB_TITLE_FOOTBALL, SUB_TAB_TITLE_SINGLE, doAfterFinish)
+                result.jump(result,TAB_TITLE_FOOTBALL, SUB_TAB_TITLE_SINGLE, doAfterFinish)
             }
 
             PostConfigData.ConfigType.MultiBasketball -> {
-                result.jump(TAB_TITLE_BASKETBALL, SUB_TAB_TITLE_MULTI, doAfterFinish)
+                result.jump(result,TAB_TITLE_BASKETBALL, SUB_TAB_TITLE_MULTI, doAfterFinish)
             }
 
             PostConfigData.ConfigType.MultiFootball -> {
-                result.jump(TAB_TITLE_FOOTBALL, SUB_TAB_TITLE_MULTI, doAfterFinish)
+                result.jump(result,TAB_TITLE_FOOTBALL, SUB_TAB_TITLE_MULTI, doAfterFinish)
             }
         }
     }
 
-    fun AnalyzeSourceResult.jump(title: String, subTitle: String, doAfterFinish: () -> Unit) {
+    fun AnalyzeSourceResult.jump(result: AnalyzeSourceResult,title: String, subTitle: String, doAfterFinish: () -> Unit) {
         findNodeByText(title).delayClickAndShowHighLight() {
-            LeisuServiceCenter.instance().result.findNodesByExpression {
+            result.findNodesByExpression {
                 subTitle == it.text && it.bounds.isLegal()
             }.nodes.let {
                 var aimNode: NodeWrapper? = null
                 if (it.size == 1) aimNode = it[0]
                 if (it.size == 2) {
-                    //result中排列顺序为 足球[单关，串关],篮球[单关串关]
+                    //result中排列顺序为 足球[单关，串关],篮球[单关，串关]
                     //故当一个子按钮有两个节点时，足球选第一个，篮球选第二个
                     aimNode = if (curPageType == PostConfigData.ConfigType.SingleFootball || curPageType == PostConfigData.ConfigType.MultiFootball) {
                         it[0]

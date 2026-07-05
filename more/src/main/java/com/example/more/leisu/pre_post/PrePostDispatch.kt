@@ -12,7 +12,7 @@ import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
 import com.jeremyliao.liveeventbus.LiveEventBus
 
-class PrePostDispatch {
+class PrePostDispatch private constructor(){
     companion object {
 
         private var instance: PrePostDispatch? = null

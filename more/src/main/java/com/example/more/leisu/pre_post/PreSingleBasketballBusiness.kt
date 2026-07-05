@@ -8,7 +8,7 @@ import com.example.more.accessibility.findNodeById
 import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.data.IDPrePostSingleBalls
 
-class PreSingleBasketballBusiness() {
+class PreSingleBasketballBusiness private constructor(){
 
     companion object {
 
