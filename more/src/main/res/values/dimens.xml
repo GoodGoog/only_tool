@@ -2,7 +2,7 @@
 <resources>
     <!-- 悬浮窗统一宽高 -->
     <dimen name="float_window_post_width">140dp</dimen>
-    <dimen name="float_window_post_height">200dp</dimen>
+    <dimen name="float_window_post_height">240dp</dimen>
     <!-- 其他尺寸可统一放这里 -->
     <dimen name="float_window_margin_right">20dp</dimen>
 </resources>

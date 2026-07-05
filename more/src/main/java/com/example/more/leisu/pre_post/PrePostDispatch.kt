@@ -2,21 +2,15 @@ package com.example.more.leisu.pre_post
 
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
-import com.example.more.accessibility.analyzeRecyclerView
-import com.example.more.accessibility.findNodeById
+import com.example.more.accessibility.LeisuServiceCenter
 import com.example.more.accessibility.findNodesByExpression
-import com.example.more.accessibility.findNodesById
-import com.example.more.accessibility.transNodeInfoToNodeWrapper
-import com.example.more.leisu.LeisuServiceDispatch
-import com.example.more.leisu.PostJumpUtils
-import com.example.more.leisu.data.IDPrePostHeader
-import com.example.more.leisu.data.IDPrePostMultiBasketBall
-import com.example.more.leisu.data.IDPrePostMultiFootball
-import com.example.more.leisu.data.IDPrePostSingleBalls
+import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
+import com.jeremyliao.liveeventbus.LiveEventBus
 
 class PrePostDispatch {
     companion object {
@@ -35,6 +29,34 @@ class PrePostDispatch {
         const val TAG = "PrePostDispatch"
     }
 
+    init {
+        // 注意：单例要用 observeForever，因为没有生命周期
+        // 或者用 Application 的 lifecycle
+        if (LeisuServiceCenter.instance().isAccessServiceConnect) {
+            LiveEventBus.get<Int>(EventBusTag.TEST_PRE_POST_PAGE_SWITCH)
+                .observeForever {
+                    val type = when(it){
+                        1 -> {
+                            PostConfigData.ConfigType.SingleFootball
+                        }
+                        2 -> {
+                            PostConfigData.ConfigType.MultiFootball
+                        }
+                        3 -> {
+                            PostConfigData.ConfigType.SingleBasketball
+                        }
+                        else -> {
+                            PostConfigData.ConfigType.MultiBasketball
+                        }
+                    }
+                    PreJumpUtils.instance().jumpSubPage(type, LeisuServiceCenter.instance().result){
+                        //PostJumpUtils.instance().hasJumpExpertHomeAction = false
+                    }
+
+                }
+        }
+    }
+
     fun dispatchTask(wrapper: EventWrapper, result: AnalyzeSourceResult) {
         when(wrapper.event.eventType){
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
@@ -48,15 +70,15 @@ class PrePostDispatch {
                     //UI分配
                     postArray[0].let { configData ->
                         //从专家主页进入比赛选择页，而不是从其他子页面退回赛事选择页，也要执行跳转
-                        if (PostJumpUtils.instance().hasJumpExpertHomeAction){
-                            PostJumpUtils.instance().jumpSubPage(configData.type, result){
-                                PostJumpUtils.instance().hasJumpExpertHomeAction = false
-                            }
-                        }
+//                        if (PreJumpUtils.instance().hasJumpExpertHomeAction){
+//                            PreJumpUtils.instance().jumpSubPage(configData.type, result){
+//                                PreJumpUtils.instance().hasJumpExpertHomeAction = false
+//                            }
+//                        }
                     }
 
                     //业务分配
-                    when(PostJumpUtils.instance().curPageType){
+                    when(PreJumpUtils.instance().curPageType){
                         PostConfigData.ConfigType.SingleBasketball -> {
                             PreSingleBasketballBusiness.instance().onWindowStatusChange(wrapper,result)
                         }
@@ -76,7 +98,7 @@ class PrePostDispatch {
 
                     //测试数据
                     //获取当前的recyclerView信息
-                    //Log.d(TAG, "dispatchTask: ==================" + result)
+                    Log.d(TAG, "dispatchTask: ==================" + result)
                 }
             }
 
@@ -104,7 +126,5 @@ class PrePostDispatch {
             }
         }
     }
-
-
 
 }

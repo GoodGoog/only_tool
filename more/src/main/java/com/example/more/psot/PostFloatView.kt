@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.example.more.R
 import com.example.more.databinding.MoreWindowFloatPostContentViewBinding
@@ -54,6 +55,19 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
     fun taskVisualizeClicked(quit : () -> Unit){
         binding.tvTaskVisualize.setOnClickListener {
             quit.invoke()
+        }
+    }
+
+    fun testPageSwitchClick(switch :(Int) -> Unit){
+        binding.tv1.addClick(switch)
+        binding.tv2.addClick(switch)
+        binding.tv3.addClick(switch)
+        binding.tv4.addClick(switch)
+    }
+
+    fun TextView.addClick(switch :(Int) -> Unit){
+        setOnClickListener {
+            switch(text.toString().toInt())
         }
     }
 }

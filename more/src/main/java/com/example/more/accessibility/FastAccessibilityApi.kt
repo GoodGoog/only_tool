@@ -37,7 +37,8 @@ fun requireAccessibility() = FastAccessibilityService.Companion.requireAccessibi
  * performAction 是针对 具体界面控件（AccessibilityNodeInfo）执行操作，如点击按钮、输入文本
  * performGlobalAction 则是 系统级全局操作，不依赖于特定控件，作用范围更广
  * */
-fun performAction(action: Int) = FastAccessibilityService.Companion.require.performGlobalAction(action)
+fun performAction(action: Int) =
+    FastAccessibilityService.Companion.require.performGlobalAction(action)
 
 // 返回
 fun back() = performAction(AccessibilityService.GLOBAL_ACTION_BACK)
@@ -120,12 +121,36 @@ fun NodeWrapper?.click(gestureClick: Boolean = true, duration: Long = 200L) {
     }
 }
 
+/**
+ * 点击指定区域
+ */
+fun Rect?.click(duration: Long = 200L) {
+    if (this == null) return
+    val x = ((left + right) / 2).toFloat()
+    val y = ((top + bottom) / 2).toFloat()
+    FastAccessibilityService.require.dispatchGesture(
+        GestureDescription.Builder().apply {
+            addStroke(
+                GestureDescription.StrokeDescription(
+                    Path().apply { moveTo(x, y) },
+                    0L,
+                    duration
+                )
+            )
+        }.build(), object : AccessibilityService.GestureResultCallback() {
+            override fun onCompleted(gestureDescription: GestureDescription?) {
+                super.onCompleted(gestureDescription)
+                // 手势执行完成回调
+            }
+        }, null
+    )
+}
 
 /**
  * 为避免连续模拟点击过快，影响数据显示,故在延时实现点击
  */
 @OptIn(DelicateCoroutinesApi::class)
-fun NodeWrapper?.delayClick(gestureClick: Boolean = true,delayTime: Long = 1500){
+fun NodeWrapper?.delayClick(gestureClick: Boolean = true, delayTime: Long = 1500) {
     GlobalScope.launch(Dispatchers.IO) {
         //协程非阻塞休眠，不用sleep
         //避免系统检测，让间隔时间浮动
@@ -482,7 +507,7 @@ fun analyzeAllSubNode(node: AccessibilityNodeInfo?, list: ArrayList<NodeWrapper>
 /**
  * nodeInfo转换为NodeWrapper
  */
-fun AccessibilityNodeInfo.transNodeInfoToNodeWrapper() : NodeWrapper {
+fun AccessibilityNodeInfo.transNodeInfoToNodeWrapper(): NodeWrapper {
     val bounds = Rect()
     this.getBoundsInScreen(bounds)
     return NodeWrapper(

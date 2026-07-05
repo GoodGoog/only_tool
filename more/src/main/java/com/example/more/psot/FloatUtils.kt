@@ -12,9 +12,11 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import com.example.more.EasyFloatTag
+import com.example.more.EventBusTag
 import com.example.more.R
 import com.example.more.databinding.MoreWindowFloatPostBinding
 import com.example.more.psot.PostActivity.Companion.TAG
+import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.ShowPattern
 import com.lzf.easyfloat.enums.SidePattern
@@ -98,6 +100,9 @@ class FloatUtils private constructor() {
                             rootWindowView.findViewById(R.id.hv_high_light_box)
                         hlv.showOrHideWindow(false)
                     }
+            }
+            testPageSwitchClick { pageIndex ->
+                LiveEventBus.get<Int>(EventBusTag.TEST_PRE_POST_PAGE_SWITCH).post(pageIndex)
             }
         }
         EasyFloat.with(context)

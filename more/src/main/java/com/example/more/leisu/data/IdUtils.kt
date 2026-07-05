@@ -47,6 +47,12 @@ class IDPrePostHeader {
         //筛选按钮
         const val id_filter_league_info = "com.leisu.sports:id/iv_filter"
 
+        //竞速切换按钮
+        const val id_switch_speed = "com.leisu.sports:id/iv_switch"
+
+        //返回按钮
+        const val id_back = "com.leisu.sports:id/iv_back"
+
         const val id_first_level_view_pager = "com.leisu.sports:id/view_page"
 
         const val id_second_level_view_pager = "com.leisu.sports:id/view_page"

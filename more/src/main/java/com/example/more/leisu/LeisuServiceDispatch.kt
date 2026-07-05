@@ -1,10 +1,10 @@
 package com.example.more.leisu
 
-import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
+import com.example.more.accessibility.findNodesByExpression
 import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.data.IDPostMultiDouble
 import com.example.more.leisu.data.IDPrePostHeader
@@ -24,15 +24,11 @@ class LeisuServiceDispatch {
                 instance = LeisuServiceDispatch()
             }
             return instance!!
+            //return LeisuServiceDispatch()
         }
 
         const val TAG = "LeisuServiceDispatch"
     }
-
-    fun refresh(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        taskDispatch(wrapper, result)
-    }
-
 
     /**
      *  先判断在什么页面，然后执行具体业务
@@ -42,7 +38,7 @@ class LeisuServiceDispatch {
         if (isInExpertHomePage(result)){
             //在专家列表页
             //设置下一次进入比赛选择页 会自动跳转 tab
-            PostJumpUtils.instance().hasJumpExpertHomeAction = true
+            PreJumpUtils.instance().hasJumpExpertHomeAction = true
         }
         if (isInPrePostPage(result)) {
             //在比赛信息选择页
@@ -61,10 +57,15 @@ class LeisuServiceDispatch {
      * 在发布页的前一页
      */
     fun isInPrePostPage(result: AnalyzeSourceResult): Boolean {
-        result.findNodeById(IDPrePostHeader.id_filter_league_info)?.let {
-            return true
+//        result.findNodeById(IDPrePostHeader.id_filter_league_info)?.let {
+//            return true
+//        }
+//        return false
+        result.findNodesByExpression {
+            it.id == IDPrePostHeader.id_filter_league_info || it.id == IDPrePostHeader.id_switch_speed || it.id == IDPrePostHeader.id_back
+        }.nodes.let {
+            return it.size == 3
         }
-        return false
     }
 
     /**

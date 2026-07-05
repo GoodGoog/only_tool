@@ -1,6 +1,5 @@
 package com.example.more.accessibility
 
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -27,7 +26,8 @@ class AllAppService : FastAccessibilityService(), LifecycleOwner {
             //当前所在app
             when (it.packageName) {
                 app_packageName_lei_su -> {
-                    LeisuServiceDispatch.instance().refresh(it,result)
+                    LeisuServiceCenter.instance().result = result
+                    LeisuServiceDispatch.instance().taskDispatch(it,result)
                 }
 
                 else -> {}
@@ -39,16 +39,17 @@ class AllAppService : FastAccessibilityService(), LifecycleOwner {
     override fun onServiceConnected() {
         super.onServiceConnected()
         LiveEventBus.get<Boolean>(EventBusTag.ACCESSIBILITY_SERVICE_START_OR_DESTROY).post(true)
-        Log.d(TAG, "onServiceConnected: ")
+        LeisuServiceCenter.instance().isAccessServiceConnect = true
         // 服务连接成功，标记为 ON_START
         lifecycleRegistry.currentState = Lifecycle.State.STARTED
     }
 
     override fun onDestroy() {
+        LeisuServiceCenter.instance().isAccessServiceConnect = false
         LiveEventBus.get<Boolean>(EventBusTag.ACCESSIBILITY_SERVICE_START_OR_DESTROY).post(false)
-        Log.d(TAG, "onDestroy: ")
         // 服务销毁，标记为 DESTROYED
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
     }
+
 
 }

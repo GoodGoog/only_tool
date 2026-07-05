@@ -11,111 +11,160 @@
         android:id="@+id/layout_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
         android:alpha="0.7"
         android:background="@drawable/bg_float_window_border_radius"
-        >
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/iv_tips_access"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:scaleType="centerInside"
-            android:id="@+id/iv_tips_access"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_access_status_red"
-            />
+            android:src="@drawable/ic_access_status_red" />
 
         <TextView
+            android:id="@+id/tv_tips_access"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_tips_access"
-            android:layout_marginTop="5dp"
             android:layout_gravity="center"
-            android:textColor="@color/post_float_window_tips_color_red"
+            android:layout_marginTop="5dp"
             android:text="@string/float_access_tips_red_text"
-            />
+            android:textColor="@color/post_float_window_tips_color_red" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp"
-            android:background="@color/bottom_line_bg_color"
-            />
+            android:layout_marginEnd="10dp"
+            android:background="@color/bottom_line_bg_color" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:gravity="center"
             android:text="正在执行任务:"
-            android:textColor="@color/global_text_color"
-            />
+            android:textColor="@color/global_text_color" />
 
 
         <TextView
+            android:id="@+id/tv_cur_execute_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
-            android:id="@+id/tv_cur_execute_task"
             android:gravity="center"
             android:text="篮球 | 串关 | 免费"
-            android:textColor="@color/global_text_color"
-            />
+            android:textColor="@color/global_text_color" />
 
 
         <TextView
+            android:id="@+id/tv_task_remains_times"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
-            android:text="剩余发布次数:9次"
-            android:id="@+id/tv_task_remains_times"
             android:gravity="center"
-            android:textColor="@color/global_text_color"
-            />
+            android:text="剩余发布次数:9次"
+            android:textColor="@color/global_text_color" />
 
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp"
-            android:background="@color/bottom_line_bg_color"
-            />
+            android:layout_marginEnd="10dp"
+            android:background="@color/bottom_line_bg_color" />
 
         <TextView
+            android:id="@+id/tv_task_visualize"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="→可视化功能←"
-            android:id="@+id/tv_task_visualize"
-            android:textColor="@color/global_text_color"
             android:gravity="center"
-            />
+            android:text="→可视化功能←"
+            android:textColor="@color/global_text_color" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/tv_quit_window"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="→退出窗口←"
-            android:id="@+id/tv_quit_window"
-            android:textColor="@color/global_text_color"
             android:gravity="center"
-            />
+            android:text="→退出窗口←"
+            android:textColor="@color/global_text_color" />
+
+        <!--        用来测试页面切换的-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="5dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tv_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_any_view_border_radius"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_any_view_border_radius"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_any_view_border_radius"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_any_view_border_radius"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/black" />
+
+            <View
+                android:layout_width="5dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
 
     </LinearLayout>
 
