@@ -546,10 +546,10 @@ fun AnalyzeSourceResult.findAllTextNode(includeDesc: Boolean = false): AnalyzeSo
 /**
  * 查找RecyclerView所有的Item-Layout节点，与Item-Layout节点所包裹的所有子视图
  */
-fun NodeWrapper?.analyzeRecyclerView(): ArrayList<AnalyzeSourceResult>? {
-    if (this == null) return null
-    if (nodeInfo == null) return null
+fun NodeWrapper?.analyzeRecyclerView(): ArrayList<AnalyzeSourceResult> {
     val rvResults = ArrayList<AnalyzeSourceResult>()
+    if (this == null) return rvResults
+    if (nodeInfo == null) return rvResults
     //获取RecyclerView的所有ItemLayout对应节点
     analyzeNextLevelSubView().forEachIndexed { layoutIndex, layoutWrapper ->
         //获取当前ItemLayout包裹的所有子视图节点

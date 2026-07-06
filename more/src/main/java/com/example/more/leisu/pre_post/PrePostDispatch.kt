@@ -7,12 +7,18 @@ import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.LeisuServiceCenter
+import com.example.more.accessibility.clickGestureWithResult
+import com.example.more.accessibility.clickPerformWithResult
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostDataCenter
 import com.jeremyliao.liveeventbus.LiveEventBus
-import kotlin.math.log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class PrePostDispatch private constructor() : BaseLeisuDispatch() {
     companion object {
@@ -31,12 +37,14 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         const val TAG = "PrePostDispatch"
     }
 
+    var result: AnalyzeSourceResult? = null
+
     init {
         // 注意：单例要用 observeForever，因为没有生命周期
         // 或者用 Application 的 lifecycle
         if (LeisuServiceCenter.instance().isAccessServiceConnect) {
             LiveEventBus.get<Int>(EventBusTag.TEST_PRE_POST_PAGE_SWITCH)
-                .observe(this) {
+                .observe(this) { it ->
                     val type = when (it) {
                         1 -> {
                             PostConfigData.ConfigType.SingleFootball
@@ -56,15 +64,32 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
                     }
                     PreJumpUtils.instance()
                         .jumpSubPage(type, LeisuServiceCenter.instance().result) { isSuccess ->
-
+                            if (isSuccess) {
+                                result?.let { aimResult ->
+                                    GlobalScope.launch(Dispatchers.IO) {
+                                        //协程非阻塞休眠，不用sleep
+                                        //避免系统检测，让间隔时间浮动
+                                        delay(1000)
+                                        PreLeagueUtils.instance().getCurShowingLeague(
+                                            LeisuServiceCenter.instance().result,
+                                            type
+                                        )
+                                    }
+//                                    PreLeagueUtils.instance().getCurShowingLeague(
+//                                        LeisuServiceCenter.instance().result,
+//                                        type
+//                                    )
+                                }
+                            }
                         }
 
                 }
         }
     }
 
-    fun dispatchTask(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        LeisuServiceCenter.instance().result = result
+    fun dispatchTask(wrapper: EventWrapper, cResult: AnalyzeSourceResult) {
+        LeisuServiceCenter.instance().result = cResult
+        result = cResult
         when (wrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 PostDataCenter.instance().postArray.let { postArray ->
@@ -77,34 +102,34 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
                     //UI分配
                     postArray[0].let { configData ->
                         //从专家主页进入比赛选择页，而不是从其他子页面退回赛事选择页，也要执行跳转
-                        if (PreJumpUtils.instance().hasJumpExpertHomeAction) {
-                            Log.d(TAG, "dispatchTask: 需要跳转" + configData)
-                            PreJumpUtils.instance().hasJumpExpertHomeAction = false
-                            PreJumpUtils.instance().jumpSubPage(configData.type, result) {
-                            }
-                        }
+//                        if (PreJumpUtils.instance().hasJumpExpertHomeAction) {
+//                            Log.d(TAG, "dispatchTask: 需要跳转" + configData)
+//                            PreJumpUtils.instance().hasJumpExpertHomeAction = false
+//                            PreJumpUtils.instance().jumpSubPage(configData.type, result) {
+//                            }
+//                        }
                     }
 
                     //业务分配
                     when (PreJumpUtils.instance().curPageType) {
                         PostConfigData.ConfigType.SingleBasketball -> {
                             PreSingleBasketballBusiness.instance()
-                                .onWindowStatusChange(wrapper, result)
+                                .onWindowStatusChange(wrapper, cResult)
                         }
 
                         PostConfigData.ConfigType.SingleFootball -> {
                             PreSingleFootballBusiness.instance()
-                                .onWindowStatusChange(wrapper, result)
+                                .onWindowStatusChange(wrapper, cResult)
                         }
 
                         PostConfigData.ConfigType.MultiBasketball -> {
                             PreMultiBasketballBusiness.instance()
-                                .onWindowStatusChange(wrapper, result)
+                                .onWindowStatusChange(wrapper, cResult)
                         }
 
                         PostConfigData.ConfigType.MultiFootball -> {
                             PreMultiFootballBusiness.instance()
-                                .onWindowStatusChange(wrapper, result)
+                                .onWindowStatusChange(wrapper, cResult)
                         }
                     }
 
@@ -125,13 +150,19 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
 
                 try {
                     // 找到真正被点击的最底层节点
-                    val clickedNode = findDeepestClickableNode(eventNode)
-                    Log.d(TAG, "=== 原生事件打印 ===")
-                    Log.d(TAG, "事件时间戳：${wrapper.event.eventTime}")
-                    Log.d(TAG, "原始节点（可能是父视图）：${eventNode.text}, ${eventNode.className}")
-                    Log.d(TAG, "实际点击节点（最底层）：${clickedNode?.text}, ${clickedNode?.className}")
-                    Log.d(TAG, "节点ID：${clickedNode?.viewIdResourceName}")
-                    Log.d(TAG, "节点包名：${clickedNode?.packageName}")
+//                    val clickedNode = findDeepestClickableNode(eventNode)
+//                    Log.d(TAG, "=== 原生事件打印 ===")
+//                    Log.d(TAG, "事件时间戳：${wrapper.event.eventTime}")
+//                    Log.d(TAG, "原始节点（可能是父视图）：${eventNode.text}, ${eventNode.className}")
+//                    Log.d(TAG, "实际点击节点（最底层）：${clickedNode?.text}, ${clickedNode?.className}")
+//                    Log.d(TAG, "节点ID：${clickedNode?.viewIdResourceName}")
+//                    Log.d(TAG, "节点包名：${clickedNode?.packageName}")
+
+//                    findDeepestClickableNode(eventNode)?.text.let { text ->
+//                        if (text == "单关" || text == "串关") {
+//                            PreLeagueUtils.instance().getCurShowingLeague(result, PreJumpUtils.instance().curPageType)
+//                        }
+//                    }
 
                     // 用 clickedNode 做后续处理
                     //handleClick(clickedNode)
@@ -139,6 +170,9 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
                 } finally {
                     eventNode.recycle()
                 }
+//                Log.d(TAG, "dispatchTask: -----------------------------------------------------------")
+//                Log.d(TAG, "dispatchTask: " + result.nodes)\
+
 
             }
 

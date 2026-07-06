@@ -51,6 +51,9 @@ class PreJumpUtils private constructor() {
     //默认实在足球-单关页面
     var curPageType = PostConfigData.ConfigType.SingleFootball
 
+    //每次跳转点击到串关或者单关时，允许VIEW_CLICKED接受一次text=单关||串关的事件，过滤无关点击
+    var isJumpClicked = false
+
     fun jumpSubPage(
         type: PostConfigData.ConfigType,
         result: AnalyzeSourceResult,

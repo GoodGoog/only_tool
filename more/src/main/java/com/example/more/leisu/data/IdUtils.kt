@@ -1,7 +1,6 @@
 package com.example.more.leisu.data
 
 
-
 //雷速的包名
 const val app_packageName_lei_su = "com.leisu.sports"
 
@@ -27,7 +26,6 @@ const val id_post_entry_league_list = "com.leisu.sports:id/recycler_view"
 const val id_post_entry_league_list_item_name = "com.leisu.sports:id/tv_league_name"
 
 
-
 /**
  * 赛事选择页 ---头部信息，不在ViewPage内的id信息
  */
@@ -36,6 +34,7 @@ class IDPrePostHeader {
         //三1.头部信息
         //顶部 足球/篮球切换 由 HorizontalScrollView实现
         const val id_switch_basketball_football = "com.leisu.sports:id/tab_layout"
+
         //足球/篮球的id
         const val id_tab_basket_and_foot_ball = "com.leisu.sports:id/tv_tab_title"
 
@@ -63,7 +62,14 @@ class IDPrePostHeader {
 
         const val id_second_level_view_pager = "com.leisu.sports:id/view_page"
 
+        //四张赛事列表RecyclerView的id都是这个
         const val id_league_lsit_recycler_view = "com.leisu.sports:id/recycler_view"
+
+        /**
+         * 每个RecyclerView都有一种Item类型,就是某一条单独的时间栏目
+         * eg:[android.widget.TextView → 周二  07月07日 4场 → com.leisu.sports:id/tv_header →  → Rect(1080, 882 - 1080, 978) →|| clickable = → true  → || scrollable → false
+         */
+        const val id_recycler_view_item_time_flags = "com.leisu.sports:id/tv_header"
 
         /**
          *            足球  篮球                                     [用来切换ViewPager]
@@ -112,8 +118,8 @@ class IDPrePostSingleBalls {
 /**
  * 赛事选择页-------篮球串关页
  */
-class IDPrePostMultiBasketBall{
-    companion object{
+class IDPrePostMultiBasketBall {
+    companion object {
 
         //比赛信息列表RecyclerView
         const val id_multi_basket_league_list = "com.leisu.sports:id/recycler_view"
@@ -166,8 +172,8 @@ class IDPrePostMultiBasketBall{
 /**
  * 赛事选择页-------足球串关页
  */
-class IDPrePostMultiFootball{
-    companion object{
+class IDPrePostMultiFootball {
+    companion object {
         //比赛信息列表RecyclerView
         const val id_multi_foot_league_list = "com.leisu.sports:id/recycler_view"
 
@@ -231,7 +237,6 @@ class IDPrePostMultiFootball{
         const val id_multi_foot_submit = "com.leisu.sports:id/tv_confirm"
     }
 }
-
 
 
 //-----------------------------------------------------分割线-----------------------------------------------------------
@@ -327,8 +332,8 @@ class IDPostDoubleSingle {
 /**
  * ！！！！！！！！！！！！串关发布页
  */
-class IDPostMultiDouble{
-    companion object{
+class IDPostMultiDouble {
+    companion object {
 
         //今日剩余发布次数
         const val id_multi_post_today_remains_times = "com.leisu.sports:id/tv_remain_times"
@@ -343,6 +348,7 @@ class IDPostMultiDouble{
         //二.1 串关-发布页，具体需要发布的信息
         //发布文章的标题输入框
         const val id_multi_post_title_edit = "com.leisu.sports:id/et_title"
+
         //发布文章的前瞻输入框
         const val id_multi_post_prospect_edit = "com.leisu.sports:id/et_prospect"
 
