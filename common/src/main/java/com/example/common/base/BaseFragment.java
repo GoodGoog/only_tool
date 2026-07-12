@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -46,6 +47,11 @@ public abstract class BaseFragment<B extends ViewDataBinding, VM extends BaseVie
         Intent intent = new Intent();
         intent.setClass(getContext(), c);
         startActivity(intent);
+    }
+
+
+    protected void showToast(String content) {
+        Toast.makeText(getContext(), content, Toast.LENGTH_LONG).show();
     }
 
 }

@@ -99,6 +99,13 @@ dependencies {
 
    api 'com.github.kongxiaojun:EasyFloat:3.0.1'
 
+    api 'com.upyun:java-sdk:4.2.3'
+    // 协程依赖（Android做异步联网必备）
+//    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1"
+    // 把原来 1.8.1 统一替换成1.7.3，core + android包版本必须保持一致
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
+
     //api 'io.github.shenzhen2017:easyfloat:1.0.0'
    // api 'com.github.princekin-f:EasyFloat:2.0.4'
 //
