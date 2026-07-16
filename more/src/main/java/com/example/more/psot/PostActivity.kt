@@ -19,7 +19,7 @@ import com.example.more.accessibility.startApp
 import com.example.more.databinding.MoreActivityTouchBinding
 import com.example.more.databinding.MoreItemInitialConfigBinding
 import com.example.more.leisu.data.PostConfigData
-import com.example.more.leisu.data.PostDataCenter
+import com.example.more.leisu.data.PreDataCenter
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 
@@ -38,7 +38,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
     fun initRecyclerView() {
         val adapter = object : BaseAdapter<MoreItemInitialConfigBinding, PostConfigData>(
-            PostDataCenter.instance().initialArray,
+            PreDataCenter.instance().initialArray,
             R.layout.more_item_initial_config
         ) {
             override fun bindViewHolder(
@@ -93,7 +93,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             binding.etCursorHolder.apply {
                 requestFocus();
             }
-            PostDataCenter.instance().apply {
+            PreDataCenter.instance().apply {
                 initialArray = adapter.beans
                 filterUselessPostInfo { hasData ->
                     if (hasData) {
@@ -141,8 +141,14 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             }
         //无障碍服务连接状态改变了
         LiveEventBus.get<Boolean>(EventBusTag.ACCESSIBILITY_SERVICE_START_OR_DESTROY)
-            .observe(this) { isStart ->
-                FloatUtils.instance().upAccessWindowContent(isStart)
+            .observe(this) { isConnect ->
+                FloatUtils.instance().upAccessWindowContent(isConnect)
+                if (isConnect){
+                    //已连接
+
+                }else{
+
+                }
             }
 
     }

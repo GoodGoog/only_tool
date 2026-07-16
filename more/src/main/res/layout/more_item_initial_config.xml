@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="是否收费:"
+                android:text="是否免费:"
                 android:gravity="center"
                 android:textColor="@color/global_text_color"
                 />

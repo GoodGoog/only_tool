@@ -29,6 +29,9 @@ class EventBusTag {
 
         //测试赛事列表页页面切换
         const val TEST_PRE_POST_PAGE_SWITCH = "TEST_PRE_POST_PAGE_SWITCH"
+
+        //开始发布
+        const val START_POST = "START_POST"
     }
 }
 

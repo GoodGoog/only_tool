@@ -3,18 +3,21 @@ package com.example.more.leisu
 import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
-import com.example.more.accessibility.LeisuServiceCenter
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.findNodesByExpression
 import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.data.IDPostMultiDouble
 import com.example.more.leisu.data.IDPrePostHeader
-import com.example.more.leisu.data.id_expert_home_page_edit
-import com.example.more.leisu.data.id_expert_home_page_share
-import com.example.more.leisu.data.id_expert_home_page_title
-import com.example.more.leisu.post_detail.PostFreeSingleBusiness
+import com.example.more.leisu.data.PostConfigData
+import com.example.more.leisu.post_detail.PostSingleBasketball
+import com.example.more.leisu.post_detail.PostSingleFootball
 import com.example.more.leisu.pre_post.PrePostDispatch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
     companion object {
@@ -33,11 +36,25 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         const val TAG = "LeisuServiceDispatch"
     }
 
+    private var isReceiptable = true  //是否允许接受event数据，用来规定至少时隔多久才能接受一次数据
+    private var minSeparatorTime = 500
+
     /**
      *  先判断在什么页面，然后执行具体业务
      */
     //业务分发
     fun taskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+        //每五百ms只接收一次
+        if (!isReceiptable){
+            return
+        }else{
+            isReceiptable = false
+        }
+        GlobalScope.launch(Dispatchers.IO) {
+            delay(minSeparatorTime.toLong())
+            isReceiptable = true
+        }
+
         if (isInExpertHomePage(result)) {
             //在专家列表页
             //设置下一次进入比赛选择页 会自动跳转 tab
@@ -50,7 +67,15 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         }
         if (isInPostSinglePage(result)) {
             //在单关发布页
-            PostFreeSingleBusiness(wrapper, result).execute()
+            if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleFootball){
+                //单关足球-发布页
+                PostSingleFootball.instance().onTaskDispatch(wrapper,result)
+            }
+            if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleBasketball){
+                //单关篮球-发布页
+                PostSingleBasketball.instance().onTaskDispatch(wrapper,result)
+            }
+            //PostFreeSingleBusiness(wrapper, result).execute()
         }
         if (isInPostMultiPage(result)) {
 

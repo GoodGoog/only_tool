@@ -1,24 +1,20 @@
 package com.example.more.leisu.pre_post
 
-import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.LeisuServiceCenter
-import com.example.more.accessibility.clickGestureWithResult
-import com.example.more.accessibility.clickPerformWithResult
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
-import com.example.more.leisu.data.PostDataCenter
+import com.example.more.leisu.data.PreDataCenter
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 class PrePostDispatch private constructor() : BaseLeisuDispatch() {
     companion object {
@@ -92,7 +88,7 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         result = cResult
         when (wrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                PostDataCenter.instance().postArray.let { postArray ->
+                PreDataCenter.instance().postArray.let { postArray ->
                     if (postArray.isEmpty()) {
                         //所有文章发布结束
                         //do something

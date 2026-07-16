@@ -21,7 +21,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_access_status_red" />
 
@@ -42,15 +42,15 @@
             android:layout_marginEnd="10dp"
             android:background="@color/bottom_line_bg_color" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:text="正在执行任务:"
-            android:textColor="@color/global_text_color" />
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:gravity="center"-->
+<!--            android:text="正在执行任务:"-->
+<!--            android:textColor="@color/global_text_color" />-->
 
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:gravity="center"
-            android:text="篮球 | 串关 | 免费"
+            android:text="xx | xx | xx"
             android:textColor="@color/global_text_color" />
 
 
@@ -73,43 +73,14 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:gravity="center"
-            android:text="剩余发布次数:9次"
-            android:textColor="@color/global_text_color" />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:background="@color/bottom_line_bg_color" />
-
-        <TextView
-            android:id="@+id/tv_task_visualize"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:text="→可视化功能←"
-            android:textColor="@color/global_text_color" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/tv_quit_window"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:text="→退出窗口←"
+            android:text="剩余发布次数:x"
             android:textColor="@color/global_text_color" />
 
         <!--        用来测试页面切换的-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <View
@@ -123,7 +94,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_any_view_border_radius"
                 android:gravity="center"
-                android:text="1"
+                android:text="足\n单"
                 android:textColor="@color/black" />
 
             <TextView
@@ -133,7 +104,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_any_view_border_radius"
                 android:gravity="center"
-                android:text="2"
+                android:text="足\n串"
                 android:textColor="@color/black" />
 
             <TextView
@@ -143,7 +114,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_any_view_border_radius"
                 android:gravity="center"
-                android:text="3"
+                android:text="篮\n单"
                 android:textColor="@color/black" />
 
             <TextView
@@ -153,7 +124,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_any_view_border_radius"
                 android:gravity="center"
-                android:text="4"
+                android:text="篮\n串"
                 android:textColor="@color/black" />
 
             <View
@@ -161,6 +132,33 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_start_post"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:text="→开始发布←"
+            android:textColor="@color/global_text_color" />
+
+
+        <TextView
+            android:id="@+id/tv_task_visualize"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:text="→可视化功能←"
+            android:textColor="@color/global_text_color" />
+
+        <TextView
+            android:id="@+id/tv_quit_window"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:text="→退出窗口←"
+            android:textColor="@color/global_text_color" />
+
 
         <View
             android:layout_width="match_parent"

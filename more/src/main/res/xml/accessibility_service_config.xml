@@ -4,7 +4,7 @@
     android:accessibilityEventTypes="typeViewClicked|typeWindowStateChanged|typeViewScrolled"
     android:accessibilityFlags="flagReportViewIds"
     android:accessibilityFeedbackType="feedbackSpoken"
-    android:notificationTimeout="200"
+    android:notificationTimeout="500"
     android:canRetrieveWindowContent="true"
     android:canPerformGestures="true"
     android:settingsActivity="com.example.android.accessibility.ServiceSettingsActivity"
