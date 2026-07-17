@@ -8,7 +8,7 @@ import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
-import com.example.more.transToPostConfigType
+import com.example.more.leisu.transToPostConfigType
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 class PrePostDispatch private constructor() : BaseLeisuDispatch() {

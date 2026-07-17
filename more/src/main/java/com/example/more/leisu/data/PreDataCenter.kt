@@ -1,7 +1,7 @@
 package com.example.more.leisu.data
 
 import com.example.more.leisu.getWeekDayByCalendar
-import com.example.more.transToPostArrayIndex
+import com.example.more.leisu.transToPostArrayIndex
 
 class PreDataCenter private constructor() {
     companion object {

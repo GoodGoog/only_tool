@@ -255,3 +255,45 @@ fun Rect.delayClickWithShowHighLight(
         }
     }
 }
+
+
+
+fun Int.transToPostConfigType(): PostConfigData.ConfigType {
+    return when (this) {
+        0 -> {
+            PostConfigData.ConfigType.SingleFootball
+        }
+
+        1 -> {
+            PostConfigData.ConfigType.MultiFootball
+        }
+
+        2 -> {
+            PostConfigData.ConfigType.SingleBasketball
+        }
+
+        else -> {
+            PostConfigData.ConfigType.MultiBasketball
+        }
+    }
+}
+
+fun PostConfigData.ConfigType.transToPostArrayIndex(): Int {
+    return when (this) {
+        PostConfigData.ConfigType.SingleFootball -> {
+            0
+        }
+
+        PostConfigData.ConfigType.MultiFootball -> {
+            1
+        }
+
+        PostConfigData.ConfigType.SingleBasketball -> {
+            2
+        }
+
+        PostConfigData.ConfigType.MultiBasketball -> {
+            3
+        }
+    }
+}

@@ -19,46 +19,6 @@ fun Context.logD(msg: String?) {
     LogUtil.d(this.javaClass.getName().toString() + "|++++++++++++++++++++++++++|", msg)
 }
 
-fun Int.transToPostConfigType(): PostConfigData.ConfigType {
-    return when (this) {
-        0 -> {
-            PostConfigData.ConfigType.SingleFootball
-        }
-
-        1 -> {
-            PostConfigData.ConfigType.MultiFootball
-        }
-
-        2 -> {
-            PostConfigData.ConfigType.SingleBasketball
-        }
-
-        else -> {
-            PostConfigData.ConfigType.MultiBasketball
-        }
-    }
-}
-
-fun PostConfigData.ConfigType.transToPostArrayIndex(): Int {
-    return when (this) {
-        PostConfigData.ConfigType.SingleFootball -> {
-            0
-        }
-
-        PostConfigData.ConfigType.MultiFootball -> {
-            1
-        }
-
-        PostConfigData.ConfigType.SingleBasketball -> {
-            2
-        }
-
-        PostConfigData.ConfigType.MultiBasketball -> {
-            3
-        }
-    }
-}
-
 fun getScreenWidth(context: Context): Int {
     val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     val dm = DisplayMetrics()
