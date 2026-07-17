@@ -1,6 +1,8 @@
 package com.example.more
 
 import android.content.Context
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import android.widget.Toast
 import com.example.common.util.LogUtil
 import com.example.more.leisu.PreJumpUtils.Companion.SUB_TAB_TITLE_MULTI
@@ -57,4 +59,10 @@ fun PostConfigData.ConfigType.transToPostArrayIndex(): Int {
     }
 }
 
+fun getScreenWidth(context: Context): Int {
+    val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val dm = DisplayMetrics()
+    wm.defaultDisplay.getMetrics(dm)
+    return dm.widthPixels
+}
 

@@ -111,7 +111,13 @@ class HighLightView @JvmOverloads constructor(
         canvas.drawRect(0f, 0f, w, h, maskPaint)
 
         if (targetRect.isEmpty || targetRect.height() <= 0) return
-        val radius = targetRect.height() / 2f
+        var radius = targetRect.height() / 2f
+        //设置最大只能时50dp
+        radius = if (radius > 20f.dpToPx(context)){
+            20f.dpToPx(context)
+        } else{
+            radius
+        }
 
         // 第二步：擦除目标矩形，镂空透明穿透底层
         canvas.drawRoundRect(targetRect, radius, radius, clearPaint)

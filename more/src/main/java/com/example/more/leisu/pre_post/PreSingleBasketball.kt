@@ -1,11 +1,18 @@
 package com.example.more.leisu.pre_post
 
 import android.util.Log
+import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
+import com.example.more.accessibility.findNodeById
+import com.example.more.accessibility.findNodesById
 import com.example.more.leisu.BaseLeisuDispatch
+import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
+import com.example.more.leisu.delayClickAndShowHighLight
+import com.example.more.leisu.delayClickWithShowHighLight
+import com.example.more.leisu.getCurPrePageMatchList
 
 class PreSingleBasketball private constructor() : BaseLeisuDispatch() {
 
@@ -29,27 +36,55 @@ class PreSingleBasketball private constructor() : BaseLeisuDispatch() {
      * 来这里的只有
      */
     fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
-        if (!PreDataCenter.instance().getCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleBasketball)) return
-        Log.d(TAG, "onWindowStatusChange: ++++++++++++++++++++++++++++++++++++++++++++++++++++++==")
+        when (eventWrapper.event.eventType) {
+            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
+                startAutoPost(result)
+            }
+
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+
+            }
+
+            AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
+
+            }
+
+            else -> {
+
+            }
+        }
+    }
+
+    fun startAutoPost(result: AnalyzeSourceResult){
+        if (!PreDataCenter.instance()
+                .getCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleBasketball)
+        ) {
+            return
+        }
+        Log.d(TAG, "startAutoPost: ++++++++++++++++++++++++++++++++++++++++++++++++++++++==")
         getCurPrePageMatchList(result, PostConfigData.ConfigType.SingleBasketball) { itemResults ->
             itemResults.forEach { itemResult ->
-                Log.d(TAG, "onWindowStatusChange: -----" + itemResult.nodes)
-                Log.d(TAG, "onWindowStatusChange: -------____________________________________________________")
-                if (itemResult.isCurItemTypeTimeFlags()) {
-                } else {
+                Log.d(TAG, "startAutoPost: parent ==" +  itemResult.parentNode)
+                Log.d(TAG, "startAutoPost: -----" + itemResult.nodes)
+                Log.d(
+                    TAG,
+                    "startAutoPost: -------____________________________________________________"
+                )
+            }
+            //默认点击第一个控件
+            if (itemResults.isNotEmpty()){
+                itemResults[0].parentNode?.let {
+                    Log.d(TAG, "startAutoPost: clickNode =" + it)
+                    it.bounds?.let { clickRect ->
+                        val aimRect = PreJumpUtils.instance().getCurItemRect(clickRect)
+                        aimRect.delayClickWithShowHighLight {
+                            Log.d(TAG, "startAutoPost: clickResult" + it)
+                        }
+                    }
+
                 }
             }
         }
-
-//        Log.d(TAG, "onWindowStatusChange: 单篮")
-//
-//        result.findNodeById(IDPrePostSingleBalls.id_single_league_list_rv).analyzeRecyclerView()?.apply {
-//            this.forEach {
-//                Log.d(TAG, "onWindowStatusChange: " + it.nodes)
-//                Log.d(TAG, "onWindowStatusChange: ------------------------------------------------------")
-//            }
-//        }
-
     }
 
     override fun onStart() {

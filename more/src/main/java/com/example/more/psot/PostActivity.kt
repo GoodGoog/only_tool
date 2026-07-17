@@ -18,6 +18,8 @@ import com.example.more.accessibility.requireAccessibility
 import com.example.more.accessibility.startApp
 import com.example.more.databinding.MoreActivityTouchBinding
 import com.example.more.databinding.MoreItemInitialConfigBinding
+import com.example.more.getScreenWidth
+import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -30,6 +32,9 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+
+        //获取屏幕宽度，在赛事列表选择页，点击Item时做高光显示
+        PreJumpUtils.instance().setWindowWidth(getScreenWidth(this))
 
         initUI()
         initRecyclerView()

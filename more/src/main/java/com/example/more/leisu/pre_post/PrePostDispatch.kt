@@ -37,12 +37,39 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         if (LeisuServiceCenter.instance().isAccessServiceConnect) {
             LiveEventBus.get<Int>(EventBusTag.TEST_PRE_POST_PAGE_SWITCH)
                 .observe(this) { pageIndex ->
+                    val result = LeisuServiceCenter.instance().result
                     PreDataCenter.instance()
                         .setCurPrePageAllowAutoPost(pageIndex.transToPostConfigType(), true)
                     PreJumpUtils.instance().jumpSubPage(
                         pageIndex.transToPostConfigType(),
-                        LeisuServiceCenter.instance().result
-                    ) { isSuccess -> }
+                        result
+                    ) { isSuccess ->
+                        //跳转成功，默认开始自动发布
+                        if (isSuccess) {
+                            when (pageIndex.transToPostConfigType()) {
+                                PostConfigData.ConfigType.SingleBasketball -> {
+                                    PreSingleBasketball.instance()
+                                        .startAutoPost(result)
+                                }
+
+                                PostConfigData.ConfigType.SingleFootball -> {
+                                    PreSingleFootball.instance()
+                                        .startAutoPost(result)
+                                }
+
+                                PostConfigData.ConfigType.MultiBasketball -> {
+                                    PreMultiBasketball.instance()
+                                        .startAutoPost(result)
+                                }
+
+                                PostConfigData.ConfigType.MultiFootball -> {
+                                    PreMultiFootball.instance()
+                                        .startAutoPost(result)
+                                }
+                            }
+
+                        }
+                    }
                 }
 
             LiveEventBus.get<Boolean>(EventBusTag.STOP_CUR_PAGE_POST)

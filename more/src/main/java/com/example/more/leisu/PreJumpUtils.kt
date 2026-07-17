@@ -51,6 +51,18 @@ class PreJumpUtils private constructor() {
     //默认实在足球-单关页面
     var curPageType = PostConfigData.ConfigType.SingleFootball
 
+    //当前赛事页面中Item俯容器ViewGroup的左右边界(left, right)
+    private var itemLeft = 20
+    private var itemRight = 20
+
+    fun setWindowWidth(windowWidth : Int){
+        itemRight = windowWidth - itemLeft
+    }
+
+    fun getCurItemRect(rect: Rect) : Rect{
+        return Rect(itemLeft,rect.top,itemRight,rect.bottom)
+    }
+
     fun jumpSubPage(
         type: PostConfigData.ConfigType,
         result: AnalyzeSourceResult,

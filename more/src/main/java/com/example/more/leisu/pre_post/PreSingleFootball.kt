@@ -1,10 +1,14 @@
 package com.example.more.leisu.pre_post
 
+import android.util.Log
+import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
+import com.example.more.leisu.getCurPrePageMatchList
+import com.example.more.leisu.isCurItemTypeTimeFlags
 
 class PreSingleFootball private constructor() : BaseLeisuDispatch(){
     companion object {
@@ -26,12 +30,48 @@ class PreSingleFootball private constructor() : BaseLeisuDispatch(){
     /**
      * 来这里的只有
      */
-    fun  onEventCome(eventWrapper: EventWrapper,result: AnalyzeSourceResult) {
-        if (!PreDataCenter.instance().getCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleFootball)) return
+    fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
 
-        //result.findNodeById(id_post_submit_button).click()
+        when (eventWrapper.event.eventType) {
+            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
+                startAutoPost(result)
+            }
 
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+
+            }
+
+            AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
+
+            }
+
+            else -> {
+
+            }
+        }
     }
+
+    fun startAutoPost(result: AnalyzeSourceResult){
+        if (!PreDataCenter.instance()
+                .getCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleFootball)
+        ) {
+            return
+        }
+        Log.d(TAG, "onWindowStatusChange: ++++++++++++++++++++++++++++++++++++++++++++++++++++++==")
+        getCurPrePageMatchList(result, PostConfigData.ConfigType.SingleFootball) { itemResults ->
+            itemResults.forEach { itemResult ->
+                Log.d(TAG, "onWindowStatusChange: -----" + itemResult.nodes)
+                Log.d(
+                    TAG,
+                    "onWindowStatusChange: -------____________________________________________________"
+                )
+                if (itemResult.isCurItemTypeTimeFlags()) {
+                } else {
+                }
+            }
+        }
+    }
+
 
     override fun onStart() {
 

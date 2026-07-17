@@ -196,6 +196,45 @@ fun NodeWrapper?.clickGestureWithResult(
 }
 
 /**
+ * 手势点击并回调结果
+ */
+fun Rect.clickGestureWithResult(
+    duration: Long = 200L,
+    clickResult: (Boolean) -> Unit
+) {
+    val x = ((left + right) / 2).toFloat()
+    val y = ((top + bottom) / 2).toFloat()
+    FastAccessibilityService.Companion.require.dispatchGesture(
+        GestureDescription.Builder().apply {
+            addStroke(
+                GestureDescription.StrokeDescription(
+                    Path().apply { moveTo(x, y) },
+                    0L,
+                    duration
+                )
+            )
+        }.build(), object : AccessibilityService.GestureResultCallback() {
+            override fun onCompleted(gestureDescription: GestureDescription?) {
+                super.onCompleted(gestureDescription)
+                //这里时异步调用，可能外部事件继续执行了，但是此处结果还没传出去导致报错
+                // 手势执行完成回调
+                clickResult(true)
+                Log.d(TAG, "onCompletedtttttttttt: success" + gestureDescription)
+            }
+
+            override fun onCancelled(gestureDescription: GestureDescription?) {
+                super.onCancelled(gestureDescription)
+                //回调点击失败结果
+                clickResult(false)
+                Log.d(TAG, "onCompletedtttttttttt: failure" + gestureDescription)
+            }
+
+        }, null
+    )
+}
+
+
+/**
  * performAction点击并回调结果
  */
 fun NodeWrapper?.clickPerformWithResult(
