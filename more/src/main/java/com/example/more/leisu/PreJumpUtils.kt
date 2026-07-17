@@ -40,19 +40,16 @@ class PreJumpUtils private constructor() {
         }
     }
 
-    //每次进入到专家主页，无论是外部进入|比赛选择页退出，都设置为true
-    //以至于下一次在信息列表选择页产生window_status_change事件时， 判断是否需要跳转至对应的子页面
-    //true 需要跳转, false反之
-    var hasJumpExpertHomeAction = true
-
-    //是否跳子页面被点击了
-    var isSubTitleClicked = false
+    //一次记录 篮球 足球  单关 串关 四类按钮的Rect
+    val jumpButtonRectArray = ArrayList<Rect>().apply {
+        add(Rect(0,0,0,0))
+        add(Rect(0,0,0,0))
+        add(Rect(0,0,0,0))
+        add(Rect(0,0,0,0))
+    }
 
     //默认实在足球-单关页面
     var curPageType = PostConfigData.ConfigType.SingleFootball
-
-    //每次跳转点击到串关或者单关时，允许VIEW_CLICKED接受一次text=单关||串关的事件，过滤无关点击
-    var isJumpClicked = false
 
     fun jumpSubPage(
         type: PostConfigData.ConfigType,
@@ -77,6 +74,10 @@ class PreJumpUtils private constructor() {
                 result.jump(result, TAB_TITLE_FOOTBALL, SUB_TAB_TITLE_MULTI, clickResult)
             }
         }
+    }
+
+    fun initPreJumpRect(result: AnalyzeSourceResult){
+
     }
 
     @OptIn(DelicateCoroutinesApi::class)

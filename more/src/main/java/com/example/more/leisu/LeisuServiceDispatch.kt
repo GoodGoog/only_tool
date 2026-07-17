@@ -56,10 +56,7 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         }
 
         if (isInExpertHomePage(result)) {
-            //在专家列表页
-            //设置下一次进入比赛选择页 会自动跳转 tab
-            PreJumpUtils.instance().hasJumpExpertHomeAction = true
-            Log.d(TAG, "taskDispatch: !!!!!!!!!在专家列表页")
+
         }
         if (isInPrePostPage(result)) {
             //在比赛信息选择页

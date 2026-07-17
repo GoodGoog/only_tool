@@ -3,28 +3,31 @@ package com.example.more.leisu.pre_post
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.leisu.BaseLeisuDispatch
+import com.example.more.leisu.data.PostConfigData
+import com.example.more.leisu.data.PreDataCenter
 
-class PreMultiBasketballBusiness private constructor(): BaseLeisuDispatch(){
+class PreMultiFootball private constructor(): BaseLeisuDispatch(){
     companion object {
 
-        private var instance: PreMultiBasketballBusiness? = null
+        private var instance: PreMultiFootball? = null
 
         // synchronized 保证多线程安全
         @Synchronized
-        fun instance(): PreMultiBasketballBusiness {
+        fun instance(): PreMultiFootball {
             if (instance == null) {
-                instance = PreMultiBasketballBusiness()
+                instance = PreMultiFootball()
             }
             return instance!!
         }
 
-        const val TAG = "PreMultiBasketballBusiness"
+        const val TAG = "PreMultiFootball"
     }
 
     /**
      * 来这里的只有
      */
-    fun  onWindowStatusChange(eventWrapper: EventWrapper,result: AnalyzeSourceResult) {
+    fun  onEventCome(eventWrapper: EventWrapper,result: AnalyzeSourceResult) {
+        if (!PreDataCenter.instance().getCurPrePageAllowAutoPost(PostConfigData.ConfigType.MultiFootball)) return
 
         //result.findNodeById(id_post_submit_button).click()
 

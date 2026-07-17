@@ -42,15 +42,15 @@
             android:layout_marginEnd="10dp"
             android:background="@color/bottom_line_bg_color" />
 
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:gravity="center"-->
-<!--            android:text="正在执行任务:"-->
-<!--            android:textColor="@color/global_text_color" />-->
+        <!--        <TextView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:layout_marginEnd="10dp"-->
+        <!--            android:gravity="center"-->
+        <!--            android:text="正在执行任务:"-->
+        <!--            android:textColor="@color/global_text_color" />-->
 
 
         <TextView
@@ -135,11 +135,11 @@
 
 
         <TextView
-            android:id="@+id/tv_start_post"
+            android:id="@+id/tv_stop_next_post"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:gravity="center"
-            android:text="→开始发布←"
+            android:text="→终止下次发布←"
             android:textColor="@color/global_text_color" />
 
 

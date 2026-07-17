@@ -31,7 +31,7 @@ class EventBusTag {
         const val TEST_PRE_POST_PAGE_SWITCH = "TEST_PRE_POST_PAGE_SWITCH"
 
         //开始发布
-        const val START_POST = "START_POST"
+        const val STOP_CUR_PAGE_POST = "STOP_CUR_PAGE_POST"
     }
 }
 

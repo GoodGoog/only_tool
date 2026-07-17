@@ -34,9 +34,9 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
         )
         addView(binding.root)
 
-        binding.tvStartPost.setOnClickListener {
+        binding.tvStopNextPost.setOnClickListener {
             if (isConnect){
-                LiveEventBus.get<Boolean>(EventBusTag.START_POST).post(true)
+                LiveEventBus.get<Boolean>(EventBusTag.STOP_CUR_PAGE_POST).post(true)
             }
         }
     }

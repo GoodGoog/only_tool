@@ -1,6 +1,7 @@
 package com.example.more.leisu.data
 
 import com.example.more.leisu.getWeekDayByCalendar
+import com.example.more.transToPostArrayIndex
 
 class PreDataCenter private constructor() {
     companion object {
@@ -22,6 +23,14 @@ class PreDataCenter private constructor() {
 
     //必须被强引用，否则切换app时可能被销毁
     var postArray = ArrayList<PostConfigData>()
+
+    //记录当前的版本是否允许发布
+    var isAllowAutoPostArray = ArrayList<Boolean>().apply {
+        add(false)
+        add(false)
+        add(false)
+        add(false)
+    }
 
     init {
         var defaultTimes = 0
@@ -140,5 +149,16 @@ class PreDataCenter private constructor() {
         return msg
     }
 
+    //设置当前页面徐云发布
+    fun setCurPrePageAllowAutoPost(type: PostConfigData.ConfigType,isAllowed : Boolean) {
+        //先所有页面归零
+        isAllowAutoPostArray.let {
+            for (i in 0 until it.size) it[i] = false
+        }
+        isAllowAutoPostArray[type.transToPostArrayIndex()] = isAllowed
+    }
+
+    //当前页面是否允许发布
+    fun getCurPrePageAllowAutoPost(type: PostConfigData.ConfigType) : Boolean = isAllowAutoPostArray[type.transToPostArrayIndex()]
 
 }
