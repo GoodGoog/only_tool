@@ -11,7 +11,7 @@ import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
-import com.example.more.leisu.delayClickAndShowHighLight
+import com.example.more.leisu.delayClickWithShowHighLight
 import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
 
@@ -95,11 +95,11 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
             }
         }
         //点击玩法
-        playNodeWrapper.delayClickAndShowHighLight { isSuccess ->
+        playNodeWrapper.delayClickWithShowHighLight { isSuccess ->
             if (isSuccess) {
                 //点击提交
                 rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {
-                    delayClickAndShowHighLight {
+                    delayClickWithShowHighLight {
                         if (it) {
                             PreDataCenter.instance()
                                 .postOneTime(PostConfigData.ConfigType.SingleFootball,getCurRemainCount(rootResult))

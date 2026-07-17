@@ -41,8 +41,9 @@ class ScrollUtils private constructor(){
      * 提前过滤无效滚动,避免消耗内存
      */
     fun isScrollInvalid(eventWrapper: EventWrapper) : ScrollDirection{
-        event = eventWrapper
-        val className = eventWrapper.event.source.transNodeInfoToNodeWrapper().className
+//        event = eventWrapper
+//        val className = eventWrapper.event.source.transNodeInfoToNodeWrapper().className
+        val className = eventWrapper.className
         // 2. 黑名单直接过滤横向容器
         if (horizontalKeyword.any { className.contains(it, ignoreCase = true) }) {
             curDirection = ScrollDirection.DirectionInvalid

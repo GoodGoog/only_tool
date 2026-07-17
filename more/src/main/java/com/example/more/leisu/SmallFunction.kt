@@ -108,7 +108,7 @@ fun Context.getPxFromDimens(resourceId: Int) =
  * 需要手势点击，不触发TYPE_VIEW_CLICKED
  */
 @OptIn(DelicateCoroutinesApi::class)
-fun NodeWrapper?.delayClickAndShowHighLight(
+fun NodeWrapper?.delayClickWithShowHighLight(
     gestureClick: Boolean = true,
     delayTime: Long = 1000,
     clickResult: ((Boolean) -> Unit)? = null

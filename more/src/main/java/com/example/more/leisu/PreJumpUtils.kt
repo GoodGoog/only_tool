@@ -102,7 +102,7 @@ class PreJumpUtils private constructor() {
         //篮球/足球控件被设置clickable = → false,故点击蓝球/足球，其本身TextView不响应事件，并将事件传递给了父视图RelativeLayout
         //只要最终有控件响应了点击事件，最终都会触发TYPE_VIEW_CLICKED，只不过此时event.source[点击事件响应按钮]为篮球/足球的父视图RelativeLayout
         //不论手势点击还是perAction，最终都会触发TYPE_VIEW_CLICKED
-        findNodeByText(title).delayClickAndShowHighLight(false) { isTitleClickSuccess ->
+        findNodeByText(title).delayClickWithShowHighLight(false) { isTitleClickSuccess ->
             if (!isTitleClickSuccess) {
                 Log.d("跳转页点击结果111", "jump: ${title}事件点击失败了")
                 clickResult.invoke(false)
@@ -138,7 +138,7 @@ class PreJumpUtils private constructor() {
                     }
             }
             aimNode?.let { lastNode ->
-                lastNode.delayClickAndShowHighLight(false) { isSubTitleClickSuccess ->
+                lastNode.delayClickWithShowHighLight(false) { isSubTitleClickSuccess ->
                     if (!isSubTitleClickSuccess) {
                         Log.d("跳转页点击结果222", "jump: ${subTitle}事件点击失败了")
                         clickResult.invoke(false)
