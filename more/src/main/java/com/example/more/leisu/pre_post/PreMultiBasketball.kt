@@ -52,7 +52,7 @@ class PreMultiBasketball private constructor(): BaseLeisuDispatch(){
     }
 
     fun startAutoPost(result: AnalyzeSourceResult){
-        if (!PreDataCenter.instance().getCurPrePageAllowAutoPost(PostConfigData.ConfigType.MultiBasketball)) return
+        if (!PreDataCenter.instance().isCurPrePageAllowAutoPost(PostConfigData.ConfigType.MultiBasketball)) return
         getCurPrePageMatchList(result, PostConfigData.ConfigType.MultiBasketball) { itemResults ->
             itemResults.forEach { itemResult ->
                 if (itemResult.isCurItemTypeTimeFlags()) {

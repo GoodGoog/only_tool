@@ -54,7 +54,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
 
     fun startAutoPost(result: AnalyzeSourceResult) {
         if (!PreDataCenter.instance()
-                .getCurPrePageAllowAutoPost(PostConfigData.ConfigType.MultiFootball)
+                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.MultiFootball)
         ) return
         Log.d(TAG, "onWindowStatusChange: ++++++++++++++++++++++++++++++++++++++++++++++++++++++==")
         getCurPrePageMatchList(result, PostConfigData.ConfigType.MultiFootball) { itemResults ->

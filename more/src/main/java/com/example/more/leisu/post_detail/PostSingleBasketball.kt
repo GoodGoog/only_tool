@@ -1,5 +1,6 @@
 package com.example.more.leisu.post_detail
 
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
@@ -36,9 +37,12 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
     }
 
     fun onTaskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+//        if (!PreDataCenter.instance()
+//                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleBasketball)
+//        ) return
         when (wrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                onWindowStateChange(result)
+                startAutoPost(result)
             }
 
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
@@ -53,10 +57,9 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
             }
         }
-
     }
 
-    fun onWindowStateChange(result: AnalyzeSourceResult) {
+    fun startAutoPost(result: AnalyzeSourceResult) {
         getCurRemainCount(result).let {
             if (it == 0) {
                 //无剩余发布次数
@@ -69,13 +72,13 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             .let { results ->
                 if (results.isNotEmpty()) {
                     //默认执行第一种玩法
-                    onAnalysePlayType(result,results[0])
+                    analysePlayType(result, results[0])
                 }
             }
     }
 
     //解析选中的玩法
-    fun onAnalysePlayType(rootResult: AnalyzeSourceResult,itemResult: AnalyzeSourceResult) {
+    fun analysePlayType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
         val itemTitle =
             itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
         val playNodeWrapper = when (itemTitle) {
@@ -94,6 +97,8 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
         }
         //点击玩法
         playNodeWrapper.delayClickWithShowHighLight { isSuccess ->
+            Log.d(TAG, "analysePlayType: isSuccess" + isSuccess)
+            Log.d(TAG, "analysePlayType: node ===" + playNodeWrapper)
             if (isSuccess) {
                 //点击提交
                 rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {

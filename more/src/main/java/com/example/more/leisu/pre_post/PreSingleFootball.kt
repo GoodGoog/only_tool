@@ -53,7 +53,7 @@ class PreSingleFootball private constructor() : BaseLeisuDispatch(){
 
     fun startAutoPost(result: AnalyzeSourceResult){
         if (!PreDataCenter.instance()
-                .getCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleFootball)
+                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleFootball)
         ) {
             return
         }

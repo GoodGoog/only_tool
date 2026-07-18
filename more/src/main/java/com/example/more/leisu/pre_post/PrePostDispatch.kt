@@ -45,6 +45,10 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
                         result
                     ) { isSuccess ->
                         //跳转成功，默认开始自动发布
+                        ////////////////////////////////////////////////////////////////////////测试
+                        //return@jumpSubPage
+
+
                         if (isSuccess) {
                             when (pageIndex.transToPostConfigType()) {
                                 PostConfigData.ConfigType.SingleBasketball -> {
@@ -67,7 +71,6 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
                                         .startAutoPost(result)
                                 }
                             }
-
                         }
                     }
                 }

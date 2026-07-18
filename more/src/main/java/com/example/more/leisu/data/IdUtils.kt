@@ -88,7 +88,7 @@ class IDPrePostHeader {
 /**
  * 赛事选择页 ---单关赛事选择
  */
-class IDPrePostSingleBalls {
+class IDPrePostSingleBall {
     companion object {
         //三2.足/蓝球的单关页
 

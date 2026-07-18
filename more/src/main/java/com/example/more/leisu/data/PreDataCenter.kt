@@ -85,43 +85,15 @@ class PreDataCenter private constructor() {
 
     //发布了一次
     fun postOneTime(type: PostConfigData.ConfigType, remainCount: Int) {
-        doInAimData(type) { data, i ->
-//            if (data.postTimes - 1 == 0) postArray.removeAt(i)
-//            else postArray[i].postTimes -= 1
-            postArray[i].apply {
-                postTimes = remainCount - 1
-                if (postTimes <= 0) isPost = false
-            }
-        }
-    }
-
-    fun getCurIsFree(type: PostConfigData.ConfigType): Boolean {
-        var isFree = true
-        doInAimData(type) { data, i ->
-            isFree = data.isFree
-        }
-        return isFree
-    }
-
-    fun doInAimData(
-        type: PostConfigData.ConfigType,
-        doInAim: ((PostConfigData, Int) -> Unit)? = null
-    ) {
-        postArray.forEachIndexed { index, it ->
-            if (it.type == type) {
-                doInAim?.invoke(it, index)
-            }
+        postArray[type.transToPostArrayIndex()].apply {
+            postTimes = remainCount - 1
+            //如果已无剩余发布次数，则禁止发布
+            if (postTimes <= 0) isPost = false
         }
     }
 
     //获取当前正在发布的信息
-    fun getCurPostData(type: PostConfigData.ConfigType): PostConfigData? {
-        var curData: PostConfigData? = null
-        doInAimData(type) { data, i ->
-            curData = data
-        }
-        return curData
-    }
+    fun getCurPostingData(type: PostConfigData.ConfigType) = postArray[type.transToPostArrayIndex()]
 
     //过滤需要发布的数据
     fun filterUselessPostInfo(hasData: (Boolean) -> Unit) {
@@ -138,7 +110,7 @@ class PreDataCenter private constructor() {
     }
 
     //打印当前信息校验
-    fun printMsg(isPostArray: Boolean): String {
+    fun getPrintMsg(isPostArray: Boolean): String {
         var msg = ""
         val aimArray = if (isPostArray) postArray else initialArray
         aimArray.forEach {
@@ -150,7 +122,7 @@ class PreDataCenter private constructor() {
     }
 
     //设置当前页面徐云发布
-    fun setCurPrePageAllowAutoPost(type: PostConfigData.ConfigType,isAllowed : Boolean) {
+    fun setCurPrePageAllowAutoPost(type: PostConfigData.ConfigType, isAllowed: Boolean) {
         //先所有页面归零
         isAllowAutoPostArray.let {
             for (i in 0 until it.size) it[i] = false
@@ -159,6 +131,10 @@ class PreDataCenter private constructor() {
     }
 
     //当前页面是否允许发布
-    fun getCurPrePageAllowAutoPost(type: PostConfigData.ConfigType) : Boolean = isAllowAutoPostArray[type.transToPostArrayIndex()]
+    fun isCurPrePageAllowAutoPost(type: PostConfigData.ConfigType): Boolean {
+        type.transToPostArrayIndex().let { pageIndex ->
+            return !(!postArray[pageIndex].isPost || !isAllowAutoPostArray[pageIndex] || postArray[pageIndex].postTimes <= 0)
+        }
+    }
 
 }

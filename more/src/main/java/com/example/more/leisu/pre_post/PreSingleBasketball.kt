@@ -4,13 +4,10 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
-import com.example.more.accessibility.findNodeById
-import com.example.more.accessibility.findNodesById
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
-import com.example.more.leisu.delayClickAndShowHighLight
 import com.example.more.leisu.delayClickWithShowHighLight
 import com.example.more.leisu.getCurPrePageMatchList
 
@@ -57,7 +54,7 @@ class PreSingleBasketball private constructor() : BaseLeisuDispatch() {
 
     fun startAutoPost(result: AnalyzeSourceResult){
         if (!PreDataCenter.instance()
-                .getCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleBasketball)
+                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleBasketball)
         ) {
             return
         }

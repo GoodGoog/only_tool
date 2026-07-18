@@ -2,7 +2,9 @@ package com.example.more.leisu
 
 import android.content.Context
 import android.graphics.Rect
+import android.os.Build
 import android.util.TypedValue
+import androidx.annotation.RequiresApi
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.NodeWrapper
@@ -19,6 +21,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import kotlin.random.Random
 
@@ -257,7 +261,6 @@ fun Rect.delayClickWithShowHighLight(
 }
 
 
-
 fun Int.transToPostConfigType(): PostConfigData.ConfigType {
     return when (this) {
         0 -> {
@@ -296,4 +299,21 @@ fun PostConfigData.ConfigType.transToPostArrayIndex(): Int {
             3
         }
     }
+}
+
+/**
+ * 判断发布时间是否合法
+ * 当前时间不能大于比赛开始时间 07/18 11：00
+ */
+fun isPostTimeLegal(startTime: String) {
+    val start = startTime.split("/", " ")
+    //val curTimes = getCurrentTime()
+}
+
+/**
+ * 获取当前为周几
+ */
+@RequiresApi(Build.VERSION_CODES.O)
+fun getCurrentTime(): String {
+    return LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd HH:mm"))
 }

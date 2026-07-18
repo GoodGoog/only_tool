@@ -88,10 +88,6 @@ class PreJumpUtils private constructor() {
         }
     }
 
-    fun initPreJumpRect(result: AnalyzeSourceResult){
-
-    }
-
     @OptIn(DelicateCoroutinesApi::class)
     fun AnalyzeSourceResult.jump(
         result: AnalyzeSourceResult,
