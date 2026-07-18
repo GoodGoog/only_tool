@@ -15,6 +15,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+import kotlin.random.nextInt
 
 /**
  * Author: CoderPig
@@ -202,6 +203,8 @@ fun Rect.clickGestureWithResult(
     duration: Long = 200L,
     clickResult: (Boolean) -> Unit
 ) {
+    //让点击时长浮动
+    val aimDuration = duration + Random.nextInt(40)
     val x = ((left + right) / 2).toFloat()
     val y = ((top + bottom) / 2).toFloat()
     FastAccessibilityService.Companion.require.dispatchGesture(
@@ -210,7 +213,7 @@ fun Rect.clickGestureWithResult(
                 GestureDescription.StrokeDescription(
                     Path().apply { moveTo(x, y) },
                     0L,
-                    duration
+                    aimDuration
                 )
             )
         }.build(), object : AccessibilityService.GestureResultCallback() {

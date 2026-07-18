@@ -3,7 +3,9 @@ package com.example.more.leisu
 import android.content.Context
 import android.graphics.Rect
 import android.os.Build
+import android.util.Log
 import android.util.TypedValue
+import android.view.accessibility.AccessibilityEvent
 import androidx.annotation.RequiresApi
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
@@ -21,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -110,6 +113,7 @@ fun Context.getPxFromDimens(resourceId: Int) =
  * 为避免连续模拟点击过快，影响数据显示,故在延时实现点击
  * 点击时给被点击区域实现高光
  * 需要手势点击，不触发TYPE_VIEW_CLICKED
+ * 临近页面切换时，尽量不适用手势切换，否则可能导致页面已经切换了才点击，导致点击失败
  */
 @OptIn(DelicateCoroutinesApi::class)
 fun NodeWrapper?.delayClickWithShowHighLight(
@@ -303,17 +307,46 @@ fun PostConfigData.ConfigType.transToPostArrayIndex(): Int {
 
 /**
  * 判断发布时间是否合法
- * 当前时间不能大于比赛开始时间 07/18 11：00
+ * 当前时间不能大于比赛开始时间 07/18 11:00
  */
-fun isPostTimeLegal(startTime: String) {
-    val start = startTime.split("/", " ")
-    //val curTimes = getCurrentTime()
+fun isPostTimeLegal(startText: String): Boolean {
+    if (startText.isEmpty()) return false
+    val curYears = "2026"
+    val startTime = "$curYears/$startText"
+    val curTime = curYears + "/" + getCurrentTime()
+
+    return compareYMdHmTime(startTime,curTime)
+}
+/**
+ * 比较两个 MM/dd HH:mm 格式时间
+ * @return -1：time1更早，0：相等，1：time1更晚
+ */
+fun compareYMdHmTime(time1: String, time2: String): Boolean {
+    val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm")
+    val cal1 = Calendar.getInstance()
+    val cal2 = Calendar.getInstance()
+
+    cal1.time = sdf.parse(time1)
+    cal2.time = sdf.parse(time2)
+
+// 对比时间戳
+    return cal1.timeInMillis > cal2.timeInMillis
 }
 
 /**
  * 获取当前为周几
  */
-@RequiresApi(Build.VERSION_CODES.O)
 fun getCurrentTime(): String {
-    return LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd HH:mm"))
+    val calendar = Calendar.getInstance()
+    val sdf = SimpleDateFormat("MM/dd HH:mm")
+    return sdf.format(calendar.time)
+}
+
+fun Int.transAccessibilityEventToString(): String{
+   return when(this){
+        AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> "TYPE_WINDOW_STATE_CHANGED"
+        AccessibilityEvent.TYPE_VIEW_CLICKED -> "TYPE_VIEW_CLICKED"
+        AccessibilityEvent.TYPE_VIEW_SCROLLED -> "TYPE_VIEW_SCROLLED"
+        else -> "else"
+    }
 }

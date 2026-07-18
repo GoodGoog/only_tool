@@ -1,6 +1,7 @@
 package com.example.more.leisu
 
 import android.util.Log
+import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.blankOrThis
@@ -44,17 +45,17 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
      */
     //业务分发
     fun taskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        //每五百ms只接收一次
-        if (!isReceiptable){
-            return
-        }else{
-            isReceiptable = false
-        }
-        GlobalScope.launch(Dispatchers.IO) {
-            delay(minSeparatorTime.toLong())
-            isReceiptable = true
-        }
-
+        //每五百ms只接收一次 目前只关注窗口状态改变
+//        if (!isReceiptable) {
+//            return
+//        } else {
+//            isReceiptable = false
+//        }
+//        GlobalScope.launch(Dispatchers.IO) {
+//            delay(minSeparatorTime.toLong())
+//            isReceiptable = true
+//        }
+//
         if (isInExpertHomePage(result)) {
 
         }
@@ -64,13 +65,13 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         }
         if (isInPostSinglePage(result)) {
             //在单关发布页
-            if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleFootball){
+            if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleFootball) {
                 //单关足球-发布页
-                PostSingleFootball.instance().onTaskDispatch(wrapper,result)
+                PostSingleFootball.instance().onTaskDispatch(wrapper, result)
             }
-            if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleBasketball){
+            if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleBasketball) {
                 //单关篮球-发布页
-                PostSingleBasketball.instance().onTaskDispatch(wrapper,result)
+                PostSingleBasketball.instance().onTaskDispatch(wrapper, result)
             }
             //PostFreeSingleBusiness(wrapper, result).execute()
         }

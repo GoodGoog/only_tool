@@ -21,8 +21,9 @@ abstract class FastAccessibilityService : AccessibilityService() {
         val appContext get() = _appContext ?: throw NullPointerException("需要在Application的onCreate()中调用init()")
         lateinit var specificServiceClass: Class<*> // 具体无障碍服务实现类的类类型
         private var listenEventTypeList = arrayListOf(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
-            AccessibilityEvent.TYPE_VIEW_CLICKED,
-            AccessibilityEvent.TYPE_VIEW_SCROLLED) // 监听的event类型列表
+            AccessibilityEvent.TYPE_VIEW_CLICKED
+            //,AccessibilityEvent.TYPE_VIEW_SCROLLED
+        ) // 监听的event类型列表
         val currentEvent get() = instance?.currentEventWrapper  // 获取当前Event
 
         /**

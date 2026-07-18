@@ -15,6 +15,7 @@ import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.delayClickWithShowHighLight
 import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
+import com.example.more.leisu.transAccessibilityEventToString
 
 class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
@@ -37,6 +38,7 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
     }
 
     fun onTaskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+        Log.d(TAG, "onTaskDispatch: --------------------" + wrapper.eventType.transAccessibilityEventToString())
 //        if (!PreDataCenter.instance()
 //                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleBasketball)
 //        ) return
@@ -60,12 +62,7 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
     }
 
     fun startAutoPost(result: AnalyzeSourceResult) {
-        getCurRemainCount(result).let {
-            if (it == 0) {
-                //无剩余发布次数
-                return
-            }
-        }
+        Log.d(TAG, "startAutoPost: -----------------------")
         //解析rv子视图
         result.findNodeById(IDPostDoubleSingle.id_single_post_player_detail_action)
             .analyzeRecyclerView()
@@ -79,6 +76,7 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
     //解析选中的玩法
     fun analysePlayType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
+        Log.d(TAG, "analysePlayType: --------------------")
         val itemTitle =
             itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
         val playNodeWrapper = when (itemTitle) {
@@ -96,18 +94,19 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             }
         }
         //点击玩法
-        playNodeWrapper.delayClickWithShowHighLight { isSuccess ->
-            Log.d(TAG, "analysePlayType: isSuccess" + isSuccess)
+        playNodeWrapper.delayClickWithShowHighLight(gestureClick = false) { isSuccess ->
+            Log.d(TAG, "analysePlayType: playType --- isSuccess" + isSuccess)
             Log.d(TAG, "analysePlayType: node ===" + playNodeWrapper)
             if (isSuccess) {
                 //点击提交
                 rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {
-                    delayClickWithShowHighLight {
-                        if (it) {
-                            PreDataCenter.instance()
-                                .postOneTime(PostConfigData.ConfigType.SingleBasketball,getCurRemainCount(rootResult))
-                        }
-                    }
+                    Log.d(TAG, "analysePlayType: submit" + this)
+//                    delayClickWithShowHighLight {
+//                        if (it) {
+//                            PreDataCenter.instance()
+//                                .postOneTime(PostConfigData.ConfigType.SingleBasketball,getCurRemainCount(rootResult))
+//                        }
+//                    }
                 }
             }
         }
