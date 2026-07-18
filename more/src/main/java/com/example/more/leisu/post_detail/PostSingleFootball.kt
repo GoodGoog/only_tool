@@ -1,5 +1,6 @@
 package com.example.more.leisu.post_detail
 
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
@@ -14,6 +15,7 @@ import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.delayClickWithShowHighLight
 import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
+import com.example.more.leisu.transAccessibilityEventToString
 
 class PostSingleFootball private constructor() : BaseLeisuDispatch() {
 
@@ -36,11 +38,14 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
         const val TAG = "PostFreeSingleFootball"
     }
 
-
     fun onTaskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+        Log.d(TAG, "onTaskDispatch: --------------------" + wrapper.eventType.transAccessibilityEventToString())
+        if (!PreDataCenter.instance()
+                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleFootball)
+        ) return
         when (wrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                onWindowStateChange(result)
+                startAutoPost(result)
             }
 
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
@@ -55,29 +60,24 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
 
             }
         }
-
     }
 
-    fun onWindowStateChange(result: AnalyzeSourceResult) {
-        getCurRemainCount(result).let {
-            if (it == 0) {
-                //无剩余发布次数
-                return
-            }
-        }
+    fun startAutoPost(result: AnalyzeSourceResult) {
+        Log.d(TAG, "startAutoPost: -----------------------")
         //解析rv子视图
         result.findNodeById(IDPostDoubleSingle.id_single_post_player_detail_action)
             .analyzeRecyclerView()
             .let { results ->
                 if (results.isNotEmpty()) {
                     //默认执行第一种玩法
-                    onAnalysePlayType(result,results[0])
+                    analysePlayType(result, results[0])
                 }
             }
     }
 
     //解析选中的玩法
-    fun onAnalysePlayType(rootResult: AnalyzeSourceResult,itemResult: AnalyzeSourceResult) {
+    fun analysePlayType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
+        Log.d(TAG, "analysePlayType: --------------------")
         val itemTitle =
             itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
         val playNodeWrapper = when (itemTitle) {
@@ -95,17 +95,20 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
             }
         }
         //点击玩法
-        playNodeWrapper.delayClickWithShowHighLight { isSuccess ->
+        playNodeWrapper.delayClickWithShowHighLight(gestureClick = false) { isSuccess ->
+            Log.d(TAG, "analysePlayType: playType --- isSuccess" + isSuccess)
+            Log.d(TAG, "analysePlayType: node ===" + playNodeWrapper)
             if (isSuccess) {
                 //点击提交
-                rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {
-                    delayClickWithShowHighLight {
-                        if (it) {
-                            PreDataCenter.instance()
-                                .postOneTime(PostConfigData.ConfigType.SingleFootball,getCurRemainCount(rootResult))
-                        }
-                    }
-                }
+//                rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {
+//                    Log.d(TAG, "analysePlayType: submit" + this)
+//                    delayClickWithShowHighLight {
+//                        if (it) {
+//                            PreDataCenter.instance()
+//                                .postOneTime(PostConfigData.ConfigType.SingleFootball,getCurRemainCount(rootResult))
+//                        }
+//                    }
+//                }
             }
         }
     }

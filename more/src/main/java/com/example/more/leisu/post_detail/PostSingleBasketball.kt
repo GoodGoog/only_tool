@@ -39,9 +39,9 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
     fun onTaskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
         Log.d(TAG, "onTaskDispatch: --------------------" + wrapper.eventType.transAccessibilityEventToString())
-//        if (!PreDataCenter.instance()
-//                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleBasketball)
-//        ) return
+        if (!PreDataCenter.instance()
+                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleFootball)
+        ) return
         when (wrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 startAutoPost(result)
@@ -99,15 +99,15 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             Log.d(TAG, "analysePlayType: node ===" + playNodeWrapper)
             if (isSuccess) {
                 //点击提交
-                rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {
-                    Log.d(TAG, "analysePlayType: submit" + this)
+//                rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {
+//                    Log.d(TAG, "analysePlayType: submit" + this)
 //                    delayClickWithShowHighLight {
 //                        if (it) {
 //                            PreDataCenter.instance()
 //                                .postOneTime(PostConfigData.ConfigType.SingleBasketball,getCurRemainCount(rootResult))
 //                        }
 //                    }
-                }
+//                }
             }
         }
     }
