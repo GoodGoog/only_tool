@@ -104,6 +104,19 @@
                     android:text="打开雷速"
                     android:textColor="@color/global_text_color" />
 
+                <TextView
+                    android:id="@+id/tv_test_zhipu"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_layout_container_radius"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:text="测试质谱ai"
+                    android:textColor="@color/global_text_color" />
+
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="20dp"

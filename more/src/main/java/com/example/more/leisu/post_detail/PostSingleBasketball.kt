@@ -11,11 +11,13 @@ import com.example.more.accessibility.findNodeById
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.data.PostConfigData
+import com.example.more.leisu.data.PostDataCenter
 import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.delayClickWithShowHighLight
 import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
 import com.example.more.leisu.transAccessibilityEventToString
+import com.example.more.leisu.transToPostArrayIndex
 
 class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
@@ -37,10 +39,15 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
         const val TAG = "PostFreeBasketball"
     }
 
+    val curType = PostConfigData.ConfigType.SingleBasketball
+
     fun onTaskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        Log.d(TAG, "onTaskDispatch: --------------------" + wrapper.eventType.transAccessibilityEventToString())
+        Log.d(
+            TAG,
+            "onTaskDispatch: --------------------" + wrapper.eventType.transAccessibilityEventToString()
+        )
         if (!PreDataCenter.instance()
-                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleFootball)
+                .isCurPrePageAllowAutoPost(curType)
         ) return
         when (wrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
@@ -69,13 +76,17 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             .let { results ->
                 if (results.isNotEmpty()) {
                     //默认执行第一种玩法
-                    analysePlayType(result, results[0])
+                    if (getCurIsFreePost()) {
+                        doFreePost(result, results[0])
+                    }else{
+                        doNotFreePost(result, results[0])
+                    }
                 }
             }
     }
 
-    //解析选中的玩法
-    fun analysePlayType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
+    //免费
+    fun doFreePost(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
         Log.d(TAG, "analysePlayType: --------------------")
         val itemTitle =
             itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
@@ -112,6 +123,42 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
         }
     }
 
+    //收费
+    fun doNotFreePost(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
+        val itemTitle =
+            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
+        val playNodeWrapper = when (itemTitle) {
+            PLAY_TYPE_HANDICAP -> {
+                //让分玩法
+                getHandicapPlayTypeNodeWrapper(itemResult)
+            }
+
+            PLAY_TYPE_TOTAL_SCORE -> {
+                getTotalScorePlayTypeNodeWrapper(itemResult)
+            }
+
+            else -> {
+                null
+            }
+        }
+        //点击玩法
+        playNodeWrapper.delayClickWithShowHighLight(gestureClick = false) { isSuccess ->
+            Log.d(TAG, "analysePlayType: playType --- isSuccess" + isSuccess)
+            Log.d(TAG, "analysePlayType: node ===" + playNodeWrapper)
+            if (isSuccess) {
+                //点击提交
+//                rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {
+//                    Log.d(TAG, "analysePlayType: submit" + this)
+//                    delayClickWithShowHighLight {
+//                        if (it) {
+//                            PreDataCenter.instance()
+//                                .postOneTime(PostConfigData.ConfigType.SingleBasketball,getCurRemainCount(rootResult))
+//                        }
+//                    }
+//                }
+            }
+        }
+    }
 
     /**
      * 让分玩法
@@ -141,9 +188,8 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
     fun getCurRemainCount(result: AnalyzeSourceResult) =
         result.findNodeById(IDPostDoubleSingle.id_single_post_today_remains_times)?.text.filterNumberOrZero()
 
-    fun getCurIsFree() {
-
-    }
+    fun getCurIsFreePost() =
+        PreDataCenter.instance().postArray[curType.transToPostArrayIndex()].isFree
 
     override fun onStart() {
 
