@@ -1,24 +1,17 @@
 package com.example.more.leisu
 
-import android.util.Log
-import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.findNodesByExpression
-import com.example.more.leisu.data.IDPostDoubleSingle
 import com.example.more.leisu.data.IDPostMultiDouble
+import com.example.more.leisu.data.IDPostSingleCommonId
 import com.example.more.leisu.data.IDPrePostHeader
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.post_detail.PostSingleBasketball
 import com.example.more.leisu.post_detail.PostSingleFootball
 import com.example.more.leisu.pre_post.PrePostDispatch
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
     companion object {
@@ -100,8 +93,8 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
      */
     fun isInPostSinglePage(result: AnalyzeSourceResult): Boolean {
         val remains =
-            result.findNodeById(IDPostDoubleSingle.id_single_post_today_remains_times)?.text.blankOrThis()
-        val analyzeEt = result.findNodeById(IDPostDoubleSingle.id_single_post_analyse_edit)
+            result.findNodeById(IDPostSingleCommonId.id_single_post_today_remains_times)?.text.blankOrThis()
+        val analyzeEt = result.findNodeById(IDPostSingleCommonId.id_single_post_analyse_edit)
         return remains.isNotEmpty() && analyzeEt != null
     }
 

@@ -2,11 +2,8 @@ package com.example.more.leisu
 
 import android.content.Context
 import android.graphics.Rect
-import android.os.Build
-import android.util.Log
 import android.util.TypedValue
 import android.view.accessibility.AccessibilityEvent
-import androidx.annotation.RequiresApi
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.NodeWrapper
@@ -14,6 +11,7 @@ import com.example.more.accessibility.analyzeRecyclerView
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.clickGestureWithResult
 import com.example.more.accessibility.clickPerformWithResult
+import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.findNodesById
 import com.example.more.leisu.data.IDPrePostHeader
 import com.example.more.leisu.data.PostConfigData
@@ -24,8 +22,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import kotlin.random.Random
 
@@ -349,4 +345,11 @@ fun Int.transAccessibilityEventToString(): String{
         AccessibilityEvent.TYPE_VIEW_SCROLLED -> "TYPE_VIEW_SCROLLED"
         else -> "else"
     }
+}
+
+/**
+ * 通过result和tv的id,获取节点的text
+ */
+fun AnalyzeSourceResult.getTextById(tvId : String): String {
+    return findNodeById(tvId)?.text.blankOrThis()
 }

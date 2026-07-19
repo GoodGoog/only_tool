@@ -64,7 +64,6 @@ class PreSingleBasketball private constructor() : BaseLeisuDispatch() {
         }
         Log.d(TAG, "startAutoPost: ++++++++++++++++++++++++++++++++++++++++++++++++++++++==")
         getCurPrePageMatchList(result, PostConfigData.ConfigType.SingleBasketball) { itemResults ->
-
             //默认点击第一个 时间合法的控件
             run {
                 itemResults.forEach { itemResult ->

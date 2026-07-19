@@ -9,7 +9,7 @@ import com.example.more.accessibility.analyzeRecyclerView
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.leisu.BaseLeisuDispatch
-import com.example.more.leisu.data.IDPostDoubleSingle
+import com.example.more.leisu.data.IDPostFootballSingle
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.delayClickWithShowHighLight
@@ -65,7 +65,7 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     fun startAutoPost(result: AnalyzeSourceResult) {
         Log.d(TAG, "startAutoPost: -----------------------")
         //解析rv子视图
-        result.findNodeById(IDPostDoubleSingle.id_single_post_player_detail_action)
+        result.findNodeById(IDPostFootballSingle.id_single_post_player_detail_action)
             .analyzeRecyclerView()
             .let { results ->
                 if (results.isNotEmpty()) {
@@ -79,7 +79,7 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     fun analysePlayType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
         Log.d(TAG, "analysePlayType: --------------------")
         val itemTitle =
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
+            itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
         val playNodeWrapper = when (itemTitle) {
             PLAY_TYPE_HANDICAP -> {
                 //让分玩法
@@ -100,7 +100,7 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
             Log.d(TAG, "analysePlayType: node ===" + playNodeWrapper)
             if (isSuccess) {
                 //点击提交
-//                rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {
+//                rootResult.findNodeById(IDPostFootballSingle.id_single_post_submit_button).apply {
 //                    Log.d(TAG, "analysePlayType: submit" + this)
 //                    delayClickWithShowHighLight {
 //                        if (it) {
@@ -120,9 +120,9 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     fun getHandicapPlayTypeNodeWrapper(itemResult: AnalyzeSourceResult): NodeWrapper? {
         //随机选择胜利
         return if (getRandomInt() % 2 == 0) {
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_left_layout_container)
+            itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_left_layout_container)
         } else {
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_right_layout_container)
+            itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_right_layout_container)
         }
     }
 
@@ -132,15 +132,15 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     fun getTotalScorePlayTypeNodeWrapper(itemResult: AnalyzeSourceResult): NodeWrapper? {
         //随机选择胜利
         return if (getRandomInt() % 2 == 0) {
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_left_layout_container)
+            itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_left_layout_container)
         } else {
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_right_layout_container)
+            itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_right_layout_container)
         }
     }
 
 
     fun getCurRemainCount(result: AnalyzeSourceResult) =
-        result.findNodeById(IDPostDoubleSingle.id_single_post_today_remains_times)?.text.filterNumberOrZero()
+        result.findNodeById(IDPostFootballSingle.id_single_post_today_remains_times)?.text.filterNumberOrZero()
 
     fun getCurIsFree() {
 

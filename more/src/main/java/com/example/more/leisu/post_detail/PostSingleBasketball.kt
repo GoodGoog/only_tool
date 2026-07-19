@@ -4,18 +4,19 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
-import com.example.more.accessibility.NodeWrapper
 import com.example.more.accessibility.analyzeRecyclerView
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.leisu.BaseLeisuDispatch
-import com.example.more.leisu.data.IDPostDoubleSingle
+import com.example.more.leisu.data.IDPostBasketballSingle
 import com.example.more.leisu.data.PostConfigData
-import com.example.more.leisu.data.PostDataCenter
+import com.example.more.leisu.data.PostSingleBasketBallHandicapTypeData
+import com.example.more.leisu.data.PostSingleBasketBallTotalScoreTypeData
 import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.delayClickWithShowHighLight
 import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
+import com.example.more.leisu.getTextById
 import com.example.more.leisu.transAccessibilityEventToString
 import com.example.more.leisu.transToPostArrayIndex
 
@@ -46,6 +47,7 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             TAG,
             "onTaskDispatch: --------------------" + wrapper.eventType.transAccessibilityEventToString()
         )
+        Log.d(TAG, "onTaskDispatch: result ==" + result.nodes)
         if (!PreDataCenter.instance()
                 .isCurPrePageAllowAutoPost(curType)
         ) return
@@ -71,33 +73,101 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
     fun startAutoPost(result: AnalyzeSourceResult) {
         Log.d(TAG, "startAutoPost: -----------------------")
         //解析rv子视图
-        result.findNodeById(IDPostDoubleSingle.id_single_post_player_detail_action)
+        result.findNodeById(IDPostBasketballSingle.id_single_post_player_detail_action)
             .analyzeRecyclerView()
-            .let { results ->
-                if (results.isNotEmpty()) {
+            .let { itemResults ->
+                itemResults.forEach {
+                    Log.d(TAG, "startAutoPost: ||||||||||||||||||||||||" + it)
+                    Log.d(TAG, "startAutoPost: ------------------------------------------------")
+                }
+                if (itemResults.isNotEmpty()) {
                     //默认执行第一种玩法
                     if (getCurIsFreePost()) {
-                        doFreePost(result, results[0])
-                    }else{
-                        doNotFreePost(result, results[0])
+                        doFreePost(result, itemResults[0])
+                    } else {
+                        doNotFreePost(result, itemResults[0])
                     }
                 }
             }
+    }
+
+
+    //收费
+    fun doNotFreePost(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
+        val itemTitle =
+            itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
+        when (itemTitle) {
+            PLAY_TYPE_HANDICAP -> {
+                //让分玩法
+                doHandicapType(rootResult,itemResult)
+            }
+
+            PLAY_TYPE_TOTAL_SCORE -> {
+                //预判总分大小
+                doTotalScoreType(rootResult,itemResult)
+            }
+
+            else -> {
+
+            }
+        }
+    }
+
+    //让分-收费  左侧队伍为 客队， 右侧队伍为 主队
+    private fun doHandicapType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult){
+        val data = PostSingleBasketBallHandicapTypeData(
+            leagueName = rootResult.getTextById(IDPostBasketballSingle.id_single_league_name),
+            leagueStartTime = rootResult.getTextById(IDPostBasketballSingle.id_single_post_league_start_time),
+            leftTeamName = rootResult.getTextById(IDPostBasketballSingle.id_single_post_left_team_name),
+            rightTeamName = rootResult.getTextById(IDPostBasketballSingle.id_single_post_right_team_name),
+
+            leftPlate = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_left_plate),
+            leftValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_left_win_value),
+            rightPlate = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_plate),
+            rightValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
+        ).apply {
+            Log.d(TAG, "doChargeHandicap: ++++++++++++++++++++ " + this)
+        }
+    }
+
+    //总分-收费
+    private fun doTotalScoreType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult){
+        val data = PostSingleBasketBallTotalScoreTypeData(
+            leagueName = rootResult.getTextById(IDPostBasketballSingle.id_single_league_name),
+            leagueStartTime = rootResult.getTextById(IDPostBasketballSingle.id_single_post_league_start_time),
+            leftTeamName = rootResult.getTextById(IDPostBasketballSingle.id_single_post_left_team_name),
+            rightTeamName = rootResult.getTextById(IDPostBasketballSingle.id_single_post_right_team_name),
+
+            biggerThanTotalValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_left_win_value),
+            totalScore = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_center_total_score),
+            smallerThanTotalValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
+        ).apply {
+            Log.d(TAG, "doTotalScoreType: ++++++++++++++++++++ " + this)
+        }
     }
 
     //免费
     fun doFreePost(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
         Log.d(TAG, "analysePlayType: --------------------")
         val itemTitle =
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
+            itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
         val playNodeWrapper = when (itemTitle) {
             PLAY_TYPE_HANDICAP -> {
                 //让分玩法
-                getHandicapPlayTypeNodeWrapper(itemResult)
+                //随机选择胜利
+                if (getRandomInt() % 2 == 0) {
+                    itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_left_layout_container)
+                } else {
+                    itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_right_layout_container)
+                }
             }
 
             PLAY_TYPE_TOTAL_SCORE -> {
-                getTotalScorePlayTypeNodeWrapper(itemResult)
+                if (getRandomInt() % 2 == 0) {
+                    itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_left_layout_container)
+                } else {
+                    itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_right_layout_container)
+                }
             }
 
             else -> {
@@ -122,74 +192,12 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             }
         }
     }
-
-    //收费
-    fun doNotFreePost(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
-        val itemTitle =
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
-        val playNodeWrapper = when (itemTitle) {
-            PLAY_TYPE_HANDICAP -> {
-                //让分玩法
-                getHandicapPlayTypeNodeWrapper(itemResult)
-            }
-
-            PLAY_TYPE_TOTAL_SCORE -> {
-                getTotalScorePlayTypeNodeWrapper(itemResult)
-            }
-
-            else -> {
-                null
-            }
-        }
-        //点击玩法
-        playNodeWrapper.delayClickWithShowHighLight(gestureClick = false) { isSuccess ->
-            Log.d(TAG, "analysePlayType: playType --- isSuccess" + isSuccess)
-            Log.d(TAG, "analysePlayType: node ===" + playNodeWrapper)
-            if (isSuccess) {
-                //点击提交
-//                rootResult.findNodeById(IDPostDoubleSingle.id_single_post_submit_button).apply {
-//                    Log.d(TAG, "analysePlayType: submit" + this)
-//                    delayClickWithShowHighLight {
-//                        if (it) {
-//                            PreDataCenter.instance()
-//                                .postOneTime(PostConfigData.ConfigType.SingleBasketball,getCurRemainCount(rootResult))
-//                        }
-//                    }
-//                }
-            }
-        }
-    }
-
-    /**
-     * 让分玩法
-     */
-    fun getHandicapPlayTypeNodeWrapper(itemResult: AnalyzeSourceResult): NodeWrapper? {
-        //随机选择胜利
-        return if (getRandomInt() % 2 == 0) {
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_left_layout_container)
-        } else {
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_right_layout_container)
-        }
-    }
-
-    /**
-     * 总分大小预测玩法
-     */
-    fun getTotalScorePlayTypeNodeWrapper(itemResult: AnalyzeSourceResult): NodeWrapper? {
-        //随机选择胜利
-        return if (getRandomInt() % 2 == 0) {
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_left_layout_container)
-        } else {
-            itemResult.findNodeById(IDPostDoubleSingle.id_single_post_prospect_right_layout_container)
-        }
-    }
-
 
     fun getCurRemainCount(result: AnalyzeSourceResult) =
-        result.findNodeById(IDPostDoubleSingle.id_single_post_today_remains_times)?.text.filterNumberOrZero()
+        result.findNodeById(IDPostBasketballSingle.id_single_post_today_remains_times)?.text.filterNumberOrZero()
 
-    fun getCurIsFreePost() =
-        PreDataCenter.instance().postArray[curType.transToPostArrayIndex()].isFree
+    fun getCurIsFreePost(): Boolean = false
+        //PreDataCenter.instance().postArray[curType.transToPostArrayIndex()].isFree
 
     override fun onStart() {
 
