@@ -15,6 +15,9 @@ import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.findNodesById
 import com.example.more.leisu.data.IDPrePostHeader
 import com.example.more.leisu.data.PostConfigData
+import com.example.more.leisu.data.PostSingleBasketBallHandicapTypeData
+import com.example.more.leisu.data.PostSingleBasketBallTotalScoreTypeData
+import com.example.more.setting.judgeLeftTeamScoreTips
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import kotlin.math.abs
 import kotlin.random.Random
 
 /**
@@ -311,8 +315,9 @@ fun isPostTimeLegal(startText: String): Boolean {
     val startTime = "$curYears/$startText"
     val curTime = curYears + "/" + getCurrentTime()
 
-    return compareYMdHmTime(startTime,curTime)
+    return compareYMdHmTime(startTime, curTime)
 }
+
 /**
  * 比较两个 MM/dd HH:mm 格式时间
  * @return -1：time1更早，0：相等，1：time1更晚
@@ -338,8 +343,8 @@ fun getCurrentTime(): String {
     return sdf.format(calendar.time)
 }
 
-fun Int.transAccessibilityEventToString(): String{
-   return when(this){
+fun Int.transAccessibilityEventToString(): String {
+    return when (this) {
         AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> "TYPE_WINDOW_STATE_CHANGED"
         AccessibilityEvent.TYPE_VIEW_CLICKED -> "TYPE_VIEW_CLICKED"
         AccessibilityEvent.TYPE_VIEW_SCROLLED -> "TYPE_VIEW_SCROLLED"
@@ -350,6 +355,51 @@ fun Int.transAccessibilityEventToString(): String{
 /**
  * 通过result和tv的id,获取节点的text
  */
-fun AnalyzeSourceResult.getTextById(tvId : String): String {
+fun AnalyzeSourceResult.getTextById(tvId: String): String {
     return findNodeById(tvId)?.text.blankOrThis()
+}
+
+/**
+ * 拼接分析的ai提问 , 左客队，右主队
+ */
+fun transToSingleHandicapAnalyseAiQuestion(data: PostSingleBasketBallHandicapTypeData) : String{
+    data.apply {
+        //受让情况
+        val handicapText = if (data.leftPlate.toFloat() == 0F) {
+            ""
+        } else {
+            "如果" + rightTeamName +
+                    (if (rightPlate.toFloat() > 0F) "受让" else "让") +
+                    "${abs(rightPlate.toFloat())}" + "分，"
+        }
+       return  "在" + leagueName + "赛事中，" +
+                leftTeamName + "对阵" + rightTeamName + "，" +
+                "分析比赛双方各自的近况和优劣势。" +
+                handicapText +
+                "预测最终哪个队伍更有可能获胜。" +
+                "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
+                "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
+                "全文不能有空白行，任意内容点之间都要换行。" +
+                "答案控制在400字以内，结尾不要有任何无关提醒！" +
+                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"
+    }
+}
+
+/**
+ * 拼接分析的ai提问 , 左客队，右主队
+ */
+fun transToSingleTotalScoreAnalyseAiQuestion(data: PostSingleBasketBallTotalScoreTypeData) : String{
+    data.apply {
+        //受让情况
+       return "在" + leagueName + "赛事中，" +
+                leftTeamName + "对阵" + rightTeamName + "，" +
+                "分析比赛双方各自的近况和优劣势，" +
+                "并预测双方总得分是否会大于" + totalScore + "。" +
+                "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
+                "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
+                "全文不能有空白行，任意内容点之间都要换行。" +
+                "答案控制在400字以内，结尾不要有任何无关提醒！" +
+                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"
+    }
+
 }

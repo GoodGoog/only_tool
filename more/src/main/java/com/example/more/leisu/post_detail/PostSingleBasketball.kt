@@ -18,7 +18,8 @@ import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.transAccessibilityEventToString
-import com.example.more.leisu.transToPostArrayIndex
+import com.example.more.leisu.transToSingleHandicapAnalyseAiQuestion
+import com.example.more.leisu.transToSingleTotalScoreAnalyseAiQuestion
 
 class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
@@ -85,12 +86,11 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
                     if (getCurIsFreePost()) {
                         doFreePost(result, itemResults[0])
                     } else {
-                        doNotFreePost(result, itemResults[0])
+                        doNotFreePost(result, itemResults[1])
                     }
                 }
             }
     }
-
 
     //收费
     fun doNotFreePost(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
@@ -126,7 +126,8 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             rightPlate = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_plate),
             rightValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
         ).apply {
-            Log.d(TAG, "doChargeHandicap: ++++++++++++++++++++ " + this)
+            val it = transToSingleHandicapAnalyseAiQuestion(this)
+            Log.d(TAG, "doChargeHandicap: ++++++++++++++++++++ " + it)
         }
     }
 
@@ -142,7 +143,8 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             totalScore = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_center_total_score),
             smallerThanTotalValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
         ).apply {
-            Log.d(TAG, "doTotalScoreType: ++++++++++++++++++++ " + this)
+            val it = transToSingleTotalScoreAnalyseAiQuestion(this)
+            Log.d(TAG, "doTotalScoreType: ++++++++++++++++++++ " + it)
         }
     }
 
