@@ -11,6 +11,7 @@ import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.IDPrePostSingleBall
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
+import com.example.more.leisu.delayClickWithShowAnotherHighLight
 import com.example.more.leisu.delayClickWithShowHighLight
 import com.example.more.leisu.getCurPrePageMatchList
 import com.example.more.leisu.isCurItemTypeTimeFlags
@@ -36,7 +37,7 @@ class PreSingleFootball private constructor() : BaseLeisuDispatch(){
     /**
      * 来这里的只有
      */
-    fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
+    override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 startAutoPost(result)
@@ -75,8 +76,8 @@ class PreSingleFootball private constructor() : BaseLeisuDispatch(){
                         itemResult.parentNode?.let {
                             Log.d(TAG, "startAutoPost: clickNode =" + it)
                             it.bounds?.let { clickRect ->
-                                val aimRect = PreJumpUtils.instance().getCurItemRect(clickRect)
-                                aimRect.delayClickWithShowHighLight(delayTime = 2000L) {
+                                val highLightRect = PreJumpUtils.instance().getCurItemRect(clickRect)
+                                itemResult.findNodeById(IDPrePostSingleBall.id_single_league_title).delayClickWithShowAnotherHighLight(highLightRect,delayTime = 2000L) {
                                     Log.d(TAG, "startAutoPost: clickResult" + it)
                                 }
                             }

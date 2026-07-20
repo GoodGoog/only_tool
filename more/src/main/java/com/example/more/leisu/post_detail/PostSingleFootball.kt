@@ -38,8 +38,11 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
         const val TAG = "PostFreeSingleFootball"
     }
 
-    fun onTaskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        Log.d(TAG, "onTaskDispatch: --------------------" + wrapper.eventType.transAccessibilityEventToString())
+    override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+        Log.d(
+            TAG,
+            "onTaskDispatch: --------------------" + wrapper.eventType.transAccessibilityEventToString()
+        )
         if (!PreDataCenter.instance()
                 .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleFootball)
         ) return
@@ -154,6 +157,16 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
 
     }
 
+
+    /***
+     * 设置窗口状态变化接受间隔
+     */
+    override fun getCurNeedReceptTimeSeparator(): BaseLeisuDispatch.Companion.TimeSeparator {
+        return BaseLeisuDispatch.Companion.TimeSeparator(
+            setOf(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED),
+            500L
+        )
+    }
 
 
 }

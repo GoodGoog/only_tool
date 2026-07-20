@@ -36,7 +36,7 @@ class PreSingleBasketball private constructor() : BaseLeisuDispatch() {
     /**
      * 来这里的只有
      */
-    fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
+    override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 startAutoPost(result)
@@ -56,7 +56,7 @@ class PreSingleBasketball private constructor() : BaseLeisuDispatch() {
         }
     }
 
-    fun startAutoPost(result: AnalyzeSourceResult){
+    fun startAutoPost(result: AnalyzeSourceResult) {
         if (!PreDataCenter.instance()
                 .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleBasketball)
         ) {

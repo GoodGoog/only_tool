@@ -264,6 +264,35 @@ fun Rect.delayClickWithShowHighLight(
     }
 }
 
+/**
+ * 点击节点，但是高光方框不是被点击节点的Rect
+ */
+@OptIn(DelicateCoroutinesApi::class)
+fun NodeWrapper?.delayClickWithShowAnotherHighLight(
+    highLightRect: Rect,  //高光需要显示的区域 ， 和实际点击的可能不一样
+    delayTime: Long = 1000,
+    clickResult: ((Boolean) -> Unit)? = null
+) {
+    if (this == null) {
+        clickResult?.invoke(false)
+        return
+    }
+    //需要提前判断位置是否合法，可能会有异常地址 Rect(1654, 237 - 1080, 342) | Rect(1080, 229 - 1080, 349)
+    if (!bounds.isLegal() || !highLightRect.isLegal()) {
+        clickResult?.invoke(false)
+        return
+    }
+    LiveEventBus.get<Rect>(EventBusTag.EVENT_BUS_CLICKED_AREA_HIGH_LIGHT_BOX).post(highLightRect)
+    GlobalScope.launch(Dispatchers.IO) {
+        //协程非阻塞休眠，不用sleep
+        //避免系统检测，让间隔时间浮动
+        delay(delayTime - Random.nextInt(50))
+        //perform点击
+        val isSuccess = clickPerformWithResult()
+        clickResult?.invoke(isSuccess)
+    }
+}
+
 
 fun Int.transToPostConfigType(): PostConfigData.ConfigType {
     return when (this) {
@@ -362,7 +391,7 @@ fun AnalyzeSourceResult.getTextById(tvId: String): String {
 /**
  * 拼接分析的ai提问 , 左客队，右主队
  */
-fun transToSingleHandicapAnalyseAiQuestion(data: PostSingleBasketBallHandicapTypeData) : String{
+fun transToSingleHandicapAnalyseAiQuestion(data: PostSingleBasketBallHandicapTypeData): String {
     data.apply {
         //受让情况
         val handicapText = if (data.leftPlate.toFloat() == 0F) {
@@ -372,7 +401,7 @@ fun transToSingleHandicapAnalyseAiQuestion(data: PostSingleBasketBallHandicapTyp
                     (if (rightPlate.toFloat() > 0F) "受让" else "让") +
                     "${abs(rightPlate.toFloat())}" + "分，"
         }
-       return  "在" + leagueName + "赛事中，" +
+        return "在" + leagueName + "赛事中，" +
                 leftTeamName + "对阵" + rightTeamName + "，" +
                 "分析比赛双方各自的近况和优劣势。" +
                 handicapText +
@@ -388,10 +417,10 @@ fun transToSingleHandicapAnalyseAiQuestion(data: PostSingleBasketBallHandicapTyp
 /**
  * 拼接分析的ai提问 , 左客队，右主队
  */
-fun transToSingleTotalScoreAnalyseAiQuestion(data: PostSingleBasketBallTotalScoreTypeData) : String{
+fun transToSingleTotalScoreAnalyseAiQuestion(data: PostSingleBasketBallTotalScoreTypeData): String {
     data.apply {
         //受让情况
-       return "在" + leagueName + "赛事中，" +
+        return "在" + leagueName + "赛事中，" +
                 leftTeamName + "对阵" + rightTeamName + "，" +
                 "分析比赛双方各自的近况和优劣势，" +
                 "并预测双方总得分是否会大于" + totalScore + "。" +

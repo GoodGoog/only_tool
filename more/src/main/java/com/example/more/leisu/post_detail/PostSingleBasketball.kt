@@ -43,7 +43,7 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
     val curType = PostConfigData.ConfigType.SingleBasketball
 
-    fun onTaskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+    override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
         Log.d(
             TAG,
             "onTaskDispatch: --------------------" + wrapper.eventType.transAccessibilityEventToString()
@@ -209,5 +209,11 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
     }
 
+    /***
+     * 设置窗口状态变化接受间隔
+     */
+    override fun getCurNeedReceptTimeSeparator(): BaseLeisuDispatch.Companion.TimeSeparator {
+        return BaseLeisuDispatch.Companion.TimeSeparator(setOf(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED),500L)
+    }
 
 }

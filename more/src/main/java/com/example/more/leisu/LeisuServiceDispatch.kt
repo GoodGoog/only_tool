@@ -37,7 +37,7 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
      *  先判断在什么页面，然后执行具体业务
      */
     //业务分发
-    fun taskDispatch(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+    override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
         //每五百ms只接收一次 目前只关注窗口状态改变
 //        if (!isReceiptable) {
 //            return
@@ -54,17 +54,17 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         }
         if (isInPrePostPage(result)) {
             //在比赛信息选择页
-            PrePostDispatch.instance().dispatchTask(wrapper, result)
+            PrePostDispatch.instance().eventCome(wrapper, result)
         }
         if (isInPostSinglePage(result)) {
             //在单关发布页
             if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleFootball) {
                 //单关足球-发布页
-                PostSingleFootball.instance().onTaskDispatch(wrapper, result)
+                PostSingleFootball.instance().eventCome(wrapper, result)
             }
             if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleBasketball) {
                 //单关篮球-发布页
-                PostSingleBasketball.instance().onTaskDispatch(wrapper, result)
+                PostSingleBasketball.instance().eventCome(wrapper, result)
             }
             //PostFreeSingleBusiness(wrapper, result).execute()
         }

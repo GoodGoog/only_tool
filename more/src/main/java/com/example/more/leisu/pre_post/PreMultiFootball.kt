@@ -30,6 +30,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
     /**
      * 来这里的只有
      */
+    override
     fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
 
         when (eventWrapper.event.eventType) {

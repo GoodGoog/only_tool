@@ -1,6 +1,6 @@
 package com.example.more.leisu.pre_post
 
-import android.util.Log
+import android.view.accessibility.AccessibilityEvent
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
@@ -9,6 +9,8 @@ import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
+import com.example.more.leisu.post_detail.PostSingleBasketball
+import com.example.more.leisu.post_detail.PostSingleFootball
 import com.example.more.leisu.transToPostConfigType
 import com.jeremyliao.liveeventbus.LiveEventBus
 
@@ -86,101 +88,31 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         }
     }
 
-    fun dispatchTask(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+    override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
 
         LeisuServiceCenter.instance().result = result
 
         when (PreJumpUtils.instance().curPageType) {
             PostConfigData.ConfigType.SingleBasketball -> {
                 PreSingleBasketball.instance()
-                    .onEventCome(wrapper, result)
+                    .eventCome(eventWrapper, result)
             }
 
             PostConfigData.ConfigType.SingleFootball -> {
                 PreSingleFootball.instance()
-                    .onEventCome(wrapper, result)
+                    .eventCome(eventWrapper, result)
             }
 
             PostConfigData.ConfigType.MultiBasketball -> {
                 PreMultiBasketball.instance()
-                    .onEventCome(wrapper, result)
+                    .eventCome(eventWrapper, result)
             }
 
             PostConfigData.ConfigType.MultiFootball -> {
                 PreMultiFootball.instance()
-                    .onEventCome(wrapper, result)
+                    .eventCome(eventWrapper, result)
             }
         }
-
-//        when (wrapper.event.eventType) {
-//            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-//                Log.d(TAG, "dispatchTask: ---------------result\n" + cResult )
-//                PreDataCenter.instance().postArray.let { postArray ->
-//                    if (postArray.isEmpty()) {
-//                        //所有文章发布结束
-//                        //do something
-//                        return
-//                    }
-//
-//                    //UI分配
-//                    postArray[0].let { configData ->
-//                        //从专家主页进入比赛选择页，而不是从其他子页面退回赛事选择页，也要执行跳转
-////                        if (PreJumpUtils.instance().hasJumpExpertHomeAction) {
-////                            Log.d(TAG, "dispatchTask: 需要跳转" + configData)
-////                            PreJumpUtils.instance().hasJumpExpertHomeAction = false
-////                            PreJumpUtils.instance().jumpSubPage(configData.type, result) {
-////                            }
-////                        }
-//                    }
-//
-//                    //业务分配
-//                    when (PreJumpUtils.instance().curPageType) {
-//                        PostConfigData.ConfigType.SingleBasketball -> {
-//                            PreSingleBasketballBusiness.instance()
-//                                .onWindowStatusChange(wrapper, cResult)
-//                        }
-//
-//                        PostConfigData.ConfigType.SingleFootball -> {
-//                            PreSingleFootballBusiness.instance()
-//                                .onWindowStatusChange(wrapper, cResult)
-//                        }
-//
-//                        PostConfigData.ConfigType.MultiBasketball -> {
-//                            PreMultiBasketballBusiness.instance()
-//                                .onWindowStatusChange(wrapper, cResult)
-//                        }
-//
-//                        PostConfigData.ConfigType.MultiFootball -> {
-//                            PreMultiFootballBusiness.instance()
-//                                .onWindowStatusChange(wrapper, cResult)
-//                        }
-//                    }
-//                }
-//            }
-//
-//            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
-//                //足球 / 篮球页面都打开过，能找到 4 个按钮
-//                //这是因为页面缓存 / 复用导致的，两个页面的 View 都存在于视图树中。
-//
-//                val eventNode = wrapper.event.source ?: return
-//                Log.d(TAG, "dispatchTask: ----" + eventNode.transNodeInfoToNodeWrapper())
-//                try {
-//
-//                } finally {
-//                    eventNode.recycle()
-//                }
-//
-//
-//            }
-//
-//            AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
-//                //Log.d(TAG, "dispatchTask: TYPE_VIEW_SCROLLED---")
-//            }
-//
-//            else -> {
-//                //Log.d(TAG, "dispatchTask: else")
-//            }
-//        }
     }
 
     override fun onStart() {
@@ -188,6 +120,10 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         PreSingleFootball.instance().start()
         PreMultiBasketball.instance().start()
         PreMultiFootball.instance().start()
+
+        //发布页
+        PostSingleBasketball.instance().start()
+        PostSingleFootball.instance().start()
     }
 
     override fun onDestroy() {
@@ -195,6 +131,19 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         PreSingleFootball.instance().destroy()
         PreMultiBasketball.instance().destroy()
         PreMultiFootball.instance().destroy()
+
+        //发布页
+        PostSingleBasketball.instance().destroy()
+        PostSingleFootball.instance().destroy()
+
     }
+
+    /***
+     * 设置窗 事件 化接受间隔
+     */
+    override fun getCurNeedReceptTimeSeparator(): BaseLeisuDispatch.Companion.TimeSeparator {
+        return BaseLeisuDispatch.Companion.TimeSeparator(setOf(AccessibilityEvent.TYPE_VIEW_CLICKED),500L)
+    }
+
 
 }
