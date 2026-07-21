@@ -58,8 +58,11 @@ class IDPrePostHeader {
         //返回按钮
         const val id_back = "com.leisu.sports:id/iv_back"
 
+
+        //第一层viewPager,包裹两个第二层viewPager
         const val id_first_level_view_pager = "com.leisu.sports:id/view_page"
 
+        //第二层viewPager
         const val id_second_level_view_pager = "com.leisu.sports:id/view_page"
 
         //四张赛事列表RecyclerView的id都是这个

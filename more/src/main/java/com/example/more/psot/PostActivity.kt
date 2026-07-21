@@ -111,6 +111,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
                         //无可发布文章时
                         showToast("先选择需要发布的内容！")
                     }
+                    Log.d(TAG, "initRecyclerView: postArray" + postArray)
                 }
             }
         }

@@ -5,12 +5,15 @@ import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.LeisuServiceCenter
 import com.example.more.accessibility.NodeWrapper
+import com.example.more.accessibility.analyzeNextLevelSubView
 import com.example.more.accessibility.clickGestureWithResult
 import com.example.more.accessibility.clickPerformWithResult
+import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.findNodeByText
 import com.example.more.accessibility.findNodesByExpression
 import com.example.more.accessibility.findNodesByText
 import com.example.more.accessibility.logD
+import com.example.more.leisu.data.IDPrePostHeader
 import com.example.more.leisu.data.PostConfigData
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -42,55 +45,61 @@ class PreJumpUtils private constructor() {
 
     //一次记录 篮球 足球  单关 串关 四类按钮的Rect
     val jumpButtonRectArray = ArrayList<Rect>().apply {
-        add(Rect(0,0,0,0))
-        add(Rect(0,0,0,0))
-        add(Rect(0,0,0,0))
-        add(Rect(0,0,0,0))
+        add(Rect(0, 0, 0, 0))
+        add(Rect(0, 0, 0, 0))
+        add(Rect(0, 0, 0, 0))
+        add(Rect(0, 0, 0, 0))
     }
 
     //默认实在足球-单关页面
     var curPageType = PostConfigData.ConfigType.SingleFootball
 
+    //赛事选择页中所有节点数据
+    var result : AnalyzeSourceResult? = null
+
     //当前赛事页面中Item俯容器ViewGroup的左右边界(left, right)
     private var itemLeft = 20
     private var itemRight = 20
 
-    fun setWindowWidth(windowWidth : Int){
+    fun setWindowWidth(windowWidth: Int) {
         itemRight = windowWidth - itemLeft
     }
 
-    fun getCurItemRect(rect: Rect) : Rect{
-        return Rect(itemLeft,rect.top,itemRight,rect.bottom)
+    fun getCurItemRect(rect: Rect): Rect {
+        return Rect(itemLeft, rect.top, itemRight, rect.bottom)
+    }
+
+    fun refreshResult(result: AnalyzeSourceResult){
+        this.result = result
+        Log.d("jumpSubTab", "refreshResult: 点击后result数据")
     }
 
     fun jumpSubPage(
         type: PostConfigData.ConfigType,
-        result: AnalyzeSourceResult,
         clickResult: (Boolean) -> Unit
     ) {
         curPageType = type
         when (type) {
             PostConfigData.ConfigType.SingleBasketball -> {
-                result.jump(result, TAB_TITLE_BASKETBALL, SUB_TAB_TITLE_SINGLE, clickResult)
+                jump(TAB_TITLE_BASKETBALL, SUB_TAB_TITLE_SINGLE, clickResult)
             }
 
             PostConfigData.ConfigType.SingleFootball -> {
-                result.jump(result, TAB_TITLE_FOOTBALL, SUB_TAB_TITLE_SINGLE, clickResult)
+                jump(TAB_TITLE_FOOTBALL, SUB_TAB_TITLE_SINGLE, clickResult)
             }
 
             PostConfigData.ConfigType.MultiBasketball -> {
-                result.jump(result, TAB_TITLE_BASKETBALL, SUB_TAB_TITLE_MULTI, clickResult)
+                jump(TAB_TITLE_BASKETBALL, SUB_TAB_TITLE_MULTI, clickResult)
             }
 
             PostConfigData.ConfigType.MultiFootball -> {
-                result.jump(result, TAB_TITLE_FOOTBALL, SUB_TAB_TITLE_MULTI, clickResult)
+                jump(TAB_TITLE_FOOTBALL, SUB_TAB_TITLE_MULTI, clickResult)
             }
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun AnalyzeSourceResult.jump(
-        result: AnalyzeSourceResult,
+    fun jump(
         title: String,
         subTitle: String,
         clickResult: (Boolean) -> Unit
@@ -98,7 +107,11 @@ class PreJumpUtils private constructor() {
         //篮球/足球控件被设置clickable = → false,故点击蓝球/足球，其本身TextView不响应事件，并将事件传递给了父视图RelativeLayout
         //只要最终有控件响应了点击事件，最终都会触发TYPE_VIEW_CLICKED，只不过此时event.source[点击事件响应按钮]为篮球/足球的父视图RelativeLayout
         //不论手势点击还是perAction，最终都会触发TYPE_VIEW_CLICKED
-        findNodeByText(title).delayClickWithShowHighLight(false) { isTitleClickSuccess ->
+        if (result == null){
+            clickResult.invoke(false)
+            return
+        }
+        result?.findNodeByText(title).delayClickWithShowHighLight(false, delayTime = 200L) { isTitleClickSuccess ->
             if (!isTitleClickSuccess) {
                 Log.d("跳转页点击结果111", "jump: ${title}事件点击失败了")
                 clickResult.invoke(false)
@@ -106,19 +119,29 @@ class PreJumpUtils private constructor() {
             } else {
                 Log.d("跳转页点击结果111", "jump: ${title}事件点击成功了")
                 GlobalScope.launch(Dispatchers.IO) {
-                    //延时点击
+                    //延时500ms,灯点击事件触发新的event事件，即新的result更新时，再进行点击
                     delay(500)
-                    result.jumpSubTab(subTitle, clickResult)
+                    jumpSubTab(subTitle, clickResult)
                 }
             }
         }
     }
 
-    fun AnalyzeSourceResult.jumpSubTab(
+    fun jumpSubTab(
         subTitle: String,
         clickResult: (Boolean) -> Unit
     ) {
-        findNodesByExpression {
+        if (result == null){
+            clickResult.invoke(false)
+            return
+        }
+        result!!.findNodesByExpression {
+            it.text == SUB_TAB_TITLE_SINGLE || it.text == SUB_TAB_TITLE_MULTI //&& it.bounds.isLegal()
+        }.nodes.forEach {
+            Log.d("jumpSubTab", "jumpSubTab: nodes = " + it)
+        }
+        Log.d("jumpSubTab", "jumpSubTab: -------------------------------------------")
+        result!!.findNodesByExpression {
             subTitle == it.text && it.bounds.isLegal()
         }.nodes.let {
             var aimNode: NodeWrapper? = null
@@ -133,15 +156,15 @@ class PreJumpUtils private constructor() {
                         it[1]
                     }
             }
-            aimNode?.let { lastNode ->
-                lastNode.delayClickWithShowHighLight(false) { isSubTitleClickSuccess ->
-                    if (!isSubTitleClickSuccess) {
-                        Log.d("跳转页点击结果222", "jump: ${subTitle}事件点击失败了")
-                        clickResult.invoke(false)
-                    } else {
-                        Log.d("跳转页点击结果222", "jump: ${subTitle}事件点击成功了")
-                        clickResult.invoke(true)
-                    }
+            Log.d("jumpSubTab", "jumpSubTab: subTitles ==" + it)
+            Log.d("jumpSubTab", "jumpSubTab: subTitleNode = " + aimNode)
+            aimNode?.delayClickWithShowHighLight(true, delayTime = 500L) { isSubTitleClickSuccess ->
+                if (!isSubTitleClickSuccess) {
+                    Log.d("jumpSubTab", "jump: ${subTitle}事件点击失败了")
+                    clickResult.invoke(false)
+                } else {
+                    Log.d("jumpSubTab", "jump: ${subTitle}事件点击成功了\n" )
+                    clickResult.invoke(true)
                 }
             }
         }

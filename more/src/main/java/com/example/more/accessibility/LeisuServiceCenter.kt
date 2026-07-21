@@ -18,6 +18,4 @@ class LeisuServiceCenter private constructor() {
     //无障碍服务连接状态
     var isAccessServiceConnect = false
 
-    var result: AnalyzeSourceResult = AnalyzeSourceResult()
-
 }

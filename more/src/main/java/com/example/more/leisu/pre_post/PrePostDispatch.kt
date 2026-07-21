@@ -1,5 +1,6 @@
 package com.example.more.leisu.pre_post
 
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
@@ -31,8 +32,7 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         const val TAG = "PrePostDispatch"
     }
 
-    //是否自动点击
-    var isAllowAutoPost = false
+    lateinit var result: AnalyzeSourceResult
 
     init {
         // 注意：单例要用 observeForever，因为没有生命周期
@@ -40,18 +40,16 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         if (LeisuServiceCenter.instance().isAccessServiceConnect) {
             LiveEventBus.get<Int>(EventBusTag.TEST_PRE_POST_PAGE_SWITCH)
                 .observe(this) { pageIndex ->
-                    val result = LeisuServiceCenter.instance().result
+                    Log.d(TAG, "pageIndex =$pageIndex ")
+                    if (result == null) return@observe
+                    //val result = LeisuServiceCenter.instance().result
                     PreDataCenter.instance()
                         .setCurPrePageAllowAutoPost(pageIndex.transToPostConfigType(), true)
                     PreJumpUtils.instance().jumpSubPage(
                         pageIndex.transToPostConfigType(),
-                        result
                     ) { isSuccess ->
                         //跳转成功，默认开始自动发布
-                        ////////////////////////////////////////////////////////////////////////测试
-                        //return@jumpSubPage
-
-
+                        Log.d(TAG, "PrePostDispatch是否跳转成功$isSuccess")
                         if (isSuccess) {
                             when (pageIndex.transToPostConfigType()) {
                                 PostConfigData.ConfigType.SingleBasketball -> {
@@ -89,8 +87,9 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
     }
 
     override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
-
-        LeisuServiceCenter.instance().result = result
+        Log.d("jumpSubTab", "onEventCome: 数据刷新了")
+        this.result = result
+        PreJumpUtils.instance().refreshResult(result)
 
         when (PreJumpUtils.instance().curPageType) {
             PostConfigData.ConfigType.SingleBasketball -> {
@@ -141,9 +140,12 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
     /***
      * 设置窗 事件 化接受间隔
      */
-    override fun getCurNeedReceptTimeSeparator(): BaseLeisuDispatch.Companion.TimeSeparator {
-        return BaseLeisuDispatch.Companion.TimeSeparator(setOf(AccessibilityEvent.TYPE_VIEW_CLICKED),500L)
-    }
-
+//    override fun getCurNeedReceptTimeSeparator(): BaseLeisuDispatch.Companion.TimeSeparator {
+//        return BaseLeisuDispatch.Companion.TimeSeparator(
+//            setOf(AccessibilityEvent.TYPE_VIEW_CLICKED),
+//            500L
+//        )
+//    }
+//
 
 }

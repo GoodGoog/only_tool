@@ -55,8 +55,8 @@ class PreDataCenter private constructor() {
             )
             add(
                 PostConfigData(
-                    PostConfigData.ConfigType.SingleBasketball,
-                    "篮球|单关",
+                    PostConfigData.ConfigType.MultiFootball,
+                    "足球|串关",
                     true,
                     true,
                     defaultTimes
@@ -64,8 +64,8 @@ class PreDataCenter private constructor() {
             )
             add(
                 PostConfigData(
-                    PostConfigData.ConfigType.MultiFootball,
-                    "足球|串关",
+                    PostConfigData.ConfigType.SingleBasketball,
+                    "篮球|单关",
                     true,
                     true,
                     defaultTimes

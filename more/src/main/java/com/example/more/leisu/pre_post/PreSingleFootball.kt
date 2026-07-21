@@ -17,7 +17,7 @@ import com.example.more.leisu.getCurPrePageMatchList
 import com.example.more.leisu.isCurItemTypeTimeFlags
 import com.example.more.leisu.isPostTimeLegal
 
-class PreSingleFootball private constructor() : BaseLeisuDispatch(){
+class PreSingleFootball private constructor() : BaseLeisuDispatch() {
     companion object {
 
         private var instance: PreSingleFootball? = null
@@ -33,6 +33,8 @@ class PreSingleFootball private constructor() : BaseLeisuDispatch(){
 
         const val TAG = "PreSingleFootball"
     }
+
+    val curType = PostConfigData.ConfigType.SingleFootball
 
     /**
      * 来这里的只有
@@ -57,14 +59,14 @@ class PreSingleFootball private constructor() : BaseLeisuDispatch(){
         }
     }
 
-    fun startAutoPost(result: AnalyzeSourceResult){
+    fun startAutoPost(result: AnalyzeSourceResult) {
         if (!PreDataCenter.instance()
-                .isCurPrePageAllowAutoPost(PostConfigData.ConfigType.SingleFootball)
+                .isCurPrePageAllowAutoPost(curType)
         ) {
             return
         }
         Log.d(TAG, "startAutoPost: ++++++++++++++++++++++++++++++++++++++++++++++++++++++==")
-        getCurPrePageMatchList(result, PostConfigData.ConfigType.SingleFootball) { itemResults ->
+        getCurPrePageMatchList(result, curType) { itemResults ->
 
             //默认点击第一个 时间合法的控件
             run {
@@ -76,10 +78,15 @@ class PreSingleFootball private constructor() : BaseLeisuDispatch(){
                         itemResult.parentNode?.let {
                             Log.d(TAG, "startAutoPost: clickNode =" + it)
                             it.bounds?.let { clickRect ->
-                                val highLightRect = PreJumpUtils.instance().getCurItemRect(clickRect)
-                                itemResult.findNodeById(IDPrePostSingleBall.id_single_league_title).delayClickWithShowAnotherHighLight(highLightRect,delayTime = 2000L) {
-                                    Log.d(TAG, "startAutoPost: clickResult" + it)
-                                }
+                                val highLightRect =
+                                    PreJumpUtils.instance().getCurItemRect(clickRect)
+                                itemResult.findNodeById(IDPrePostSingleBall.id_single_league_title)
+                                    .delayClickWithShowAnotherHighLight(
+                                        highLightRect,
+                                        delayTime = 2000L
+                                    ) {
+                                        Log.d(TAG, "startAutoPost: clickResult" + it)
+                                    }
                             }
                         }
                         //点了第一个有效的Item就走

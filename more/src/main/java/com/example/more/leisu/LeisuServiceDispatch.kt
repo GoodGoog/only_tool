@@ -30,25 +30,11 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         const val TAG = "LeisuServiceDispatch"
     }
 
-    private var isReceiptable = true  //是否允许接受event数据，用来规定至少时隔多久才能接受一次数据
-    private var minSeparatorTime = 500
-
     /**
      *  先判断在什么页面，然后执行具体业务
      */
     //业务分发
     override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        //每五百ms只接收一次 目前只关注窗口状态改变
-//        if (!isReceiptable) {
-//            return
-//        } else {
-//            isReceiptable = false
-//        }
-//        GlobalScope.launch(Dispatchers.IO) {
-//            delay(minSeparatorTime.toLong())
-//            isReceiptable = true
-//        }
-//
         if (isInExpertHomePage(result)) {
 
         }
