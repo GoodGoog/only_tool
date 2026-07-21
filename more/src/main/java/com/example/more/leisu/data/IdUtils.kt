@@ -353,13 +353,13 @@ class IDPostFootballSingle {
         const val id_single_league_name = "com.leisu.sports:id/tv_league_name"
 
         //比赛时间
-        const val id_single_post_league_time = "com.leisu.sports:id/tv_time"
+        const val id_single_post_league_start_time = "com.leisu.sports:id/tv_time"
 
         //主队/左侧队伍 名称
-        const val id_single_post_left_name = "com.leisu.sports:id/home_name"
+        const val id_single_post_left_team_name = "com.leisu.sports:id/home_name"
 
         //客队/右侧队伍 名称
-        const val id_single_post_right_name = "com.leisu.sports:id/away_name"
+        const val id_single_post_right_team_name = "com.leisu.sports:id/away_name"
 
 
         //一.2发布页 预测RecyclerView信息

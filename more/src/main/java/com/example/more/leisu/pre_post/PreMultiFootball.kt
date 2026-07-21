@@ -50,7 +50,6 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
 
             }
         }
-
     }
 
     fun startAutoPost(result: AnalyzeSourceResult) {

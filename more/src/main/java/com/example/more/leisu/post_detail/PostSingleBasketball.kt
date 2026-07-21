@@ -2,12 +2,14 @@ package com.example.more.leisu.post_detail
 
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.analyzeRecyclerView
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.leisu.BaseLeisuDispatch
+import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.IDPostBasketballSingle
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostSingleBasketBallHandicapTypeData
@@ -18,8 +20,9 @@ import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.transAccessibilityEventToString
-import com.example.more.leisu.transToSingleHandicapAnalyseAiQuestion
-import com.example.more.leisu.transToSingleTotalScoreAnalyseAiQuestion
+import com.example.more.leisu.transToSingleBasketballHandicapAnalyseAiQuestion
+import com.example.more.leisu.transToSingleBasketballTotalScoreAnalyseAiQuestion
+import com.jeremyliao.liveeventbus.LiveEventBus
 
 class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
@@ -42,6 +45,13 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
     }
 
     val curType = PostConfigData.ConfigType.SingleBasketball
+
+    init {
+        LiveEventBus.get<String>(EventBusTag.POST_CHARGE_ANSWER_FROM_AI).observe(this){
+            if (PreJumpUtils.instance().curPageType != curType) return@observe
+            //拿到了Ai返回的答案
+        }
+    }
 
     override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
         Log.d(
@@ -126,8 +136,8 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             rightPlate = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_plate),
             rightValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
         ).apply {
-            val it = transToSingleHandicapAnalyseAiQuestion(this)
-            Log.d(TAG, "doChargeHandicap: ++++++++++++++++++++ " + it)
+            val it = transToSingleBasketballHandicapAnalyseAiQuestion(this)
+            LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(it)
         }
     }
 
@@ -143,8 +153,8 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             totalScore = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_center_total_score),
             smallerThanTotalValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
         ).apply {
-            val it = transToSingleTotalScoreAnalyseAiQuestion(this)
-            Log.d(TAG, "doTotalScoreType: ++++++++++++++++++++ " + it)
+            val it = transToSingleBasketballTotalScoreAnalyseAiQuestion(this)
+            LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(it)
         }
     }
 
@@ -187,7 +197,7 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 //                    delayClickWithShowHighLight {
 //                        if (it) {
 //                            PreDataCenter.instance()
-//                                .postOneTime(PostConfigData.ConfigType.SingleBasketball,getCurRemainCount(rootResult))
+//                                .postOneTime(curType,getCurRemainCount(rootResult))
 //                        }
 //                    }
 //                }

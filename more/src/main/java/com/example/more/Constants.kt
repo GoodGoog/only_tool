@@ -33,6 +33,13 @@ class EventBusTag {
         //开始发布
         //true为发布，false为停止
         const val START_OR_STOP_CUR_AUTO_POST = "START_OR_STOP_CUR_AUTO_POST"
+
+        //传递向AI提问的问题
+        const val POST_CHARGE_QUESTION_TO_AI = "POST_CHARGE_QUESTION_TO_AI"
+
+        //传递向AI回答
+        const val POST_CHARGE_ANSWER_FROM_AI = "POST_CHARGE_ANSWER_FROM_AI"
+
     }
 }
 
