@@ -35,52 +35,48 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
     lateinit var result: AnalyzeSourceResult
 
     init {
-        // 注意：单例要用 observeForever，因为没有生命周期
-        // 或者用 Application 的 lifecycle
         if (LeisuServiceCenter.instance().isAccessServiceConnect) {
             LiveEventBus.get<Int>(EventBusTag.TEST_PRE_POST_PAGE_SWITCH)
                 .observe(this) { pageIndex ->
-                    Log.d(TAG, "pageIndex =$pageIndex ")
-                    if (result == null) return@observe
-                    //val result = LeisuServiceCenter.instance().result
+                    //允许自动发布
                     PreDataCenter.instance()
                         .setCurPrePageAllowAutoPost(pageIndex.transToPostConfigType(), true)
                     PreJumpUtils.instance().jumpSubPage(
                         pageIndex.transToPostConfigType(),
                     ) { isSuccess ->
-                        //跳转成功，默认开始自动发布
+                        //跳转成功
                         Log.d(TAG, "PrePostDispatch是否跳转成功$isSuccess")
-                        if (isSuccess) {
-                            when (pageIndex.transToPostConfigType()) {
-                                PostConfigData.ConfigType.SingleBasketball -> {
-                                    PreSingleBasketball.instance()
-                                        .startAutoPost(result)
-                                }
-
-                                PostConfigData.ConfigType.SingleFootball -> {
-                                    PreSingleFootball.instance()
-                                        .startAutoPost(result)
-                                }
-
-                                PostConfigData.ConfigType.MultiBasketball -> {
-                                    PreMultiBasketball.instance()
-                                        .startAutoPost(result)
-                                }
-
-                                PostConfigData.ConfigType.MultiFootball -> {
-                                    PreMultiFootball.instance()
-                                        .startAutoPost(result)
-                                }
-                            }
-                        }
                     }
                 }
 
-            LiveEventBus.get<Boolean>(EventBusTag.STOP_CUR_PAGE_POST)
-                .observe(this) { _ ->
-                    //终止当前页面的下一次发布，作用与 发布页--->赛事列表页
-                    PreDataCenter.instance()
-                        .setCurPrePageAllowAutoPost(PreJumpUtils.instance().curPageType, false)
+            LiveEventBus.get<Boolean>(EventBusTag.START_OR_STOP_CUR_AUTO_POST)
+                .observe(this) { isStart ->
+                    //开始 或 终止当前页面自动发布，作用与 发布页--->赛事列表页
+                    if (isStart){
+                        //发布
+                        when (PreJumpUtils.instance().curPageType) {
+                            PostConfigData.ConfigType.SingleFootball -> {
+                                PreSingleFootball.instance()
+                                    .startAutoPost(result)
+                            }
+                            PostConfigData.ConfigType.MultiFootball -> {
+                                PreMultiFootball.instance()
+                                    .startAutoPost(result)
+                            }
+                            PostConfigData.ConfigType.SingleBasketball -> {
+                                PreSingleBasketball.instance()
+                                    .startAutoPost(result)
+                            }
+                            PostConfigData.ConfigType.MultiBasketball -> {
+                                PreMultiBasketball.instance()
+                                    .startAutoPost(result)
+                            }
+                        }
+                    }else {
+                        //禁止自动发布
+                        PreDataCenter.instance()
+                            .setCurPrePageAllowAutoPost(PreJumpUtils.instance().curPageType, false)
+                    }
                 }
 
         }

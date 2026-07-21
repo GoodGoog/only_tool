@@ -83,7 +83,7 @@ class PreSingleFootball private constructor() : BaseLeisuDispatch() {
                                 itemResult.findNodeById(IDPrePostSingleBall.id_single_league_title)
                                     .delayClickWithShowAnotherHighLight(
                                         highLightRect,
-                                        delayTime = 2000L
+                                        delayTime = 500L
                                     ) {
                                         Log.d(TAG, "startAutoPost: clickResult" + it)
                                     }

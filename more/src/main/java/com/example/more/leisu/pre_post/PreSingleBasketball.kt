@@ -78,24 +78,24 @@ class PreSingleBasketball private constructor() : BaseLeisuDispatch() {
                         Log.d(TAG, "startAutoPost: isPostTimeLegal")
                         //时间不冲突，可以发布此Item
                         itemResult.parentNode?.let { itemContainerLayoutNode ->
-                            Log.d(TAG, "startAutoPost: itemResult.parentNode")
-                            itemContainerLayoutNode.delayClickWithShowHighLight(gestureClick = false) {
-                                Log.d(TAG, "startAutoPost: 这是item点击结果 + $it")
-                                Log.d(TAG, "startAutoPost: itemNode = " + itemContainerLayoutNode)
-                            }
-//                            itemContainerLayoutNode.bounds?.let { clickRect ->
-//                                Log.d(TAG, "startAutoPost: clickRect = $clickRect")
-//                                val highLightRect =
-//                                    PreJumpUtils.instance().getCurItemRect(clickRect)
-//                                Log.d(TAG, "startAutoPost: highLightRect = $highLightRect")
-//                                //itemResult.findNodeById(IDPrePostSingleBall.id_single_league_title)
-//                                    itemContainerLayoutNode.delayClickWithShowAnotherHighLight(
-//                                        highLightRect,
-//                                        delayTime = 2000L
-//                                    ) {
-//                                        Log.d(TAG, "startAutoPost: clickResult" + it)
-//                                    }
+//                            Log.d(TAG, "startAutoPost: itemResult.parentNode")
+//                            itemContainerLayoutNode.delayClickWithShowHighLight(gestureClick = false) {
+//                                Log.d(TAG, "startAutoPost: 这是item点击结果 + $it")
+//                                Log.d(TAG, "startAutoPost: itemNode = " + itemContainerLayoutNode)
 //                            }
+                            itemContainerLayoutNode.bounds?.let { clickRect ->
+                                Log.d(TAG, "startAutoPost: clickRect = $clickRect")
+                                val highLightRect =
+                                    PreJumpUtils.instance().getCurItemRect(clickRect)
+                                Log.d(TAG, "startAutoPost: highLightRect = $highLightRect")
+                                itemResult.findNodeById(IDPrePostSingleBall.id_single_league_title)
+                                    .delayClickWithShowAnotherHighLight(
+                                        highLightRect,
+                                        delayTime = 500L
+                                    ) {
+                                        Log.d(TAG, "startAutoPost: clickResult" + it)
+                                    }
+                            }
                         }
                         //点了第一个有效的Item就走
                         //return@forEach // 仅跳过当前这一次循环，下一个继续

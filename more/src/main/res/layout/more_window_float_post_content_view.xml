@@ -134,21 +134,22 @@
         </LinearLayout>
 
 
+
         <TextView
-            android:id="@+id/tv_stop_next_post"
+            android:id="@+id/tv_start_auto_post"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:gravity="center"
-            android:text="→终止下次发布←"
+            android:text="→开始发布←"
             android:textColor="@color/global_text_color" />
 
 
         <TextView
-            android:id="@+id/tv_task_visualize"
+            android:id="@+id/tv_stop_auto_post"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:gravity="center"
-            android:text="→可视化功能←"
+            android:text="→终止发布←"
             android:textColor="@color/global_text_color" />
 
         <TextView

@@ -87,7 +87,7 @@ class HighLightView @JvmOverloads constructor(
         //特定时间之后擦除已经画好的框
         // 提交延时任务
 
-        handler.postDelayed(delayTask, 1000)
+        handler.postDelayed(delayTask, 500)
     }
 
     fun clearRect() {

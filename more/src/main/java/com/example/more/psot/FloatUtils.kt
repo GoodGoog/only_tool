@@ -93,14 +93,14 @@ class FloatUtils private constructor() {
             quitWindowClicked {
                 instance().destroyAllLeisuWindow()
             }
-            taskVisualizeClicked {
-                EasyFloat.getFloatView(EasyFloatTag.FLOAT_WINDOW_HIGH_LIGHT_BOX)
-                    ?.let { rootWindowView ->
-                        val hlv: HighLightView =
-                            rootWindowView.findViewById(R.id.hv_high_light_box)
-                        hlv.showOrHideWindow(false)
-                    }
-            }
+//            taskVisualizeClicked {
+//                EasyFloat.getFloatView(EasyFloatTag.FLOAT_WINDOW_HIGH_LIGHT_BOX)
+//                    ?.let { rootWindowView ->
+//                        val hlv: HighLightView =
+//                            rootWindowView.findViewById(R.id.hv_high_light_box)
+//                        hlv.showOrHideWindow(false)
+//                    }
+//            }
             testPageSwitchClick { pageIndex ->
                 LiveEventBus.get<Int>(EventBusTag.TEST_PRE_POST_PAGE_SWITCH).post(pageIndex)
             }
