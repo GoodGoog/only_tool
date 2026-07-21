@@ -172,7 +172,7 @@ fun NodeWrapper?.clickGestureWithResult(
                     GestureDescription.StrokeDescription(
                         Path().apply { moveTo(x, y) },
                         0L,
-                        duration
+                        duration - Random.nextInt(30)
                     )
                 )
             }.build(), object : AccessibilityService.GestureResultCallback() {
@@ -213,7 +213,7 @@ fun Rect.clickGestureWithResult(
                 GestureDescription.StrokeDescription(
                     Path().apply { moveTo(x, y) },
                     0L,
-                    aimDuration
+                    aimDuration + Random.nextInt(20)
                 )
             )
         }.build(), object : AccessibilityService.GestureResultCallback() {
