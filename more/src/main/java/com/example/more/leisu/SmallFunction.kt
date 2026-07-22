@@ -391,6 +391,20 @@ fun AnalyzeSourceResult.getTextById(tvId: String): String {
 }
 
 /**
+ * 通过result和tv的id,获取节点的text,
+ * 并过滤掉节点文本的 " ","胜"，"平"，"负"等等,只保留{0,1,2,3,4,5,6,7,8,9 和 . - +}
+ */
+fun AnalyzeSourceResult.getNumberTextByIdAndFilterOther(tvId: String): String {
+    return findNodeById(tvId)?.text.blankOrThis().let { text ->
+        val removeChars = setOf('1','2','3','4','5','6','7','8','9','0','+','-','.')
+        //filter，保留满足条件的字符
+        val aimStr = text.filter { it in removeChars }
+        aimStr
+    }
+}
+
+
+/**
  * 篮球 拼接分析的ai提问 , 左客队，右主队
  */
 fun transToSingleBasketballHandicapAnalyseAiQuestion(data: PostSingleBasketBallHandicapTypeData): String {

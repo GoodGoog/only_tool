@@ -49,7 +49,8 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
 
     init {
         LiveEventBus.get<String>(EventBusTag.POST_CHARGE_ANSWER_FROM_AI).observe(this){
-            if (PreJumpUtils.instance().curPageType != curType) return@observe
+            //不是当前页面 或 无障碍服务连接已断开
+            if (PreJumpUtils.instance().curPageType != curType || !isServiceConnect) return@observe
             //拿到了Ai返回的答案
         }
     }
@@ -129,12 +130,12 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
             leagueName = rootResult.getTextById(IDPostFootballSingle.id_single_league_name),
             leagueStartTime = rootResult.getTextById(IDPostFootballSingle.id_single_post_league_start_time),
             leftTeamName = rootResult.getTextById(IDPostFootballSingle.id_single_post_left_team_name),
-            rightTeamName = rootResult.getTextById(IDPostBasketballSingle.id_single_post_right_team_name),
+            rightTeamName = rootResult.getTextById(IDPostFootballSingle.id_single_post_right_team_name),
 
-            leftPlate = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_left_plate),
-            leftValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_left_win_value),
-            rightPlate = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_plate),
-            rightValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
+            leftPlate = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_left_plate),
+            leftValue = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_left_win_value),
+            rightPlate = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_right_plate),
+            rightValue = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_right_win_value),
         ).apply {
             val it = transToSingleFootballHandicapAnalyseAiQuestion(this)
             //传递向AI发送的问题
@@ -145,14 +146,14 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     //总分-收费 左侧队伍为 主队， 右侧队伍为 客队
     private fun doTotalScoreType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult){
         val data = PostSingleFootBallTotalScoreTypeData(
-            leagueName = rootResult.getTextById(IDPostBasketballSingle.id_single_league_name),
-            leagueStartTime = rootResult.getTextById(IDPostBasketballSingle.id_single_post_league_start_time),
-            leftTeamName = rootResult.getTextById(IDPostBasketballSingle.id_single_post_left_team_name),
-            rightTeamName = rootResult.getTextById(IDPostBasketballSingle.id_single_post_right_team_name),
+            leagueName = rootResult.getTextById(IDPostFootballSingle.id_single_league_name),
+            leagueStartTime = rootResult.getTextById(IDPostFootballSingle.id_single_post_league_start_time),
+            leftTeamName = rootResult.getTextById(IDPostFootballSingle.id_single_post_left_team_name),
+            rightTeamName = rootResult.getTextById(IDPostFootballSingle.id_single_post_right_team_name),
 
-            biggerThanTotalValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_left_win_value),
-            totalScore = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_center_total_score),
-            smallerThanTotalValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
+            biggerThanTotalValue = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_left_win_value),
+            totalScore = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_center_total_score),
+            smallerThanTotalValue = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_right_win_value),
         ).apply {
             val it = transToSingleFootballTotalScoreAnalyseAiQuestion(this)
             LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(it)
@@ -163,23 +164,23 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     fun doFreePost(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
         Log.d(TAG, "analysePlayType: --------------------")
         val itemTitle =
-            itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
+            itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_item_title)?.text.blankOrThis()
         val playNodeWrapper = when (itemTitle) {
             PLAY_TYPE_HANDICAP -> {
                 //让分玩法
                 //随机选择胜利
                 if (getRandomInt() % 2 == 0) {
-                    itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_left_layout_container)
+                    itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_left_layout_container)
                 } else {
-                    itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_right_layout_container)
+                    itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_right_layout_container)
                 }
             }
 
             PLAY_TYPE_TOTAL_SCORE -> {
                 if (getRandomInt() % 2 == 0) {
-                    itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_left_layout_container)
+                    itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_left_layout_container)
                 } else {
-                    itemResult.findNodeById(IDPostBasketballSingle.id_single_post_prospect_right_layout_container)
+                    itemResult.findNodeById(IDPostFootballSingle.id_single_post_prospect_right_layout_container)
                 }
             }
 
@@ -207,7 +208,7 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     }
 
     fun getCurRemainCount(result: AnalyzeSourceResult) =
-        result.findNodeById(IDPostBasketballSingle.id_single_post_today_remains_times)?.text.filterNumberOrZero()
+        result.findNodeById(IDPostFootballSingle.id_single_post_today_remains_times)?.text.filterNumberOrZero()
 
     fun getCurIsFreePost(): Boolean = false
     //PreDataCenter.instance().postArray[curType.transToPostArrayIndex()].isFree

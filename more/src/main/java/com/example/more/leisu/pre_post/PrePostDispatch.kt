@@ -116,9 +116,6 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         PreMultiBasketball.instance().start()
         PreMultiFootball.instance().start()
 
-        //发布页
-        PostSingleBasketball.instance().start()
-        PostSingleFootball.instance().start()
     }
 
     override fun onDestroy() {
@@ -126,10 +123,6 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         PreSingleFootball.instance().destroy()
         PreMultiBasketball.instance().destroy()
         PreMultiFootball.instance().destroy()
-
-        //发布页
-        PostSingleBasketball.instance().destroy()
-        PostSingleFootball.instance().destroy()
 
     }
 

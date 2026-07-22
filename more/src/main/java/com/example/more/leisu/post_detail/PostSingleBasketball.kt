@@ -48,7 +48,8 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
     init {
         LiveEventBus.get<String>(EventBusTag.POST_CHARGE_ANSWER_FROM_AI).observe(this){
-            if (PreJumpUtils.instance().curPageType != curType) return@observe
+            //不是当前页面 或 无障碍服务连接已断开
+            if (PreJumpUtils.instance().curPageType != curType || !isServiceConnect) return@observe
             //拿到了Ai返回的答案
         }
     }

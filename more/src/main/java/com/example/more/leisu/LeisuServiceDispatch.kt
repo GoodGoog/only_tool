@@ -109,10 +109,19 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
 
     override fun onStart() {
         PrePostDispatch.instance().start()
+
+        //发布页
+        PostSingleBasketball.instance().start()
+        PostSingleFootball.instance().start()
     }
 
     override fun onDestroy() {
         PrePostDispatch.instance().destroy()
+
+        //发布页
+        PostSingleBasketball.instance().destroy()
+        PostSingleFootball.instance().destroy()
+
     }
 
 }

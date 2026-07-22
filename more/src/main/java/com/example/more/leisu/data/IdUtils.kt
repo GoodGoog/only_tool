@@ -175,22 +175,22 @@ class IDPrePostMultiBasketBall {
 /**
  * 赛事选择页-------足球串关页
  */
-class IDPrePostMultiFootball {
+class IDPreMultiFootball {
     companion object {
         //比赛信息列表RecyclerView
         const val id_multi_foot_league_list = "com.leisu.sports:id/recycler_view"
 
         //比赛名
-        const val id_multi_foot_league_title = "com.leisu.sports:id/tv_comp_name"
+        const val id_league_name = "com.leisu.sports:id/tv_comp_name"
 
         //左侧主场队名
-        const val id_multi_foot_left_home_name = "com.leisu.sports:id/home_name"
+        const val id_left_team_name = "com.leisu.sports:id/home_name"
 
         //右侧客场队名
-        const val id_multi_foot_right_away_name = "com.leisu.sports:id/away_name"
+        const val id_right_team_name = "com.leisu.sports:id/away_name"
 
         //比赛时间
-        const val id_multi_foot_start_time = "com.leisu.sports:id/tv_time"
+        const val id_league_start_time = "com.leisu.sports:id/tv_time"
 
         /**
          *
@@ -207,34 +207,26 @@ class IDPrePostMultiFootball {
          * 通常是左侧队伍为主队，右侧队伍为客队
          **/
 
-        //第一列，0分=双方互不让分
-        const val id_multi_foot_zero_score = "com.leisu.sports:id/tv_spf"
+        //第一列为主队让分受让分
+        //队伍为 |||||||||||||| 左主队  右客队
 
-        //主队胜赔率
-        const val id_multi_foot_zero_score_left_win_odds = "com.leisu.sports:id/tv_spf_win "
+        //第一行，0分-双方互不让分
+        const val id_tv_spf = "com.leisu.sports:id/tv_spf"
+        //0-主队胜赔率
+        const val id_tv_spf_win_value = "com.leisu.sports:id/tv_spf_win"
+        //0-平局赔率
+        const val id_tv_spf_flat_value = "com.leisu.sports:id/tv_spf_flat"
+        //0-主队败赔率
+        const val id_tv_spf_lose_value = "com.leisu.sports:id/tv_spf_lose"
 
-        //平局赔率
-        const val id_multi_foot_zero_score_flat_odds = "com.leisu.sports:id/tv_spf_flat"
-
-        //主队败赔率
-        const val id_multi_foot_zero_score_left_lose_odds = "com.leisu.sports:id/tv_spf_lose"
-
-
-        //未开放0分玩法时显示 该玩法未开售
-        const val id_multi_foot_zero_no_sale = "com.leisu.sports:id/tv_spf_dns"
-
-
-        //第二列，主队 让/受让分[-x / +x]
-        const val id_multi_foot_left_extra_score = "com.leisu.sports:id/tv_rq"
-
-        //主队胜赔率
-        const val id_multi_foot_left_extra_score_win_odds = "com.leisu.sports:id/tv_rq_win"
-
-        //平局赔率
-        const val id_multi_foot_flat_odds = "com.leisu.sports:id/tv_rq_flat"
-
-        //主队败赔率
-        const val id_multi_foot_left_extra_score_lose_odds = "com.leisu.sports:id/tv_rq_lose"
+        //第二行，主队让分 / 受让分
+        const val id_tv_rq = "com.leisu.sports:id/tv_rq"
+        //让分 / 受让分  -主队胜赔率
+        const val id_tv_rq_win_value = "com.leisu.sports:id/tv_rq_win"
+        //让分 / 受让分  -平局赔率
+        const val id_tv_rq_flat_value = "com.leisu.sports:id/tv_rq_flat"
+        //让分 / 受让分  -主队败赔率
+        const val id_tv_rq_lose_value = "com.leisu.sports:id/tv_rq_lose"
 
         //下一步按钮
         const val id_multi_foot_submit = "com.leisu.sports:id/tv_confirm"
