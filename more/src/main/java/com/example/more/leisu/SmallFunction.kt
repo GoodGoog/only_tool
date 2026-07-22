@@ -503,13 +503,13 @@ fun isClickNodeInCurLeagueList(
     curType : PostConfigData.ConfigType,
     clickNodeWrapper: NodeWrapper
 ): Boolean {
-    var isClickInList = false
+    var isClickInList: Boolean
     var sameNodeCount = 0
     getCurPrePageMatchList(result, curType) { itemResults ->
         itemResults.forEach { itemResult ->
             itemResult.findNodesByExpression {
-                it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id &&
-                        it.className == clickNodeWrapper.className && it.clickable == clickNodeWrapper.clickable
+                it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id
+                        && it.bounds == clickNodeWrapper.bounds //避免id和text都重复的节点冲突
             }.let {
                 sameNodeCount += it.nodes.size
             }

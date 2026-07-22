@@ -2,8 +2,10 @@ package com.example.more.leisu.pre_post
 
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
+import com.example.more.accessibility.transNodeInfoToNodeWrapper
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.IDPreMultiFootball
 import com.example.more.leisu.data.IDPrePostMultiBasketBall
@@ -16,6 +18,7 @@ import com.example.more.leisu.data.PreMultiFootBallSubData
 import com.example.more.leisu.getCurPrePageMatchList
 import com.example.more.leisu.getNumberTextByIdAndFilterOther
 import com.example.more.leisu.getTextById
+import com.example.more.leisu.isClickNodeInCurLeagueList
 import com.example.more.leisu.isCurItemTypeTimeFlags
 
 class PreMultiBasketball private constructor(): BaseLeisuDispatch(){
@@ -49,12 +52,35 @@ class PreMultiBasketball private constructor(): BaseLeisuDispatch(){
                 //startAutoPost(result)
             }
 
-            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+            AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
 
             }
 
-            AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+                Log.d(TAG, "onEventCome: laile !!!")
+                val node: AccessibilityNodeInfo? = eventWrapper.event.source
+                node ?: return
+                try {
+                    if (!isClickNodeInCurLeagueList(
+                            result,
+                            curType,
+                            node.transNodeInfoToNodeWrapper()
+                        )
+                    ){
+                        Log.d(TAG, "onEventCome: 点击不在列表只中 node ==" + node.transNodeInfoToNodeWrapper() )
 
+                        getCurPrePageMatchList(result, curType){
+                            it.forEach { itemResult ->
+                                Log.d(TAG, "onEventCome: itemResult = " + itemResult)
+                            }
+                        }
+                        return
+                    }
+                    Log.d(TAG, "当前被点击的节点数据 = " + node.transNodeInfoToNodeWrapper())
+                } finally {
+                    // 【强制】必须回收，否则内存泄漏、系统杀服务
+                    node.recycle()
+                }
             }
 
             else -> {

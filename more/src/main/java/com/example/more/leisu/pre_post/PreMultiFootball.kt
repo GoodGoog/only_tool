@@ -41,7 +41,6 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
      */
     override
     fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
-        Log.d(TAG, "onEventCome: ---------------------result == $result")
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 //串关-足球只支持手动开启
@@ -62,7 +61,6 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
                             node.transNodeInfoToNodeWrapper()
                         )
                     ) return
-                    Log.d(TAG, "当前被点击的节点数据 = " + node.transNodeInfoToNodeWrapper())
                 } finally {
                     // 【强制】必须回收，否则内存泄漏、系统杀服务
                     node.recycle()
