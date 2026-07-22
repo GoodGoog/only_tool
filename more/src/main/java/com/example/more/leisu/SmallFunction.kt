@@ -12,6 +12,7 @@ import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.clickGestureWithResult
 import com.example.more.accessibility.clickPerformWithResult
 import com.example.more.accessibility.findNodeById
+import com.example.more.accessibility.findNodesByExpression
 import com.example.more.accessibility.findNodesById
 import com.example.more.leisu.data.IDPrePostHeader
 import com.example.more.leisu.data.PostConfigData
@@ -492,4 +493,32 @@ fun transToSingleFootballTotalScoreAnalyseAiQuestion(data: PostSingleFootBallTot
                 "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"
     }
 
+}
+
+/**
+ * 判断当前的点击响应控件是否再当前显示的列表中
+ */
+fun isClickNodeInCurLeagueList(
+    result: AnalyzeSourceResult,
+    curType : PostConfigData.ConfigType,
+    clickNodeWrapper: NodeWrapper
+): Boolean {
+    var isClickInList = false
+    var sameNodeCount = 0
+    getCurPrePageMatchList(result, curType) { itemResults ->
+        itemResults.forEach { itemResult ->
+            itemResult.findNodesByExpression {
+                it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id &&
+                        it.className == clickNodeWrapper.className && it.clickable == clickNodeWrapper.clickable
+            }.let {
+                sameNodeCount += it.nodes.size
+            }
+        }
+    }
+    isClickInList = when (sameNodeCount) {
+        0 -> false
+        1 -> true
+        else -> false
+    }
+    return isClickInList
 }

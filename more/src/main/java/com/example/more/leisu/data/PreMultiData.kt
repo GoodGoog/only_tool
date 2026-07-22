@@ -7,37 +7,59 @@ package com.example.more.leisu.data
 data class PreMultiFootBallData(
     //赛事名
     val leagueName: String = "",
-
     //赛事开始时间
     val leagueStartTime: String = "",
-
     //左侧队伍名  主队
     val leftTeamName: String = "",
-
     //右侧队伍名  客队
     val rightTeamName: String = "",
 
-    //spf 为主客队互不让分
-    val spfScore : String = "0",
-    //主队胜赔率
-    val spfWinValue : String = "",
-    //平局赔率
-    val spfFlatValue : String = "",
-    //主队败赔率
-    val spfLoseValue : String = "",
+    //当前选择哪一种玩法
+    var curIsSpf: Boolean = false,
 
-    //rq 为主队 让分-3 或者 受让分+3
-    val rqScore : String = "0",
-    //主队胜赔率
-    val rqWinValue : String = "",
-    //平局赔率
-    val rqFlatValue : String = "",
-    //主队败赔率
-    val rqLoseValue : String = "",
+    val subDataArray: ArrayList<PreMultiFootBallSubData>,
+
 ) {
     override fun toString(): String {
-        return "leagueName= $leagueName ||leagueStartTime = $leagueStartTime||leftTeamName = $leftTeamName ||rightTeamName = $rightTeamName \n" +
-                "spfScore = $spfScore ||spfWinValue = $spfWinValue||spfFlatValue = $spfFlatValue ||spfLoseValue = $spfLoseValue \n" +
-                "rqScore = $rqScore ||rqWinValue = $rqWinValue||rqFlatValue = $rqFlatValue ||rqLoseValue = $rqLoseValue"
+        return "leagueName= $leagueName ||leagueStartTime = $leagueStartTime||leftTeamName = $leftTeamName ||rightTeamName = $rightTeamName || curIsSpf = $curIsSpf \n" +
+                 subDataArray.let {
+                     var subDataArrayStr = ""
+                     it.forEach { subData ->
+                         subDataArrayStr += subData.toString() + "\n"
+                     }
+                     subDataArrayStr
+                 }
+    }
+
+    fun initData() {
+
+    }
+}
+
+/**
+ * 预览页-串关-足球的一种玩法
+ */
+data class PreMultiFootBallSubData(
+    //spf 为主客队互不让分
+    //rq 为主队 让分-3 或者 受让分+3
+    val isSpf: Boolean = true,
+
+    //spf 为主客队互不让分
+    val score: String = "0",
+
+    //spf未开放此玩法 [文本不为空时表示未开放]
+    val notOpenText: String = "",
+
+    //主队胜赔率
+    val winValue: String = "",
+
+    //平局赔率
+    val flatValue: String = "",
+
+    //主队败赔率
+    val loseValue: String = "",
+) {
+    override fun toString(): String {
+        return "isSpf = $isSpf || score = $score || notOpenText = $notOpenText ||winValue = $winValue||flatValue = $flatValue ||loseValue = $loseValue"
     }
 }

@@ -212,6 +212,9 @@ class IDPreMultiFootball {
 
         //第一行，0分-双方互不让分
         const val id_tv_spf = "com.leisu.sports:id/tv_spf"
+        //第一行,0分-双方互不让分  [ 该玩法未开售 → com.leisu.sports:id/tv_spf_dns ]
+        //该玩法未开放时不能，此提示占满整行
+        const val id_tv_spf_not_open = "com.leisu.sports:id/tv_spf_dns"
         //0-主队胜赔率
         const val id_tv_spf_win_value = "com.leisu.sports:id/tv_spf_win"
         //0-平局赔率
@@ -221,6 +224,8 @@ class IDPreMultiFootball {
 
         //第二行，主队让分 / 受让分
         const val id_tv_rq = "com.leisu.sports:id/tv_rq"
+        //该玩法未开放时不能，此提示占满整行
+        const val id_tv_rq_not_open = "com.leisu.sports:id/tv_rq_dns"
         //让分 / 受让分  -主队胜赔率
         const val id_tv_rq_win_value = "com.leisu.sports:id/tv_rq_win"
         //让分 / 受让分  -平局赔率
