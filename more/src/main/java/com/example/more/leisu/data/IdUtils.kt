@@ -119,54 +119,52 @@ class IDPrePostSingleBall {
 
 
 /**
- * 赛事选择页-------篮球串关页
+ * 赛事选择页-------篮球串关页  左客队 右主队
  */
 class IDPrePostMultiBasketBall {
     companion object {
 
         //比赛信息列表RecyclerView
-        const val id_multi_basket_league_list = "com.leisu.sports:id/recycler_view"
+        const val id_league_list = "com.leisu.sports:id/recycler_view"
 
         //比赛名
-        const val id_multi_basket_league_title = "com.leisu.sports:id/tv_comp_name"
+        const val id_league_name = "com.leisu.sports:id/tv_comp_name"
 
-        //左侧主场队名
-        const val id_multi_basket_left_name = "com.leisu.sports:id/home_name"
+        //左侧 客队名
+        const val id_left_team_name = "com.leisu.sports:id/home_name"
 
-        //右侧客场队名
-        const val id_multi_basket_right_name = "com.leisu.sports:id/away_name"
+        //右侧 主队名
+        const val id_right_team_name = "com.leisu.sports:id/away_name"
 
         //比赛时间
-        const val id_multi_basket_start_time = "com.leisu.sports:id/tv_time"
+        const val id_league_start_time = "com.leisu.sports:id/tv_time"
 
-//篮球串关页 右侧队伍似乎是主队，左侧队伍为客队 ，有待确认
+
+//篮球串关页 右侧队伍是主队，左侧队伍为客队
         /**
          *            火花 → com.leisu.sports:id/home_name          VS         狂热[主队] → com.leisu.sports:id/away_name
          * 主队 -6.5 → com.leisu.sports:id/tv_bt_rf   客胜 1.75 → com.leisu.sports:id/tv_bt_rf_away   主胜 1.65 → com.leisu.sports:id/tv_bt_rf_home
          * 总分 180.5 → com.leisu.sports:id/tv_bt_zf   大 1.66 → com.leisu.sports:id/tv_bt_zf_away   小 1.74 → com.leisu.sports:id/tv_bt_zf_home
          */
-//赔率信息
 
-//让分玩法 ||主队受让分[+5 或 -5]，统称为 home_initial_score
-        const val id_multi_basket_home_initial_score = "com.leisu.sports:id/tv_bt_rf"
+        //让分玩法 ||主队受让分[+5 或 -5]，统称为 home_initial_score
+        ////统一按 主队 胜负 赔率 来看
+        const val id_handicap_score = "com.leisu.sports:id/tv_bt_rf"
 
-        //客胜赔率
-        const val id_multi_basket_away_win_odds = "com.leisu.sports:id/tv_bt_rf_away"
+        //主败赔率 即 客胜赔率
+        const val id_handicap_lose_value = "com.leisu.sports:id/tv_bt_rf_away"
+        //主胜赔率 即 客败赔率
+        const val id_handicap_win_value = "com.leisu.sports:id/tv_bt_rf_home"
 
-        //主胜赔率
-        const val id_multi_basket_home_win_odds = "com.leisu.sports:id/tv_bt_rf_home"
-
-        //预测总分大小某值玩法
-        const val id_multi_basket_total_score = "com.leisu.sports:id/tv_bt_zf"
-
+        //预测总分大小某值玩法  赢=大于预测分，输=小于预测分
+        const val id_total_score = "com.leisu.sports:id/tv_bt_zf"
         //大于预测总分时赔率
-        const val id_multi_basket_greater_win_odds = "com.leisu.sports:id/tv_bt_zf_away"
-
+        const val id_total_win_value = "com.leisu.sports:id/tv_bt_zf_away"
         //小于预测总分时赔率
-        const val id_multi_basket_smaller_win_odds = "com.leisu.sports:id/tv_bt_zf_home"
+        const val id_total_lose_value = "com.leisu.sports:id/tv_bt_zf_home"
 
         //下一步按钮
-        const val id_multi_basket_submit = "com.leisu.sports:id/tv_confirm"
+        const val id_submit = "com.leisu.sports:id/tv_confirm"
 
     }
 }
@@ -178,7 +176,7 @@ class IDPrePostMultiBasketBall {
 class IDPreMultiFootball {
     companion object {
         //比赛信息列表RecyclerView
-        const val id_multi_foot_league_list = "com.leisu.sports:id/recycler_view"
+        const val id_league_list = "com.leisu.sports:id/recycler_view"
 
         //比赛名
         const val id_league_name = "com.leisu.sports:id/tv_comp_name"
