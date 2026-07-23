@@ -433,7 +433,7 @@ class IDPostMultiDouble {
         const val id_multi_post_submit_button = "com.leisu.sports:id/tv_submit"
 
         //价格 [免费 \ 具体价格]
-        const val id_multi_post_price = "com.leisu.sports:id/tv_price "
+        const val id_multi_post_price = "com.leisu.sports:id/tv_price"
 
 
         //二.1 串关-发布页，具体需要发布的信息

@@ -211,3 +211,53 @@ data class PreMultiBasketBallSubData(
         return "isHandicap = $isHandicap || score = $score || notOpenText = $notOpenText ||winValue = $winValue|| loseValue = $loseValue"
     }
 }
+
+
+/**
+ * 预览页-足球-串关，被选中的Item
+ */
+data class PreMultiBasketballSelectedLeague(
+    //tag = 左侧对伍名VS左侧队伍名
+    val itemTag: String = "",
+
+    //true为让分  false为总分比大小
+    var isHandicap: Boolean,
+
+    //被选中的玩法,spf 或者 rq
+    //由第一列scor值为0或者非0区分
+    var scoreNodeWrapper: NodeWrapper,
+
+    // 选中的玩法 ，最多1个
+    var selectedNode: NodeWrapper
+
+) {
+
+    override fun toString(): String {
+        return "itemTag = $itemTag ||||||||||||||| isHandicap = $isHandicap  ||||||||||||||| isHandicap =  + scoreNodeWrapper = $scoreNodeWrapper  ||||||||||||||| isHandicap =  selectedNode = $selectedNode---------------------------------"
+    }
+
+    /**
+     * 更新节点数据
+     */
+    fun upDataClickNodeWrapper(
+        //是否为让分玩法
+        mIsHandicap: Boolean,
+        scoreNodeWrapper : NodeWrapper,
+        clickNodeWrapper: NodeWrapper
+    ): Boolean {
+
+        //下列为 之前的类型 和 当前点击的类型 一致
+        if (isTwoNodeSame(selectedNode, clickNodeWrapper)) {
+            //当前点击的节点已被选中了，故删除此已选中节点
+            //零当前item已经没有选中的节点，需要从selectedArray中移除
+            return true
+        }
+
+        //下列为 当前点击的节点  和 之前已被选中的节点 不同
+        isHandicap = mIsHandicap
+        this.scoreNodeWrapper = scoreNodeWrapper
+        selectedNode = clickNodeWrapper
+        return false
+    }
+
+}

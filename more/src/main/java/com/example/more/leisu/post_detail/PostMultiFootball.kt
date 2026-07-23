@@ -7,14 +7,12 @@ import com.example.more.accessibility.EventWrapper
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
+import com.example.more.leisu.pre_post.PreMultiFootball
 import com.example.more.leisu.transAccessibilityEventToString
 
 class PostMultiFootball private constructor() : BaseLeisuDispatch() {
 
     companion object {
-        const val PLAY_TYPE_HANDICAP = "预测-让分"
-        const val PLAY_TYPE_TOTAL_SCORE = "预测-总分"
-
         private var instance: PostMultiFootball? = null
 
         // synchronized 保证多线程安全
@@ -35,17 +33,13 @@ class PostMultiFootball private constructor() : BaseLeisuDispatch() {
         eventWrapper: EventWrapper,
         result: AnalyzeSourceResult
     ) {
-        Log.d(
-            TAG,
-            "onTaskDispatch: --------------------" + eventWrapper.eventType.transAccessibilityEventToString()
-        )
-        Log.d(TAG, "onTaskDispatch: result ==" + result.nodes)
-        if (!PreDataCenter.instance()
-                .isCurPrePageAllowAutoPost(curType)
-        ) return
+        //Log.d(TAG, "onTaskDispatch: result ==" + result.nodes)
+//        if (!PreDataCenter.instance()
+//                .isCurPrePageAllowAutoPost(curType)
+//        ) return
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                //startAutoPost(result)
+                loadAiQuestion(result)
             }
 
             AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
@@ -56,6 +50,14 @@ class PostMultiFootball private constructor() : BaseLeisuDispatch() {
             }
             else -> {
 
+            }
+        }
+    }
+
+    fun loadAiQuestion(result : AnalyzeSourceResult){
+        PreMultiFootball.instance().selectedItemArray.let {
+            it.forEachIndexed { index, league ->
+                Log.d(TAG, "printCurSelectedArray: item == " + league)
             }
         }
     }

@@ -34,14 +34,14 @@ class PostMultiBasketball private constructor() : BaseLeisuDispatch() {
         eventWrapper: EventWrapper,
         result: AnalyzeSourceResult
     ) {
-        Log.d(
-            TAG,
-            "onTaskDispatch: --------------------" + eventWrapper.eventType.transAccessibilityEventToString()
-        )
-        Log.d(TAG, "onTaskDispatch: result ==" + result.nodes)
-        if (!PreDataCenter.instance()
-                .isCurPrePageAllowAutoPost(curType)
-        ) return
+//        Log.d(
+//            TAG,
+//            "onTaskDispatch: --------------------" + eventWrapper.eventType.transAccessibilityEventToString()
+//        )
+//        Log.d(TAG, "onTaskDispatch: result ==" + result.nodes)
+//        if (!PreDataCenter.instance()
+//                .isCurPrePageAllowAutoPost(curType)
+//        ) return
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 //startAutoPost(result)

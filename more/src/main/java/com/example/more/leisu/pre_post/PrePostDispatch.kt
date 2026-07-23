@@ -1,14 +1,19 @@
 package com.example.more.leisu.pre_post
 
 import android.util.Log
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.LeisuServiceCenter
+import com.example.more.accessibility.transNodeInfoToNodeWrapper
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
+import com.example.more.leisu.getCurPrePageMatchList
+import com.example.more.leisu.isClickNodeInCurLeagueList
 import com.example.more.leisu.transToPostConfigType
 import com.jeremyliao.liveeventbus.LiveEventBus
 
@@ -80,7 +85,6 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
     }
 
     override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
-        Log.d("jumpSubTab", "onEventCome: 数据刷新了")
         this.result = result
         PreJumpUtils.instance().refreshResult(result)
 
@@ -103,6 +107,18 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
             PostConfigData.ConfigType.MultiFootball -> {
                 PreMultiFootball.instance()
                     .eventCome(eventWrapper, result)
+            }
+        }
+
+        if (eventWrapper.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED){
+            //点击事件
+            val node: AccessibilityNodeInfo? = eventWrapper.event.source
+            node ?: return
+            try {
+                //Log.d(TAG, ("当前被点击的节点数据 = " + node.text))
+            } finally {
+                // 【强制】必须回收，否则内存泄漏、系统杀服务
+                node.recycle()
             }
         }
     }

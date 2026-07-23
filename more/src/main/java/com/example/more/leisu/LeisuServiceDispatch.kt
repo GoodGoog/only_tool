@@ -39,7 +39,7 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
      */
     //业务分发
     override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        Log.d(TAG, "onEventCome: result = " + result.nodes)
+        //Log.d(TAG, "onEventCome: result = " + result.nodes)
         if (isInExpertHomePage(result)) {
             //情况预览页-足球-串关-选中的数据
             PreMultiFootball.instance().clearAll()
@@ -48,19 +48,31 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
             //在比赛信息选择页
             PrePostDispatch.instance().eventCome(wrapper, result)
         }
-        if (isInPostSinglePage(result)) {
-            //在单关发布页
-            if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleFootball) {
-                //单关足球-发布页
-                PostSingleFootball.instance().eventCome(wrapper, result)
+        if (isInPostPage(result)) {
+            //在发布页
+            when (PreJumpUtils.instance().curPageType) {
+                PostConfigData.ConfigType.SingleFootball -> {
+                    Log.d(TAG, "onEventCome: SingleFootball")
+                    //单关足球-发布页
+                    PostSingleFootball.instance().eventCome(wrapper, result)
+                }
+
+                PostConfigData.ConfigType.MultiFootball -> {
+                    Log.d(TAG, "onEventCome: MultiFootball")
+                    PostMultiFootball.instance().eventCome(wrapper,result)
+                }
+
+                PostConfigData.ConfigType.SingleBasketball -> {
+                    Log.d(TAG, "onEventCome: SingleBasketball")
+                    //单关篮球-发布页
+                    PostSingleBasketball.instance().eventCome(wrapper, result)
+                }
+
+                PostConfigData.ConfigType.MultiBasketball -> {
+                    Log.d(TAG, "onEventCome: MultiBasketball")
+                    PostMultiBasketball.instance().eventCome(wrapper,result)
+                }
             }
-            if (PreJumpUtils.instance().curPageType == PostConfigData.ConfigType.SingleBasketball) {
-                //单关篮球-发布页
-                PostSingleBasketball.instance().eventCome(wrapper, result)
-            }
-            //PostFreeSingleBusiness(wrapper, result).execute()
-        }
-        if (isInPostMultiPage(result)) {
 
         }
     }
@@ -81,23 +93,13 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
     }
 
     /**
-     * 在单关发布页
-     */
-    fun isInPostSinglePage(result: AnalyzeSourceResult): Boolean {
-        val remains =
-            result.findNodeById(IDPostSingleCommonId.id_single_post_today_remains_times)?.text.blankOrThis()
-        val analyzeEt = result.findNodeById(IDPostSingleCommonId.id_single_post_analyse_edit)
-        return remains.isNotEmpty() && analyzeEt != null
-    }
-
-    /**
      * 在多关发布页
      */
-    fun isInPostMultiPage(result: AnalyzeSourceResult): Boolean {
+    fun isInPostPage(result: AnalyzeSourceResult): Boolean {
         val remains =
-            result.findNodeById(IDPostMultiDouble.id_multi_post_today_remains_times)?.text.blankOrThis()
-        //val analyzeEt = result.findNodeById(PostMultiDoubleId.)
-        return false
+            result.getTextById(IDPostMultiDouble.id_multi_post_today_remains_times)
+        val submit = result.getTextById(IDPostMultiDouble.id_multi_post_submit_button)
+        return remains.isNotEmpty() && submit.isNotEmpty()
     }
 
     /**
