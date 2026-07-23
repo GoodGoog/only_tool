@@ -22,16 +22,16 @@ data class PreMultiFootBallData(
 
     val subDataArray: ArrayList<PreMultiFootBallSubData>,
 
-) {
+    ) {
     override fun toString(): String {
         return "leagueName= $leagueName ||leagueStartTime = $leagueStartTime||leftTeamName = $leftTeamName ||rightTeamName = $rightTeamName || curIsSpf = $curIsSpf \n" +
-                 subDataArray.let {
-                     var subDataArrayStr = ""
-                     it.forEach { subData ->
-                         subDataArrayStr += subData.toString() + "\n"
-                     }
-                     subDataArrayStr
-                 }
+                subDataArray.let {
+                    var subDataArrayStr = ""
+                    it.forEach { subData ->
+                        subDataArrayStr += subData.toString() + "\n"
+                    }
+                    subDataArrayStr
+                }
     }
 
     fun initData() {
@@ -72,56 +72,73 @@ data class PreMultiFootBallSubData(
  */
 data class PreMultiFootballSelectedLeague(
     //tag = 左侧对伍名VS左侧队伍名
-    val itemTag : String = "",
+    val itemTag: String = "",
+
+    //是否为互不让分
+    var isSpf: Boolean,
 
     //被选中的玩法,spf 或者 rq
     //由第一列scor值为0或者非0区分
-    val scoreNodeWrapper: NodeWrapper,
+    var scoreNodeWrapper: NodeWrapper,
 
     // 选中的玩法 ，最多两个
-    val selectedNodes : ArrayList<NodeWrapper>
+    val selectedNodes: ArrayList<NodeWrapper>
 
-){
+) {
 
     override fun toString(): String {
-        return "itemTag = $itemTag || + scoreNodeWrapper = $scoreNodeWrapper || selectedNodes = $selectedNodes---------------------------------"
+        return "itemTag = $itemTag || isSpf = $isSpf || + scoreNodeWrapper = $scoreNodeWrapper || selectedNodes = $selectedNodes---------------------------------"
     }
 
     /**
      * 更新节点数据
      */
-    fun upDataClickNodeWrapper(clickNodeWrapper: NodeWrapper) : Boolean{
+    fun upDataClickNodeWrapper(
+        isClickSpf: Boolean,
+        clickNodeWrapper: NodeWrapper
+    ): Boolean {
         //当前item是否需要从列表中移除
         var isNeedRemoveFromList = false
-        if (selectedNodes.size == 1){
-            //当前只有一个节点被选中
-            if (isTwoNodeSame(selectedNodes[0],clickNodeWrapper)){
+
+        // 之前的类型 和 当前点击的类型 是否一致
+        if (isSpf != isClickSpf) {
+            //不是同一类型，无效点击，不响应
+            //当一个玩法已被选中时，雷速禁止点击其他玩法
+            return false
+        }
+
+        //下列为 之前的类型 和 当前点击的类型 一致
+        //当前只有一个节点被选中
+        if (selectedNodes.size == 1) {
+            // 之前的类型 和 当前点击的类型 是否一致
+            if (isTwoNodeSame(selectedNodes[0], clickNodeWrapper)) {
                 //当前点击的节点已被选中了，故删除此已选中节点
                 //零当前item已经没有选中的节点，需要冲selectedArray中移除
                 selectedNodes.removeAt(0)
                 isNeedRemoveFromList = true
-            }else{
+            } else {
                 selectedNodes.add(clickNodeWrapper)
             }
-        }else if (selectedNodes.size == 2){
+
+        } else if (selectedNodes.size == 2) {
             //看看当前的点击节点，是否已存在与选中的节点之中
             //1.如果不在，则移除数组第一个节点，并插入新的节点
             //2.如果已在，则移除此重复点击的节点
             var position = -1
             selectedNodes.forEachIndexed { index, wrapper ->
-                position = if (isTwoNodeSame(wrapper,clickNodeWrapper)){
+                position = if (isTwoNodeSame(wrapper, clickNodeWrapper)) {
                     //已存在
                     index
-                }else{
+                } else {
                     //不存在
                     -1
                 }
             }
-            if (position<0){
+            if (position < 0) {
                 //不在，则移除数组第一个节点，并插入新的节点
                 selectedNodes.add(clickNodeWrapper)
                 selectedNodes.removeAt(0)
-            }else{
+            } else {
                 //已在，则移除此重复点击的节点
                 selectedNodes.removeAt(position)
                 //selectedNodes.add(position,clickNodeWrapper)

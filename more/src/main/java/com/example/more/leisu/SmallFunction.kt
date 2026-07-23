@@ -524,19 +524,19 @@ fun isClickNodeInCurLeagueList(
     result: AnalyzeSourceResult,
     curType: PostConfigData.ConfigType,
     clickNodeWrapper: NodeWrapper,
-    compareNodeBounds : Boolean = true
+    compareNodeBounds: Boolean = true
 ): Boolean {
     var isClickInList: Boolean
     var sameNodeCount = 0
     getCurPrePageMatchList(result, curType) { itemResults ->
         itemResults.forEach { itemResult ->
             itemResult.findNodesByExpression {
-               return@findNodesByExpression if (compareNodeBounds) {
+                return@findNodesByExpression if (compareNodeBounds) {
                     it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id
                             && it.bounds == clickNodeWrapper.bounds //避免id和text都重复的节点冲突
-                }else{
-                   it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id
-               }
+                } else {
+                    it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id
+                }
             }.let {
                 sameNodeCount += it.nodes.size
             }
@@ -550,10 +550,24 @@ fun isClickNodeInCurLeagueList(
     return isClickInList
 }
 
+/**
+ * 查看result是否包含某个节点
+ */
+fun AnalyzeSourceResult.isContainsNodeWrapper(clickNodeWrapper: NodeWrapper): Boolean {
+    var isContains = false
+    findNodesByExpression {
+        it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id
+                && it.bounds == clickNodeWrapper.bounds //避免id和text都重复的节点冲突
+    }.let {
+        if (it.nodes.isNotEmpty()) isContains = true
+    }
+    return isContains
+}
+
 
 /**
  * 判断同一个Item内，两个节点是否相等
  */
-fun isTwoNodeSame(firstNodeWrapper : NodeWrapper,secondNodeWrapper: NodeWrapper): Boolean{
+fun isTwoNodeSame(firstNodeWrapper: NodeWrapper, secondNodeWrapper: NodeWrapper): Boolean {
     return firstNodeWrapper.text == secondNodeWrapper.text && firstNodeWrapper.id == secondNodeWrapper.id
 }

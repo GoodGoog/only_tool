@@ -14,6 +14,7 @@ import com.example.more.leisu.post_detail.PostMultiBasketball
 import com.example.more.leisu.post_detail.PostMultiFootball
 import com.example.more.leisu.post_detail.PostSingleBasketball
 import com.example.more.leisu.post_detail.PostSingleFootball
+import com.example.more.leisu.pre_post.PreMultiFootball
 import com.example.more.leisu.pre_post.PrePostDispatch
 
 class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
@@ -40,7 +41,8 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
     override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
         Log.d(TAG, "onEventCome: result = " + result.nodes)
         if (isInExpertHomePage(result)) {
-
+            //情况预览页-足球-串关-选中的数据
+            PreMultiFootball.instance().clearAll()
         }
         if (isInPrePostPage(result)) {
             //在比赛信息选择页
