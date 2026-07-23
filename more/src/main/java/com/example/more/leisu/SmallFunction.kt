@@ -199,6 +199,28 @@ fun getCurPrePageMatchList(
 }
 
 /**
+ * 获取当前显示在窗口李的比赛信息列表
+ */
+fun getCurPrePageMatchList(
+    result: AnalyzeSourceResult,
+    type: PostConfigData.ConfigType,
+    isFilterTimeItem: Boolean = true
+): ArrayList<AnalyzeSourceResult> {
+    val aimArray = ArrayList<AnalyzeSourceResult>()
+    val curPageRvNode = result.getAimRecyclerViewNodeWrapper(type) ?: return aimArray
+    val itemResults = curPageRvNode.analyzeRecyclerView()
+    itemResults.forEach {
+        if (isFilterTimeItem) {
+            //过滤日期标签item 周五  07月17日 26场 → com.leisu.sports:id/tv_header
+            if (!it.isCurItemTypeTimeFlags()) aimArray.add(it)
+        } else {
+            aimArray.add(it)
+        }
+    }
+    return aimArray
+}
+
+/**
  * 每个RecyclerView都有一种Item类型,就是某一条单独的时间栏目
  * eg:[android.widget.TextView → 周二  07月07日 4场 → com.leisu.sports:id/tv_header →  → Rect(1080, 882 - 1080, 978) →|| clickable = → true  → || scrollable → false
  */
@@ -397,7 +419,7 @@ fun AnalyzeSourceResult.getTextById(tvId: String): String {
  */
 fun AnalyzeSourceResult.getNumberTextByIdAndFilterOther(tvId: String): String {
     return findNodeById(tvId)?.text.blankOrThis().let { text ->
-        val removeChars = setOf('1','2','3','4','5','6','7','8','9','0','+','-','.')
+        val removeChars = setOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '.')
         //filter，保留满足条件的字符
         val aimStr = text.filter { it in removeChars }
         aimStr
@@ -500,16 +522,21 @@ fun transToSingleFootballTotalScoreAnalyseAiQuestion(data: PostSingleFootBallTot
  */
 fun isClickNodeInCurLeagueList(
     result: AnalyzeSourceResult,
-    curType : PostConfigData.ConfigType,
-    clickNodeWrapper: NodeWrapper
+    curType: PostConfigData.ConfigType,
+    clickNodeWrapper: NodeWrapper,
+    compareNodeBounds : Boolean = true
 ): Boolean {
     var isClickInList: Boolean
     var sameNodeCount = 0
     getCurPrePageMatchList(result, curType) { itemResults ->
         itemResults.forEach { itemResult ->
             itemResult.findNodesByExpression {
-                it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id
-                        && it.bounds == clickNodeWrapper.bounds //避免id和text都重复的节点冲突
+               return@findNodesByExpression if (compareNodeBounds) {
+                    it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id
+                            && it.bounds == clickNodeWrapper.bounds //避免id和text都重复的节点冲突
+                }else{
+                   it.text == clickNodeWrapper.text && it.id == clickNodeWrapper.id
+               }
             }.let {
                 sameNodeCount += it.nodes.size
             }
@@ -521,4 +548,12 @@ fun isClickNodeInCurLeagueList(
         else -> false
     }
     return isClickInList
+}
+
+
+/**
+ * 判断同一个Item内，两个节点是否相等
+ */
+fun isTwoNodeSame(firstNodeWrapper : NodeWrapper,secondNodeWrapper: NodeWrapper): Boolean{
+    return firstNodeWrapper.text == secondNodeWrapper.text && firstNodeWrapper.id == secondNodeWrapper.id
 }

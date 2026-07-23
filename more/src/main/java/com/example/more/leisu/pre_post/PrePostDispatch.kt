@@ -1,7 +1,6 @@
 package com.example.more.leisu.pre_post
 
 import android.util.Log
-import android.view.accessibility.AccessibilityEvent
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
@@ -10,8 +9,6 @@ import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
-import com.example.more.leisu.post_detail.PostSingleBasketball
-import com.example.more.leisu.post_detail.PostSingleFootball
 import com.example.more.leisu.transToPostConfigType
 import com.jeremyliao.liveeventbus.LiveEventBus
 

@@ -7,19 +7,15 @@ import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.transNodeInfoToNodeWrapper
 import com.example.more.leisu.BaseLeisuDispatch
-import com.example.more.leisu.data.IDPreMultiFootball
 import com.example.more.leisu.data.IDPrePostMultiBasketBall
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.data.PreMultiBasketBallData
 import com.example.more.leisu.data.PreMultiBasketBallSubData
-import com.example.more.leisu.data.PreMultiFootBallData
-import com.example.more.leisu.data.PreMultiFootBallSubData
 import com.example.more.leisu.getCurPrePageMatchList
 import com.example.more.leisu.getNumberTextByIdAndFilterOther
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.isClickNodeInCurLeagueList
-import com.example.more.leisu.isCurItemTypeTimeFlags
 
 class PreMultiBasketball private constructor(): BaseLeisuDispatch(){
     companion object {
@@ -39,6 +35,8 @@ class PreMultiBasketball private constructor(): BaseLeisuDispatch(){
     }
 
     val curType = PostConfigData.ConfigType.MultiBasketball
+
+
 
     /**
      * 来这里的只有
@@ -77,6 +75,7 @@ class PreMultiBasketball private constructor(): BaseLeisuDispatch(){
                         return
                     }
                     Log.d(TAG, "当前被点击的节点数据 = " + node.transNodeInfoToNodeWrapper())
+                    Log.d(TAG, "当前被点击的节点数据 isSelected =  + " + node.isAccessibilityFocused)
                 } finally {
                     // 【强制】必须回收，否则内存泄漏、系统杀服务
                     node.recycle()
@@ -109,6 +108,8 @@ class PreMultiBasketball private constructor(): BaseLeisuDispatch(){
                 score = getNumberTextByIdAndFilterOther(IDPrePostMultiBasketBall.id_handicap_score),
                 notOpenText = "", //getTextById(IDPrePostMultiBasketBall.id_handicap_win_value), //不明确是否会不开放此玩法
                 winValue = getNumberTextByIdAndFilterOther(IDPrePostMultiBasketBall.id_handicap_win_value),
+
+
                 loseValue = getNumberTextByIdAndFilterOther(IDPrePostMultiBasketBall.id_handicap_lose_value)
             ).let {
                 //当前玩法开放
@@ -140,6 +141,10 @@ class PreMultiBasketball private constructor(): BaseLeisuDispatch(){
             Log.d(TAG, "analyzeItemResult $this")
 
         }
+    }
+
+    fun getCurLeagueListOfSelectableNodeWrapper(result: AnalyzeSourceResult){
+
     }
 
 

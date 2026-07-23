@@ -1,5 +1,8 @@
 package com.example.more.leisu.data
 
+import com.example.more.accessibility.NodeWrapper
+import com.example.more.leisu.isTwoNodeSame
+
 /**
  * 足球串关预览页 中 左主队  右  客队
  */
@@ -62,6 +65,71 @@ data class PreMultiFootBallSubData(
     override fun toString(): String {
         return "isSpf = $isSpf || score = $score || notOpenText = $notOpenText ||winValue = $winValue||flatValue = $flatValue ||loseValue = $loseValue"
     }
+}
+
+/**
+ * 预览页-足球-串关，被选中的Item
+ */
+data class PreMultiFootballSelectedLeague(
+    //tag = 左侧对伍名VS左侧队伍名
+    val itemTag : String = "",
+
+    //被选中的玩法,spf 或者 rq
+    //由第一列scor值为0或者非0区分
+    val scoreNodeWrapper: NodeWrapper,
+
+    // 选中的玩法 ，最多两个
+    val selectedNodes : ArrayList<NodeWrapper>
+
+){
+
+    override fun toString(): String {
+        return "itemTag = $itemTag || + scoreNodeWrapper = $scoreNodeWrapper || selectedNodes = $selectedNodes---------------------------------"
+    }
+
+    /**
+     * 更新节点数据
+     */
+    fun upDataClickNodeWrapper(clickNodeWrapper: NodeWrapper) : Boolean{
+        //当前item是否需要从列表中移除
+        var isNeedRemoveFromList = false
+        if (selectedNodes.size == 1){
+            //当前只有一个节点被选中
+            if (isTwoNodeSame(selectedNodes[0],clickNodeWrapper)){
+                //当前点击的节点已被选中了，故删除此已选中节点
+                //零当前item已经没有选中的节点，需要冲selectedArray中移除
+                selectedNodes.removeAt(0)
+                isNeedRemoveFromList = true
+            }else{
+                selectedNodes.add(clickNodeWrapper)
+            }
+        }else if (selectedNodes.size == 2){
+            //看看当前的点击节点，是否已存在与选中的节点之中
+            //1.如果不在，则移除数组第一个节点，并插入新的节点
+            //2.如果已在，则移除此重复点击的节点
+            var position = -1
+            selectedNodes.forEachIndexed { index, wrapper ->
+                position = if (isTwoNodeSame(wrapper,clickNodeWrapper)){
+                    //已存在
+                    index
+                }else{
+                    //不存在
+                    -1
+                }
+            }
+            if (position<0){
+                //不在，则移除数组第一个节点，并插入新的节点
+                selectedNodes.add(clickNodeWrapper)
+                selectedNodes.removeAt(0)
+            }else{
+                //已在，则移除此重复点击的节点
+                selectedNodes.removeAt(position)
+                //selectedNodes.add(position,clickNodeWrapper)
+            }
+        }
+        return isNeedRemoveFromList
+    }
+
 }
 
 

@@ -1,5 +1,6 @@
 package com.example.more.leisu
 
+import android.util.Log
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.blankOrThis
@@ -9,6 +10,8 @@ import com.example.more.leisu.data.IDPostMultiDouble
 import com.example.more.leisu.data.IDPostSingleCommonId
 import com.example.more.leisu.data.IDPrePostHeader
 import com.example.more.leisu.data.PostConfigData
+import com.example.more.leisu.post_detail.PostMultiBasketball
+import com.example.more.leisu.post_detail.PostMultiFootball
 import com.example.more.leisu.post_detail.PostSingleBasketball
 import com.example.more.leisu.post_detail.PostSingleFootball
 import com.example.more.leisu.pre_post.PrePostDispatch
@@ -35,6 +38,7 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
      */
     //业务分发
     override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+        Log.d(TAG, "onEventCome: result = " + result.nodes)
         if (isInExpertHomePage(result)) {
 
         }
@@ -113,6 +117,8 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         //发布页
         PostSingleBasketball.instance().start()
         PostSingleFootball.instance().start()
+        PostMultiBasketball.instance().start()
+        PostMultiFootball.instance().start()
     }
 
     override fun onDestroy() {
@@ -121,7 +127,8 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         //发布页
         PostSingleBasketball.instance().destroy()
         PostSingleFootball.instance().destroy()
-
+        PostMultiBasketball.instance().destroy()
+        PostMultiFootball.instance().destroy()
     }
 
 }
