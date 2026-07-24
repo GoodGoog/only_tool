@@ -62,16 +62,16 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
                                     .startAutoPost(result)
                             }
                             PostConfigData.ConfigType.MultiFootball -> {
-                                PreMultiFootball.instance()
-                                    .startAutoPost(result)
+//                                PreMultiFootball.instance()
+//                                    .startAutoPost(result)
                             }
                             PostConfigData.ConfigType.SingleBasketball -> {
                                 PreSingleBasketball.instance()
                                     .startAutoPost(result)
                             }
                             PostConfigData.ConfigType.MultiBasketball -> {
-                                PreMultiBasketball.instance()
-                                    .startAutoPost(result)
+//                                PreMultiBasketball.instance()
+//                                    .startAutoPost(result)
                             }
                         }
                     }else {

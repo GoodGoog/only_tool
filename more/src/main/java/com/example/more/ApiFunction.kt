@@ -1,12 +1,6 @@
 package com.example.more
 
-import android.util.Log
-import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.common.base.BaseAdapter
 import com.example.more.bean.ApiBean
-import com.example.more.databinding.MoreItemApiListBinding
 
 const val KEY_VALUE_SEPARATOR = "****"
 

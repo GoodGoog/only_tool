@@ -90,6 +90,18 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
 
 
     fun doSomething(clickedNodeWrapper: NodeWrapper, result: AnalyzeSourceResult) {
+        //有效点击，只有点击到了 胜 平 负 这三个按钮，才算是有限点击，其他的统统无效
+        setOf<String>(
+            IDPrePostMultiBasketBall.id_handicap_win_value,
+            IDPrePostMultiBasketBall.id_handicap_lose_value,
+            IDPrePostMultiBasketBall.id_total_win_value,
+            IDPrePostMultiBasketBall.id_total_lose_value,
+        ).let {
+            //不接受无效点击
+            if (!it.contains(clickedNodeWrapper.id)) return
+        }
+
+
         val itemResults = getCurPrePageMatchList(result, curType)
 
         var curClickInItemTag = ""
@@ -98,6 +110,7 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
         var newSelectedLeague: PreMultiBasketballSelectedLeague? = null
         //第一列分数相关 让分数 / 总分数
         var scoreNodeWrapper: NodeWrapper? = null
+
         //找出被点击的节点对应的itemTag
         run {
             itemResults.forEach { itemResult ->

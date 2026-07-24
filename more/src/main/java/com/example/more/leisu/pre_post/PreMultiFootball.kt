@@ -86,6 +86,19 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
     }
 
     fun doSomething(clickedNodeWrapper: NodeWrapper, result: AnalyzeSourceResult) {
+        //有效点击，只有点击到了 胜 平 负 这三个按钮，才算是有限点击，其他的统统无效
+        setOf<String>(
+            IDPreMultiFootball.id_tv_spf_win_value,
+            IDPreMultiFootball.id_tv_spf_flat_value,
+            IDPreMultiFootball.id_tv_spf_lose_value,
+            IDPreMultiFootball.id_tv_rq_win_value,
+            IDPreMultiFootball.id_tv_rq_flat_value,
+            IDPreMultiFootball.id_tv_rq_lose_value
+        ).let {
+            //不接受无效点击
+            if (!it.contains(clickedNodeWrapper.id)) return
+        }
+
         val itemResults = getCurPrePageMatchList(result, curType)
 
         var curClickInItemTag = ""
