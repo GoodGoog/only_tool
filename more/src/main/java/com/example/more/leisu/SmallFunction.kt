@@ -364,7 +364,7 @@ fun PostConfigData.ConfigType.transToPostArrayIndex(): Int {
  * 判断发布时间是否合法
  * 当前时间不能大于比赛开始时间 07/18 11:00
  */
-fun isPostTimeLegal(startText: String): Boolean {
+fun isLegalPostTime(startText: String): Boolean {
     if (startText.isEmpty()) return false
     val curYears = "2026"
     val startTime = "$curYears/$startText"

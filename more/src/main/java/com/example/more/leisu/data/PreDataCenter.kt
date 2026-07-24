@@ -24,7 +24,7 @@ class PreDataCenter private constructor() {
     //必须被强引用，否则切换app时可能被销毁
     var postArray = ArrayList<PostConfigData>()
 
-    //记录当前的版本是否允许发布
+    //记录当前是否否允许自动发布
     var isAllowAutoPostArray = ArrayList<Boolean>().apply {
         add(false)
         add(false)
@@ -133,7 +133,7 @@ class PreDataCenter private constructor() {
     //当前页面是否允许发布
     fun isCurPrePageAllowAutoPost(type: PostConfigData.ConfigType): Boolean {
         type.transToPostArrayIndex().let { pageIndex ->
-            return !(!postArray[pageIndex].isPost || !isAllowAutoPostArray[pageIndex] || postArray[pageIndex].postTimes <= 0)
+            return postArray[pageIndex].isPost && isAllowAutoPostArray[pageIndex]
         }
     }
 

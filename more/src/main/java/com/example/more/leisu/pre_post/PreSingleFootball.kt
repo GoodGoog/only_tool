@@ -1,10 +1,9 @@
 package com.example.more.leisu.pre_post
 
-import android.util.Log
+import android.graphics.Rect
 import android.view.accessibility.AccessibilityEvent
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
-import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
@@ -12,10 +11,9 @@ import com.example.more.leisu.data.IDPrePostSingleBall
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.delayClickWithShowAnotherHighLight
-import com.example.more.leisu.delayClickWithShowHighLight
 import com.example.more.leisu.getCurPrePageMatchList
-import com.example.more.leisu.isCurItemTypeTimeFlags
-import com.example.more.leisu.isPostTimeLegal
+import com.example.more.leisu.getTextById
+import com.example.more.leisu.isLegalPostTime
 
 class PreSingleFootball private constructor() : BaseLeisuDispatch() {
     companion object {
@@ -60,42 +58,30 @@ class PreSingleFootball private constructor() : BaseLeisuDispatch() {
     }
 
     fun startAutoPost(result: AnalyzeSourceResult) {
-        if (!PreDataCenter.instance()
-                .isCurPrePageAllowAutoPost(curType)
-        ) {
-            return
-        }
-        Log.d(TAG, "startAutoPost: ++++++++++++++++++++++++++++++++++++++++++++++++++++++==")
-        getCurPrePageMatchList(result, curType) { itemResults ->
+        if (!PreDataCenter.instance().isCurPrePageAllowAutoPost(curType)) return
+        val itemResults = getCurPrePageMatchList(result, curType)
 
-            //默认点击第一个 时间合法的控件
-            run {
-                itemResults.forEach { itemResult ->
-                    val startTime =
-                        itemResult.findNodeById(IDPrePostSingleBall.id_single_start_time)?.text.blankOrThis()
-                    if (isPostTimeLegal(startTime)) {
-                        //时间不冲突，可以发布此Item
-                        itemResult.parentNode?.let {
-                            Log.d(TAG, "startAutoPost: clickNode =" + it)
-                            it.bounds?.let { clickRect ->
-                                val highLightRect =
-                                    PreJumpUtils.instance().getCurItemRect(clickRect)
-                                itemResult.findNodeById(IDPrePostSingleBall.id_single_league_title)
-                                    .delayClickWithShowAnotherHighLight(
-                                        highLightRect,
-                                        delayTime = 500L
-                                    ) {
-                                        Log.d(TAG, "startAutoPost: clickResult" + it)
-                                    }
-                            }
+        //默认点击第一个 时间合法的控件
+        run {
+            itemResults.forEach { itemResult ->
+                val startTime = itemResult.getTextById(IDPrePostSingleBall.id_single_start_time)
+                if (!isLegalPostTime(startTime)) return@forEach //只跳出此次循环 ,不退出整个循环
+                //时间不冲突，可以发布此Item
+                itemResult.parentNode?.let {
+                    val clickRect = it.bounds ?: Rect(0, 0, 0, 0)
+                    val highLightRect =
+                        PreJumpUtils.instance().getCurItemRect(clickRect)
+                    itemResult.findNodeById(IDPrePostSingleBall.id_single_league_title)
+                        .delayClickWithShowAnotherHighLight(
+                            highLightRect,
+                            delayTime = 500L
+                        ) {
+
                         }
-                        //点了第一个有效的Item就走
-                        //return@forEach // 仅跳过当前这一次循环，下一个继续
-                        return@run //退出整个run
-                    }
                 }
+                //点了第一个有效的Item就走
+                return@run //退出整个run
             }
-
         }
     }
 
