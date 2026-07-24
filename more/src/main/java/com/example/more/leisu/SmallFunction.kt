@@ -20,6 +20,7 @@ import com.example.more.leisu.data.PostSingleBasketBallHandicapTypeData
 import com.example.more.leisu.data.PostSingleBasketBallTotalScoreTypeData
 import com.example.more.leisu.data.PostSingleFootBallHandicapTypeData
 import com.example.more.leisu.data.PostSingleFootBallTotalScoreTypeData
+import com.example.more.leisu.data.PreMultiFootballSelectedLeague
 import com.example.more.setting.judgeLeftTeamScoreTips
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -426,6 +427,28 @@ fun AnalyzeSourceResult.getNumberTextByIdAndFilterOther(tvId: String): String {
     }
 }
 
+/**
+ * 过滤掉节点文本的 " ","胜"，"平"，"负"等等,只保留{0,1,2,3,4,5,6,7,8,9 和 . - +}
+ */
+fun NodeWrapper.getNumberTextAndFilterOtherChar(): String {
+    return this.text.blankOrThis().let { text ->
+        val removeChars = setOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '.')
+        //filter，保留满足条件的字符
+        val aimStr = text.filter { it in removeChars }
+        aimStr
+    }
+}
+
+fun NodeWrapper.getChineseTextAndFilterOtherChar(): String {
+    return this.text.blankOrThis().let { text ->
+        val removeChars =
+            setOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '.')
+        //filter，保留满足条件的字符
+        val aimStr = text.filter { it !in removeChars }
+        aimStr.replace(" ","")
+    }
+}
+
 
 /**
  * 篮球 拼接分析的ai提问 , 左客队，右主队
@@ -515,6 +538,48 @@ fun transToSingleFootballTotalScoreAnalyseAiQuestion(data: PostSingleFootBallTot
                 "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"
     }
 
+}
+
+/**
+ * 发布页-足球-串关 拼接分析的ai提问 , 左主队，右客队
+ */
+fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): String {
+    //受让情况
+    val handicapText = if (isSpf) {
+        //互不受让
+        ""
+    } else {
+        val plate = scoreNodeWrapper.getNumberTextAndFilterOtherChar()
+        "如果" + leftTeamName +
+                (if (plate.toFloat() > 0F) "受让" else "让") +
+                "${abs(plate.toFloat())}" + "分，"
+    }
+    var resultStr: String = ""
+    ArrayList<String>().apply {
+        //预测结果
+        selectedNodes.forEach { node ->
+           node.getChineseTextAndFilterOtherChar().let { resultStr ->
+               if (resultStr == "胜") add("赢")
+               if (resultStr == "平") add("平局")
+               if (resultStr == "负") add("输")
+           }
+        }
+    }.let {
+        if (it.size == 1) resultStr += it[0]
+        if (it.size == 2){
+            resultStr = it[0] + "或" + it[1]
+        }
+    }
+
+    return "在" + leagueName + "赛事中，" +
+            leftTeamName + "对阵" + rightTEamName + "。" +
+            handicapText +
+            "预测最终结果为" + leftTeamName + resultStr + "," +
+            "为我的预测结果做出合理解释。" +
+            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
+            "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
+            "全文不能有空白行，任意内容点之间都要换行。" +
+            "答案控制在300字左右，结尾不要有任何无关提醒！"
 }
 
 /**

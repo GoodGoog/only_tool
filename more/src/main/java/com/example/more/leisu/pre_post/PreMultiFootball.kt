@@ -96,12 +96,16 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
             IDPreMultiFootball.id_tv_rq_lose_value
         ).let {
             //不接受无效点击
-            if (!it.contains(clickedNodeWrapper.id)) return
+            if (!it.contains(clickedNodeWrapper.id)){
+                Log.d(TAG, "doSomething: 当前点击是无效点击 id = ${clickedNodeWrapper.id}")
+                return
+            }
         }
 
         val itemResults = getCurPrePageMatchList(result, curType)
 
-        var curClickInItemTag = ""
+        var curLeftTeamName: String = ""
+        var cuRightTeamName: String = ""
         var isClickSpf = true
         //只在当前item首次被点击时才被需要
         var newSelectedLeague: PreMultiFootballSelectedLeague? = null
@@ -110,9 +114,12 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
             itemResults.forEach { itemResult ->
                 if (itemResult.isContainsNodeWrapper(clickedNodeWrapper)) {
                     //被点击的节点在当前的item内
-                    curClickInItemTag =
-                        itemResult.findNodeById(IDPreMultiFootball.id_left_team_name)?.text?.blankOrThis() + "VS" +
-                                itemResult.findNodeById(IDPreMultiFootball.id_right_team_name)?.text?.blankOrThis()
+
+                    val curLeagueName = itemResult.getTextById(IDPreMultiFootball.id_league_name)
+                    curLeftTeamName =
+                        itemResult.getTextById(IDPreMultiFootball.id_left_team_name)
+                    cuRightTeamName =
+                        itemResult.getTextById(IDPreMultiFootball.id_right_team_name)
 
                     //存储一下数据，如果这个item是第一次被点击时会被用来存储进selectedItemArray
                     //根据节点id是否包含spf[不让球] 或者 rq[主队让/不让球],来判断是那种类型的玩法[让分或者不让分]
@@ -129,7 +136,9 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
                     }
                     scoreNodeWrapper?.let {
                         newSelectedLeague = PreMultiFootballSelectedLeague(
-                            itemTag = curClickInItemTag,
+                            leagueName = curLeagueName,
+                            leftTeamName = curLeftTeamName,
+                            rightTEamName = cuRightTeamName,
                             isSpf = isClickSpf,
                             scoreNodeWrapper = it,
                             selectedNodes
@@ -143,7 +152,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
         //记录点击的控件，在被选中数组的第几个位置
         var position = -1
         selectedItemArray.forEachIndexed { index, league ->
-            if (league.itemTag == curClickInItemTag) {
+            if (league.leftTeamName == curLeftTeamName && league.rightTEamName == cuRightTeamName) {
                 position = index
             }
         }
@@ -151,16 +160,21 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
         if (position >= 0) {
             //刚好有一个满足条件,更新记载的数据，或这删除
             selectedItemArray[position].apply {
+                if (isSpf != isClickSpf){
+                    //当前点击的玩法和已选中的玩法不一致，不左响应处理
+                    return
+                }
                 upDataClickNodeWrapper(
-                    isClickSpf = isClickSpf,
                     clickedNodeWrapper
                 ).let { isNeedRemoveFormList ->
                     Log.d(TAG, "doSomething:isNeedRemoveFormList = $isNeedRemoveFormList ")
                     if (isNeedRemoveFormList) {
                         //需要从选中列表中移除
+                        Log.d(TAG, "doSomething----------------: 移除")
                         selectedItemArray.removeAt(position)
                     } else {
                         //只是更新选中列表中对应item的数据，不需要额外处理
+                        Log.d(TAG, "doSomething----------------: 不移除")
                     }
                 }
             }
@@ -178,7 +192,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
      */
     fun printCurSelectedArray() {
         selectedItemArray.forEachIndexed { index, league ->
-            Log.d(TAG, "printCurSelectedArray: item == " + league)
+            Log.d(TAG, "doSomething ================== $league")
         }
     }
 

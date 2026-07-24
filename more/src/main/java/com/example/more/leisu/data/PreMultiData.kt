@@ -1,5 +1,6 @@
 package com.example.more.leisu.data
 
+import android.util.Log
 import com.example.more.accessibility.NodeWrapper
 import com.example.more.leisu.isTwoNodeSame
 
@@ -71,8 +72,12 @@ data class PreMultiFootBallSubData(
  * 预览页-足球-串关，被选中的Item
  */
 data class PreMultiFootballSelectedLeague(
-    //tag = 左侧对伍名VS左侧队伍名
-    val itemTag: String = "",
+    val leagueName : String = "",
+
+    //左侧主队
+    val leftTeamName : String = "",
+    //右侧客队
+    val rightTEamName : String = "",
 
     //是否为互不让分
     var isSpf: Boolean,
@@ -85,27 +90,24 @@ data class PreMultiFootballSelectedLeague(
     val selectedNodes: ArrayList<NodeWrapper>
 
 ) {
+    fun getItemTag() = leftTeamName + "VS" + rightTEamName
 
     override fun toString(): String {
-        return "itemTag = $itemTag || isSpf = $isSpf || + scoreNodeWrapper = $scoreNodeWrapper || selectedNodes = $selectedNodes---------------------------------"
+        var selectedNodesText : String  = ""
+        selectedNodes.forEach {
+            selectedNodesText +="[" + it.text + "]"
+        }
+        return "itemTag = ${getItemTag()} || isSpf = $isSpf || + scoreNodeWrapperText = ${scoreNodeWrapper.text} || selectedNodesText = $selectedNodesText---------------------------------"
     }
 
     /**
      * 更新节点数据
      */
     fun upDataClickNodeWrapper(
-        isClickSpf: Boolean,
         clickNodeWrapper: NodeWrapper
     ): Boolean {
         //当前item是否需要从列表中移除
         var isNeedRemoveFromList = false
-
-        // 之前的类型 和 当前点击的类型 是否一致
-        if (isSpf != isClickSpf) {
-            //不是同一类型，无效点击，不响应
-            //当一个玩法已被选中时，雷速禁止点击其他玩法
-            return false
-        }
 
         //下列为 之前的类型 和 当前点击的类型 一致
         //当前只有一个节点被选中
@@ -114,7 +116,7 @@ data class PreMultiFootballSelectedLeague(
             if (isTwoNodeSame(selectedNodes[0], clickNodeWrapper)) {
                 //当前点击的节点已被选中了，故删除此已选中节点
                 //零当前item已经没有选中的节点，需要冲selectedArray中移除
-                selectedNodes.removeAt(0)
+                //selectedNodes.removeAt(0)
                 isNeedRemoveFromList = true
             } else {
                 selectedNodes.add(clickNodeWrapper)

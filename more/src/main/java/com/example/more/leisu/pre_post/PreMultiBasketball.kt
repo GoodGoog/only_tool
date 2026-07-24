@@ -186,20 +186,7 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
      */
     fun printCurSelectedArray() {
         selectedItemArray.forEachIndexed { index, league ->
-            Log.d(TAG, "printCurSelectedArray: item == " + league)
-        }
-    }
-
-
-    fun startAutoPost(result: AnalyzeSourceResult) {
-        if (!PreDataCenter.instance()
-                .isCurPrePageAllowAutoPost(curType)
-        ) return
-        getCurPrePageMatchList(result, curType) { itemResults ->
-            itemResults.forEach { itemResult ->
-                Log.d(TAG, "startAutoPost: itemResult = $itemResult")
-                itemResult.analyzeItemResult()
-            }
+            Log.d(TAG, "ClickItem == $league")
         }
     }
 
@@ -244,10 +231,6 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
             Log.d(TAG, "analyzeItemResult $this")
 
         }
-    }
-
-    fun getCurLeagueListOfSelectableNodeWrapper(result: AnalyzeSourceResult) {
-
     }
 
 

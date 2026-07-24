@@ -7,8 +7,10 @@ import com.example.more.accessibility.EventWrapper
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
+import com.example.more.leisu.data.PreMultiFootballSelectedLeague
 import com.example.more.leisu.pre_post.PreMultiFootball
 import com.example.more.leisu.transAccessibilityEventToString
+import com.example.more.leisu.transToMultiFootballSpfAnalyseAiQuestion
 
 class PostMultiFootball private constructor() : BaseLeisuDispatch() {
 
@@ -33,31 +35,34 @@ class PostMultiFootball private constructor() : BaseLeisuDispatch() {
         eventWrapper: EventWrapper,
         result: AnalyzeSourceResult
     ) {
-        //Log.d(TAG, "onTaskDispatch: result ==" + result.nodes)
+        Log.d(TAG, "onEventCome: result ==" + result.nodes)
 //        if (!PreDataCenter.instance()
 //                .isCurPrePageAllowAutoPost(curType)
 //        ) return
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                loadAiQuestion(result)
+                loadAiQuestion()
             }
 
             AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
 
             }
+
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
                 //发生点击事件了，
             }
+
             else -> {
 
             }
         }
     }
 
-    fun loadAiQuestion(result : AnalyzeSourceResult){
+    fun loadAiQuestion() {
         PreMultiFootball.instance().selectedItemArray.let {
-            it.forEachIndexed { index, league ->
-                Log.d(TAG, "printCurSelectedArray: item == " + league)
+            it.forEach { league ->
+                val question = league.transToMultiFootballSpfAnalyseAiQuestion()
+                Log.d(TAG, "printCurSelectedArray: item == $question")
             }
         }
     }
