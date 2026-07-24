@@ -167,6 +167,21 @@ class FloatUtils private constructor() {
         }
     }
 
+    /**
+     * 外部传来了qiQuestion
+     */
+    fun refreshAiQuestion(aiQuestion: String) {
+        // 先判断浮窗是否存在
+        if (!EasyFloat.isShow(EasyFloatTag.FLOAT_WINDOW_ALL_APP_TAG)) return
+        // 获取浮窗根布局
+        val root = EasyFloat.getFloatView(EasyFloatTag.FLOAT_WINDOW_ALL_APP_TAG) ?: return
+
+        root.findViewById<PostFloatView>(R.id.pv_window_content_view).apply {
+            refreshAiQuestion(aiQuestion)
+        }
+
+    }
+
 
     /**
      * 全屏窗口覆盖状态栏

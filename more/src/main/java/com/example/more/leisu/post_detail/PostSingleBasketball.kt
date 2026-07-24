@@ -20,6 +20,7 @@ import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.transAccessibilityEventToString
+import com.example.more.leisu.transToPostArrayIndex
 import com.example.more.leisu.transToSingleBasketballHandicapAnalyseAiQuestion
 import com.example.more.leisu.transToSingleBasketballTotalScoreAnalyseAiQuestion
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -97,7 +98,7 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
                     if (getCurIsFreePost()) {
                         doFreePost(result, itemResults[0])
                     } else {
-                        doNotFreePost(result, itemResults[1])
+                        doNotFreePost(result, itemResults[0])
                     }
                 }
             }
@@ -206,11 +207,7 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
         }
     }
 
-    fun getCurRemainCount(result: AnalyzeSourceResult) =
-        result.findNodeById(IDPostBasketballSingle.id_single_post_today_remains_times)?.text.filterNumberOrZero()
-
-    fun getCurIsFreePost(): Boolean = false
-        //PreDataCenter.instance().postArray[curType.transToPostArrayIndex()].isFree
+    fun getCurIsFreePost(): Boolean = PreDataCenter.instance().postArray[curType.transToPostArrayIndex()].isFree
 
     override fun onStart() {
 

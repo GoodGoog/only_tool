@@ -2,6 +2,7 @@ package com.example.more.leisu.post_detail
 
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.leisu.BaseLeisuDispatch
@@ -11,6 +12,7 @@ import com.example.more.leisu.data.PreMultiFootballSelectedLeague
 import com.example.more.leisu.pre_post.PreMultiFootball
 import com.example.more.leisu.transAccessibilityEventToString
 import com.example.more.leisu.transToMultiFootballSpfAnalyseAiQuestion
+import com.jeremyliao.liveeventbus.LiveEventBus
 
 class PostMultiFootball private constructor() : BaseLeisuDispatch() {
 
@@ -59,12 +61,13 @@ class PostMultiFootball private constructor() : BaseLeisuDispatch() {
     }
 
     fun loadAiQuestion() {
+        var totalQuestion : String = ""
         PreMultiFootball.instance().selectedItemArray.let {
             it.forEach { league ->
-                val question = league.transToMultiFootballSpfAnalyseAiQuestion()
-                Log.d(TAG, "printCurSelectedArray: item == $question")
+                totalQuestion += league.transToMultiFootballSpfAnalyseAiQuestion() + "\n"
             }
         }
+        LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(totalQuestion)
     }
 
     override fun onStart() {

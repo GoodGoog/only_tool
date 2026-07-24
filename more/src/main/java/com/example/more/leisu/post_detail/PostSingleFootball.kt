@@ -21,6 +21,7 @@ import com.example.more.leisu.filterNumberOrZero
 import com.example.more.leisu.getRandomInt
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.transAccessibilityEventToString
+import com.example.more.leisu.transToPostArrayIndex
 import com.example.more.leisu.transToSingleFootballHandicapAnalyseAiQuestion
 import com.example.more.leisu.transToSingleFootballTotalScoreAnalyseAiQuestion
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -210,8 +211,7 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     fun getCurRemainCount(result: AnalyzeSourceResult) =
         result.findNodeById(IDPostFootballSingle.id_single_post_today_remains_times)?.text.filterNumberOrZero()
 
-    fun getCurIsFreePost(): Boolean = false
-    //PreDataCenter.instance().postArray[curType.transToPostArrayIndex()].isFree
+    fun getCurIsFreePost(): Boolean = PreDataCenter.instance().postArray[curType.transToPostArrayIndex()].isFree
 
     override fun onStart() {
 

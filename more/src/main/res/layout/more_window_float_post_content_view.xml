@@ -25,14 +25,14 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_access_status_red" />
 
-        <TextView
-            android:id="@+id/tv_tips_access"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:text="@string/float_access_tips_red_text"
-            android:textColor="@color/post_float_window_tips_color_red" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_tips_access"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:text="@string/float_access_tips_red_text"-->
+<!--            android:textColor="@color/post_float_window_tips_color_red" />-->
 
         <View
             android:layout_width="match_parent"
@@ -65,16 +65,16 @@
             android:textColor="@color/global_text_color" />
 
 
-        <TextView
-            android:id="@+id/tv_task_remains_times"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:text="剩余发布次数:x"
-            android:textColor="@color/global_text_color" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_task_remains_times"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:gravity="center"-->
+<!--            android:text="剩余发布次数:x"-->
+<!--            android:textColor="@color/global_text_color" />-->
 
         <!--        用来测试页面切换的-->
         <LinearLayout
@@ -150,6 +150,14 @@
             android:layout_height="25dp"
             android:gravity="center"
             android:text="→终止发布←"
+            android:textColor="@color/global_text_color" />
+
+        <TextView
+            android:id="@+id/tv_copy_ai_question"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:text="→复制AI提问←"
             android:textColor="@color/global_text_color" />
 
         <TextView
