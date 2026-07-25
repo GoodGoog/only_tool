@@ -445,7 +445,7 @@ fun NodeWrapper.getChineseTextAndFilterOtherChar(): String {
             setOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '.')
         //filter，保留满足条件的字符
         val aimStr = text.filter { it !in removeChars }
-        aimStr.replace(" ","")
+        aimStr.replace(" ", "")
     }
 }
 
@@ -471,8 +471,9 @@ fun transToSingleBasketballHandicapAnalyseAiQuestion(data: PostSingleBasketBallH
                 "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
                 "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
                 "全文不能有空白行，任意内容点之间都要换行。" +
-                "答案控制在400字以内，结尾不要有任何无关提醒！" +
-                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"
+                "答案控制在500字以内，结尾不要有任何无关提醒！" +
+                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"+
+                "再给这段文章写一份60字以内的前瞻。"
     }
 }
 
@@ -489,8 +490,9 @@ fun transToSingleBasketballTotalScoreAnalyseAiQuestion(data: PostSingleBasketBal
                 "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
                 "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
                 "全文不能有空白行，任意内容点之间都要换行。" +
-                "答案控制在400字以内，结尾不要有任何无关提醒！" +
-                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"
+                "答案控制在500字以内，结尾不要有任何无关提醒！" +
+                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。" +
+                "再给这段文章写一份60字以内的前瞻。"
     }
 
 }
@@ -516,8 +518,9 @@ fun transToSingleFootballHandicapAnalyseAiQuestion(data: PostSingleFootBallHandi
                 "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
                 "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
                 "全文不能有空白行，任意内容点之间都要换行。" +
-                "答案控制在400字以内，结尾不要有任何无关提醒！" +
-                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"
+                "答案控制在500字左右，结尾不要有任何无关提醒！" +
+                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。" +
+                "再给这段文章写一份60字以内的前瞻。"
     }
 }
 
@@ -532,10 +535,11 @@ fun transToSingleFootballTotalScoreAnalyseAiQuestion(data: PostSingleFootBallTot
                 "分析比赛双方各自的近况和优劣势，" +
                 "并预测双方总得分是否会大于" + totalScore + "。" +
                 "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-                "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
+                "每一个大内容点内，小内容点用（1.2.3.4.）等标识，" +
                 "全文不能有空白行，任意内容点之间都要换行。" +
-                "答案控制在400字以内，结尾不要有任何无关提醒！" +
-                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"
+                "答案控制在500字左右，结尾不要有任何无关提醒！" +
+                "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。" +
+                "再给这段文章写一份60字以内的前瞻。"
     }
 
 }
@@ -558,15 +562,15 @@ fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): S
     ArrayList<String>().apply {
         //预测结果
         selectedNodes.forEach { node ->
-           node.getChineseTextAndFilterOtherChar().let { resultStr ->
-               if (resultStr == "胜") add("赢")
-               if (resultStr == "平") add("平局")
-               if (resultStr == "负") add("输")
-           }
+            node.getChineseTextAndFilterOtherChar().let { resultStr ->
+                if (resultStr == "胜") add(leftTeamName + "赢得比赛")
+                if (resultStr == "平") add("双方平局")
+                if (resultStr == "负") add(leftTeamName + "输掉比赛")
+            }
         }
     }.let {
         if (it.size == 1) resultStr += it[0]
-        if (it.size == 2){
+        if (it.size == 2) {
             resultStr = it[0] + "或" + it[1]
         }
     }
@@ -574,7 +578,7 @@ fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): S
     return "在" + leagueName + "赛事中，" +
             leftTeamName + "对阵" + rightTEamName + "。" +
             handicapText +
-            "预测最终结果为" + leftTeamName + resultStr + "," +
+            "预测最终结果为" + resultStr + "。" +
             "为我的预测结果做出合理解释。" +
             "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
             "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
