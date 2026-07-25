@@ -44,7 +44,7 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
         }
 
         binding.tvQuestionDetail.setOnClickListener {
-            val rawScoreStr =  binding.etLeftTeamRawScore.text.toString()
+            val rawScoreStr = binding.etLeftTeamRawScore.text.toString()
             binding.etAiQuestion.setText(
                 "在" + binding.etCupName.text + "赛事中，"
                         + binding.etLeftName.text + "对阵" + binding.etRightName.text + "，"
@@ -61,7 +61,8 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
                         + "每一个大内容点内，小内容点用（1.2.3.4.）等标识， "
                         + "全文不能有空白行，任意内容点之间都要换行。"
                         + "答案控制在500字以内，结尾不要有任何无关提醒！"
-                + "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。"
+                        + "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。" +
+                        "再给这段文章写一份60字以内的前瞻。"
             )
         }
         binding.tvQuestionRude.setOnClickListener {
@@ -101,11 +102,11 @@ class SettingActivity : BaseActivity<MoreActivitySettingBinding, BaseViewModel>(
                 //复制
                 copyTextToSystem(it.toString(), true)
                 //跳转
-                Intent(this, ResultActivity::class.java).let { mIntent ->
-                    mIntent.putExtra(TEAM_LEFT_NAME, binding.etLeftName.text.toString())
-                    mIntent.putExtra(TEAM_RIGHT_NAME, binding.etRightName.text.toString())
-                    startActivity(mIntent)
-                }
+//                Intent(this, ResultActivity::class.java).let { mIntent ->
+//                    mIntent.putExtra(TEAM_LEFT_NAME, binding.etLeftName.text.toString())
+//                    mIntent.putExtra(TEAM_RIGHT_NAME, binding.etRightName.text.toString())
+//                    startActivity(mIntent)
+//                }
             }
         }
 

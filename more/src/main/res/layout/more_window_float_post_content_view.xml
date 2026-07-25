@@ -156,6 +156,8 @@
             android:id="@+id/tv_copy_ai_question"
             android:layout_width="match_parent"
             android:layout_height="25dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
             android:text="→复制AI提问←"
             android:textColor="@color/global_text_color" />

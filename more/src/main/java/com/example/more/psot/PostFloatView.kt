@@ -35,6 +35,9 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
     //xml文件中使用此类需要两个参数的构造方法
     constructor(mContext: Context, attrs: AttributeSet) : this(mContext, attrs, 0)
 
+    val bgTvNormal = Color.parseColor("#E0E0E0")
+    val bgTvAfterClick = Color.parseColor("#FF6347")
+    val bgTvBeforeClick = Color.parseColor("#03A89E")
 
     init {
         binding = DataBindingUtil.inflate(
@@ -59,11 +62,11 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
             val clipData = ClipData.newPlainText("aiQuestion", aiQuestion)
             clipboardManager.setPrimaryClip(clipData)
 
-            binding.tvCopyAiQuestion.setBackgroundColor(Color.parseColor("#999999"))
+            binding.tvCopyAiQuestion.setBackgroundColor(bgTvAfterClick)
             // 提交延时任务
             handler.postDelayed({
                 //一秒后执行 按钮背景颜色复原
-                binding.tvCopyAiQuestion.setBackgroundColor(Color.parseColor("#E0E0E0"))
+                binding.tvCopyAiQuestion.setBackgroundColor(bgTvNormal)
             }, 1000)
         }
 
@@ -96,6 +99,12 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
 
     fun refreshAiQuestion(aiQuestion : String){
         this.aiQuestion = aiQuestion
+        binding.tvCopyAiQuestion.setBackgroundColor(bgTvBeforeClick)
+        // 提交延时任务
+        handler.postDelayed({
+            //一秒后执行 按钮背景颜色复原
+            binding.tvCopyAiQuestion.setBackgroundColor(bgTvNormal)
+        }, 500)
     }
 
 //    fun taskVisualizeClicked(quit: () -> Unit) {
