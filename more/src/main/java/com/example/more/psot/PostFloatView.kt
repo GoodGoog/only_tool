@@ -26,7 +26,7 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
     var isConnect: Boolean = false
 
     //客复制的ai提问
-    var aiQuestion : String = ""
+    var aiQuestion: String = ""
 
     companion object {
 
@@ -58,7 +58,8 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
 //        }
         binding.tvCopyAiQuestion.setOnClickListener {
             //复制文本
-            val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboardManager =
+                context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = ClipData.newPlainText("aiQuestion", aiQuestion)
             clipboardManager.setPrimaryClip(clipData)
 
@@ -97,7 +98,7 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
         }
     }
 
-    fun refreshAiQuestion(aiQuestion : String){
+    fun refreshAiQuestion(aiQuestion: String) {
         this.aiQuestion = aiQuestion
         binding.tvCopyAiQuestion.setBackgroundColor(bgTvBeforeClick)
         // 提交延时任务
@@ -130,14 +131,23 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
     }
 
     fun changeCurPostInfo(data: PostConfigData?) {
-        data?.apply {
+        if (data == null) {
+            binding.tvCurExecuteTask.text = "xx|xx|xx"
+            //binding.tvTaskRemainsTimes.text = "剩余发布次数:x"
+        } else {
             //binding.tvCurExecuteTask.text = title + "|" + if (isFree) "免费" else "收费"
             //binding.tvTaskRemainsTimes.text = "剩余发布次数:" + postTimes
+            binding.tvCurExecuteTask.text = data.title + "ing"
 
-            binding.tvCurExecuteTask.text = title + "ing"
+            //变换颜色提醒一下
+            binding.tvCurExecuteTask.setBackgroundColor(bgTvBeforeClick)
+            // 提交延时任务
+            handler.postDelayed({
+                //一秒后执行 按钮背景颜色复原
+                binding.tvCurExecuteTask.setBackgroundColor(bgTvNormal)
+            }, 500)
             return
         }
-        binding.tvCurExecuteTask.text = "xx|xx|xx"
-        //binding.tvTaskRemainsTimes.text = "剩余发布次数:x"
+
     }
 }
