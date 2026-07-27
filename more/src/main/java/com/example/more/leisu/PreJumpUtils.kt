@@ -74,6 +74,10 @@ class PreJumpUtils private constructor() {
         Log.d("jumpSubTab", "refreshResult: 点击后result数据")
     }
 
+    fun refreshCurType(type: PostConfigData.ConfigType){
+        curPageType = type
+    }
+
     fun jumpSubPage(
         type: PostConfigData.ConfigType,
         clickResult: (Boolean) -> Unit

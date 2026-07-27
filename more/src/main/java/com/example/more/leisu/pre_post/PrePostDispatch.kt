@@ -40,15 +40,17 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
         if (LeisuServiceCenter.instance().isAccessServiceConnect) {
             LiveEventBus.get<Int>(EventBusTag.TEST_PRE_POST_PAGE_SWITCH)
                 .observe(this) { pageIndex ->
+                    //关闭自动操作
+                    PreJumpUtils.instance().refreshCurType(pageIndex.transToPostConfigType())
                     //允许自动发布
-                    PreDataCenter.instance()
-                        .setCurPrePageAllowAutoPost(pageIndex.transToPostConfigType(), true)
-                    PreJumpUtils.instance().jumpSubPage(
-                        pageIndex.transToPostConfigType(),
-                    ) { isSuccess ->
-                        //跳转成功
-                        Log.d(TAG, "PrePostDispatch是否跳转成功$isSuccess")
-                    }
+//                    PreDataCenter.instance()
+//                        .setCurPrePageAllowAutoPost(pageIndex.transToPostConfigType(), true)
+//                    PreJumpUtils.instance().jumpSubPage(
+//                        pageIndex.transToPostConfigType(),
+//                    ) { isSuccess ->
+//                        //跳转成功
+//                        Log.d(TAG, "PrePostDispatch是否跳转成功$isSuccess")
+//                    }
                 }
 
             LiveEventBus.get<Boolean>(EventBusTag.START_OR_STOP_CUR_AUTO_POST)

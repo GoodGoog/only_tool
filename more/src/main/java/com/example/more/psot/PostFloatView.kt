@@ -131,8 +131,10 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
 
     fun changeCurPostInfo(data: PostConfigData?) {
         data?.apply {
-            binding.tvCurExecuteTask.text = title + "|" + if (isFree) "免费" else "收费"
+            //binding.tvCurExecuteTask.text = title + "|" + if (isFree) "免费" else "收费"
             //binding.tvTaskRemainsTimes.text = "剩余发布次数:" + postTimes
+
+            binding.tvCurExecuteTask.text = title + "ing"
             return
         }
         binding.tvCurExecuteTask.text = "xx|xx|xx"
