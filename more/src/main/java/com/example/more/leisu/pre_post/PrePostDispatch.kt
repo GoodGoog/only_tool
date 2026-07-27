@@ -53,6 +53,8 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
 
             LiveEventBus.get<Boolean>(EventBusTag.START_OR_STOP_CUR_AUTO_POST)
                 .observe(this) { isStart ->
+                    //关闭自动发布功能
+                    return@observe
                     //开始 或 终止当前页面自动发布，作用与 发布页--->赛事列表页
                     if (isStart){
                         //发布

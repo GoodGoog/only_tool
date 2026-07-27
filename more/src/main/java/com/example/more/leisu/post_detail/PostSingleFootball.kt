@@ -54,14 +54,14 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     }
 
     override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
-        if (!PreDataCenter.instance().isCurPrePageAllowAutoPost(curType)) return
+        //if (!PreDataCenter.instance().isCurPrePageAllowAutoPost(curType)) return
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 //如果没有发布次数就不干了
-                if (getCurRemainCount(result) > 0) {
-                    startAutoPost(result)
-                }
-                //startAutoPost(result)
+//                if (getCurRemainCount(result) > 0) {
+//                    startAutoPost(result)
+//                }
+                startAutoPost(result)
             }
 
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
@@ -86,20 +86,32 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
         if (itemResults.isNotEmpty()) {
             //默认执行第一种玩法
             val firstItemResult = itemResults[0]
-            if (isCurFreePost()) {
-                doFreePost(result, firstItemResult)
-            } else {
-                //收费
-                when (firstItemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_item_title)) {
-                    PLAY_TYPE_HANDICAP -> {
-                        //让分玩法
-                        doHandicapType(result, firstItemResult)
-                    }
+//            if (isCurFreePost()) {
+//                doFreePost(result, firstItemResult)
+//            } else {
+//                //收费
+//                when (firstItemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_item_title)) {
+//                    PLAY_TYPE_HANDICAP -> {
+//                        //让分玩法
+//                        doHandicapType(result, firstItemResult)
+//                    }
+//
+//                    PLAY_TYPE_TOTAL_SCORE -> {
+//                        //预判总分大小
+//                        doTotalScoreType(result, firstItemResult)
+//                    }
+//                }
+//            }
+            //默认当前不区分收费免费，一律生成ai提问
+            when (firstItemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_item_title)) {
+                PLAY_TYPE_HANDICAP -> {
+                    //让分玩法
+                    doHandicapType(result, firstItemResult)
+                }
 
-                    PLAY_TYPE_TOTAL_SCORE -> {
-                        //预判总分大小
-                        doTotalScoreType(result, firstItemResult)
-                    }
+                PLAY_TYPE_TOTAL_SCORE -> {
+                    //预判总分大小
+                    doTotalScoreType(result, firstItemResult)
                 }
             }
         }

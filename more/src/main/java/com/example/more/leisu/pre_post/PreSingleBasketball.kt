@@ -41,7 +41,8 @@ class PreSingleBasketball private constructor() : BaseLeisuDispatch() {
     override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                startAutoPost(result)
+                //关闭自动点击
+                //startAutoPost(result)
             }
 
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
