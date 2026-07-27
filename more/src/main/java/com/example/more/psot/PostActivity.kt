@@ -2,23 +2,18 @@ package com.example.more.psot
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.common.base.BaseActivity
 import com.example.common.base.BaseAdapter
 import com.example.common.base.BaseViewModel
-import com.example.common.util.EventBusInfo
-import com.example.common.zhipuAi.ZhipuAiHelper
 import com.example.more.EventBusTag
 import com.example.more.R
 import com.example.more.accessibility.isAccessibilityEnable
 import com.example.more.accessibility.requireAccessibility
-import com.example.more.accessibility.startApp
 import com.example.more.databinding.MoreActivityTouchBinding
 import com.example.more.databinding.MoreItemInitialConfigBinding
 import com.example.more.getScreenWidth
@@ -26,7 +21,6 @@ import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
 import com.jeremyliao.liveeventbus.LiveEventBus
-import kotlinx.coroutines.launch
 
 
 class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
@@ -47,7 +41,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
 
     fun initRecyclerView() {
         val adapter = object : BaseAdapter<MoreItemInitialConfigBinding, PostConfigData>(
-            PreDataCenter.instance().initialArray,
+            PreDataCenter.instance().postArray,
             R.layout.more_item_initial_config
         ) {
             override fun bindViewHolder(
@@ -102,18 +96,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             binding.etCursorHolder.apply {
                 requestFocus();
             }
-            PreDataCenter.instance().apply {
-                initialArray = adapter.beans
-                filterUselessPostInfo { hasData ->
-                    if (hasData) {
-                        showToast("保存成功！")
-                    } else {
-                        //无可发布文章时
-                        showToast("先选择需要发布的内容！")
-                    }
-                    Log.d(TAG, "initRecyclerView: postArray" + postArray)
-                }
-            }
+            PreDataCenter.instance().postArray = adapter.beans
         }
 
     }
@@ -128,7 +111,7 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             if (isAccessibilityEnable) showToast("无障碍服务已开启")
             else requireAccessibility()
         }
-        binding.tvShowAccessWindow.setOnClickListener {
+        binding.tvOpenAccessWindow.setOnClickListener {
             //showTaskWindow()
             FloatUtils.instance().showAllLeisuWindow(window.decorView as ViewGroup)
         }

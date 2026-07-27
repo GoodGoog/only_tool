@@ -19,7 +19,7 @@ class PreDataCenter private constructor() {
     }
 
 
-    var initialArray = ArrayList<PostConfigData>()
+//    var initialArray = ArrayList<PostConfigData>()
 
     //必须被强引用，否则切换app时可能被销毁
     var postArray = ArrayList<PostConfigData>()
@@ -43,7 +43,7 @@ class PreDataCenter private constructor() {
             defaultTimes = 10
         }
 
-        initialArray.apply {
+        postArray.apply {
             add(
                 PostConfigData(
                     PostConfigData.ConfigType.SingleFootball,
@@ -92,28 +92,11 @@ class PreDataCenter private constructor() {
         }
     }
 
-    //获取当前正在发布的信息
-    fun getCurPostingData(type: PostConfigData.ConfigType) = postArray[type.transToPostArrayIndex()]
-
-    //过滤需要发布的数据
-    fun filterUselessPostInfo(hasData: (Boolean) -> Unit) {
-        //可能会多次点击保存，每次执行前先清空
-        postArray.clear()
-        initialArray.forEach {
-//            if (it.isPost) {
-//                postArray.add(PostConfigData(it.type, it.title, it.isPost, it.isFree, it.postTimes))
-//            }
-            postArray.add(PostConfigData(it.type, it.title, it.isPost, it.isFree, it.postTimes))
-        }
-        if (postArray.isEmpty()) hasData.invoke(false)
-        else hasData.invoke(true)
-    }
 
     //打印当前信息校验
-    fun getPrintMsg(isPostArray: Boolean): String {
+    fun getPrintMsg(): String {
         var msg = ""
-        val aimArray = if (isPostArray) postArray else initialArray
-        aimArray.forEach {
+        postArray.forEach {
             it.apply {
                 msg += "postType :$type-->title:$title-->isFree: $isFree--> isPost:$isPost--> times :$postTimes\n"
             }

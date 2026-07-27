@@ -147,9 +147,12 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
 
         //记录点击的控件，在被选中数组的第几个位置
         var position = -1
-        selectedItemArray.forEachIndexed { index, league ->
-            if (league.itemTag == curClickInItemTag) {
-                position = index
+        run {
+            selectedItemArray.forEachIndexed { index, league ->
+                if (league.itemTag == curClickInItemTag) {
+                    position = index
+                    return@run
+                }
             }
         }
 

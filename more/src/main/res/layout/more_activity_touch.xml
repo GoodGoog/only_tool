@@ -7,18 +7,18 @@
     </data>
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:background="@color/default_bg_color"
-        >
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:background="@color/default_bg_color">-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/default_bg_color"
-            >
+            android:layout_height="match_parent"
+            android:background="@color/default_bg_color">
+
+            <!--            设置当前不显示数据配置界面-->
 
             <TextView
                 android:id="@+id/tv_tips_initial"
@@ -27,104 +27,115 @@
                 android:layout_marginTop="20dp"
                 android:text="配置下列初始信息:"
                 android:textColor="@color/global_text_color"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_initial_config"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_initial_config"
-                app:layout_constraintTop_toBottomOf="@id/tv_tips_initial"
-                />
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tv_tips_initial" />
 
             <EditText
                 android:id="@+id/et_cursor_holder"
                 android:layout_width="1dp"
                 android:layout_height="1dp"
-                app:layout_constraintTop_toBottomOf="@id/rv_initial_config"
-                app:layout_constraintStart_toStartOf="@id/rv_initial_config"
                 android:background="@null"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                />
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/rv_initial_config"
+                app:layout_constraintTop_toBottomOf="@id/rv_initial_config" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/rv_initial_config"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                >
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_initial_config">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_save_config"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
-                    android:text="保存上述配置"
-                    android:gravity="center"
-                    android:background="@drawable/bg_layout_container_radius"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_layout_container_radius"
+                    android:gravity="center"
+                    android:text="保存上述配置"
                     android:textColor="@color/global_text_color" />
 
                 <TextView
                     android:id="@+id/tv_is_enable"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_layout_container_radius"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_layout_container_radius"
                     android:gravity="center"
                     android:text="检测服务是否开启"
                     android:textColor="@color/global_text_color" />
 
                 <TextView
-                    android:id="@+id/tv_show_access_window"
+                    android:id="@+id/tv_open_access_window"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_layout_container_radius"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_layout_container_radius"
                     android:gravity="center"
-                    android:textColor="@color/global_text_color"
-                    android:text="打开服务窗口" />
+                    android:text="打开服务窗口"
+                    android:textColor="@color/global_text_color" />
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_start_leisu"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="40dp"-->
-<!--                    android:layout_marginTop="20dp"-->
-<!--                    android:background="@drawable/bg_layout_container_radius"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="打开雷速"-->
-<!--                    android:textColor="@color/global_text_color" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_start_leisu"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="40dp"-->
+                <!--                    android:layout_marginTop="20dp"-->
+                <!--                    android:background="@drawable/bg_layout_container_radius"-->
+                <!--                    android:layout_marginStart="10dp"-->
+                <!--                    android:layout_marginEnd="10dp"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:text="打开雷速"-->
+                <!--                    android:textColor="@color/global_text_color" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_test_zhipu"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="40dp"-->
-<!--                    android:layout_marginTop="20dp"-->
-<!--                    android:background="@drawable/bg_layout_container_radius"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_marginEnd="10dp"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="测试质谱ai"-->
-<!--                    android:textColor="@color/global_text_color" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_test_zhipu"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="40dp"-->
+                <!--                    android:layout_marginTop="20dp"-->
+                <!--                    android:background="@drawable/bg_layout_container_radius"-->
+                <!--                    android:layout_marginStart="10dp"-->
+                <!--                    android:layout_marginEnd="10dp"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:text="测试质谱ai"-->
+                <!--                    android:textColor="@color/global_text_color" />-->
 
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    />
+                    android:layout_height="20dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+<!--    </ScrollView>-->
 </layout>

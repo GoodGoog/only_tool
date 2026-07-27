@@ -21,6 +21,7 @@ import com.example.more.leisu.getNumberTextByIdAndFilterOther
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.isClickNodeInCurLeagueList
 import com.example.more.leisu.isContainsNodeWrapper
+import org.w3c.dom.Node
 
 class PreMultiFootball private constructor() : BaseLeisuDispatch() {
     companion object {
@@ -96,7 +97,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
             IDPreMultiFootball.id_tv_rq_lose_value
         ).let {
             //不接受无效点击
-            if (!it.contains(clickedNodeWrapper.id)){
+            if (!it.contains(clickedNodeWrapper.id)) {
                 Log.d(TAG, "doSomething: 当前点击是无效点击 id = ${clickedNodeWrapper.id}")
                 return
             }
@@ -109,6 +110,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
         var isClickSpf = true
         //只在当前item首次被点击时才被需要
         var newSelectedLeague: PreMultiFootballSelectedLeague? = null
+        var scoreNodeWrapper: NodeWrapper? = null
         //找出被点击的节点对应的itemTag
         run {
             itemResults.forEach { itemResult ->
@@ -123,7 +125,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
 
                     //存储一下数据，如果这个item是第一次被点击时会被用来存储进selectedItemArray
                     //根据节点id是否包含spf[不让球] 或者 rq[主队让/不让球],来判断是那种类型的玩法[让分或者不让分]
-                    val scoreNodeWrapper =
+                    scoreNodeWrapper =
                         if (clickedNodeWrapper.id.blankOrThis().contains("spf")) {
                             isClickSpf = true
                             itemResult.findNodeById(IDPreMultiFootball.id_tv_spf)
@@ -151,16 +153,19 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
 
         //记录点击的控件，在被选中数组的第几个位置
         var position = -1
-        selectedItemArray.forEachIndexed { index, league ->
-            if (league.leftTeamName == curLeftTeamName && league.rightTEamName == cuRightTeamName) {
-                position = index
+        run {
+            selectedItemArray.forEachIndexed { index, league ->
+                if (league.leftTeamName == curLeftTeamName && league.rightTEamName == cuRightTeamName) {
+                    position = index
+                    return@run
+                }
             }
         }
 
         if (position >= 0) {
             //刚好有一个满足条件,更新记载的数据，或这删除
             selectedItemArray[position].apply {
-                if (isSpf != isClickSpf){
+                if (isSpf != isClickSpf) {
                     //当前点击的玩法和已选中的玩法不一致，不左响应处理
                     return
                 }

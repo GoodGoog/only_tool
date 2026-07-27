@@ -46,16 +46,16 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
         )
         addView(binding.root)
 
-        binding.tvStopAutoPost.setOnClickListener {
-            if (isConnect){
-                LiveEventBus.get<Boolean>(EventBusTag.START_OR_STOP_CUR_AUTO_POST).post(false)
-            }
-        }
-        binding.tvStartAutoPost.setOnClickListener {
-            if (isConnect) {
-                LiveEventBus.get<Boolean>(EventBusTag.START_OR_STOP_CUR_AUTO_POST).post(true)
-            }
-        }
+//        binding.tvStopAutoPost.setOnClickListener {
+//            if (isConnect){
+//                LiveEventBus.get<Boolean>(EventBusTag.START_OR_STOP_CUR_AUTO_POST).post(false)
+//            }
+//        }
+//        binding.tvStartAutoPost.setOnClickListener {
+//            if (isConnect) {
+//                LiveEventBus.get<Boolean>(EventBusTag.START_OR_STOP_CUR_AUTO_POST).post(true)
+//            }
+//        }
         binding.tvCopyAiQuestion.setOnClickListener {
             //复制文本
             val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -67,7 +67,7 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
             handler.postDelayed({
                 //一秒后执行 按钮背景颜色复原
                 binding.tvCopyAiQuestion.setBackgroundColor(bgTvNormal)
-            }, 1000)
+            }, 500)
         }
 
     }
@@ -135,7 +135,7 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
             //binding.tvTaskRemainsTimes.text = "剩余发布次数:" + postTimes
             return
         }
-        binding.tvCurExecuteTask.text = "xx|xx|xx|x次"
+        binding.tvCurExecuteTask.text = "xx|xx|xx"
         //binding.tvTaskRemainsTimes.text = "剩余发布次数:x"
     }
 }

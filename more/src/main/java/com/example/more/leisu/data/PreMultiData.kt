@@ -72,12 +72,12 @@ data class PreMultiFootBallSubData(
  * 预览页-足球-串关，被选中的Item
  */
 data class PreMultiFootballSelectedLeague(
-    val leagueName : String = "",
+    val leagueName: String = "",
 
     //左侧主队
-    val leftTeamName : String = "",
+    val leftTeamName: String = "",
     //右侧客队
-    val rightTEamName : String = "",
+    val rightTEamName: String = "",
 
     //是否为互不让分
     var isSpf: Boolean,
@@ -93,9 +93,9 @@ data class PreMultiFootballSelectedLeague(
     fun getItemTag() = leftTeamName + "VS" + rightTEamName
 
     override fun toString(): String {
-        var selectedNodesText : String  = ""
+        var selectedNodesText: String = ""
         selectedNodes.forEach {
-            selectedNodesText +="[" + it.text + "]"
+            selectedNodesText += "[" + it.text + "]"
         }
         return "itemTag = ${getItemTag()} || isSpf = $isSpf || + scoreNodeWrapperText = ${scoreNodeWrapper.text} || selectedNodesText = $selectedNodesText---------------------------------"
     }
@@ -127,13 +127,13 @@ data class PreMultiFootballSelectedLeague(
             //1.如果不在，则移除数组第一个节点，并插入新的节点
             //2.如果已在，则移除此重复点击的节点
             var position = -1
-            selectedNodes.forEachIndexed { index, wrapper ->
-                position = if (isTwoNodeSame(wrapper, clickNodeWrapper)) {
-                    //已存在
-                    index
-                } else {
-                    //不存在
-                    -1
+            run {
+                selectedNodes.forEachIndexed { index, wrapper ->
+                    if (isTwoNodeSame(wrapper, clickNodeWrapper)) {
+                        //已存在
+                        position = index
+                        return@run
+                    }
                 }
             }
             if (position < 0) {
@@ -244,7 +244,7 @@ data class PreMultiBasketballSelectedLeague(
     fun upDataClickNodeWrapper(
         //是否为让分玩法
         mIsHandicap: Boolean,
-        scoreNodeWrapper : NodeWrapper,
+        scoreNodeWrapper: NodeWrapper,
         clickNodeWrapper: NodeWrapper
     ): Boolean {
 
