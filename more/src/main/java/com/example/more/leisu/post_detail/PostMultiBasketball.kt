@@ -1,13 +1,15 @@
 package com.example.more.leisu.post_detail
 
-import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.PostConfigData
-import com.example.more.leisu.data.PreDataCenter
-import com.example.more.leisu.transAccessibilityEventToString
+import com.example.more.leisu.pre_post.PreMultiBasketball
+import com.example.more.leisu.transToMultiBasketballHandicapTypeAnalyseAiQuestion
+import com.example.more.leisu.transToMultiBasketballTotalScoreAnalyseAiQuestion
+import com.jeremyliao.liveeventbus.LiveEventBus
 
 class PostMultiBasketball private constructor() : BaseLeisuDispatch() {
 
@@ -44,7 +46,7 @@ class PostMultiBasketball private constructor() : BaseLeisuDispatch() {
 //        ) return
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                //startAutoPost(result)
+                loadAiQuestion()
             }
 
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
@@ -59,6 +61,20 @@ class PostMultiBasketball private constructor() : BaseLeisuDispatch() {
 
             }
         }
+    }
+
+    fun loadAiQuestion() {
+        var totalQuestion : String = ""
+        PreMultiBasketball.instance().selectedItemArray.let {
+            it.forEach { league ->
+                if (league.isHandicap) {
+                    totalQuestion += league.transToMultiBasketballHandicapTypeAnalyseAiQuestion() + "\n"
+                }else{
+                    totalQuestion += league.transToMultiBasketballTotalScoreAnalyseAiQuestion() + "\n"
+                }
+            }
+        }
+        LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(totalQuestion)
     }
 
     override fun onStart() {

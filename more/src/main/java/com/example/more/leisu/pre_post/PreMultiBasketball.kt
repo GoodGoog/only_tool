@@ -101,10 +101,15 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
             if (!it.contains(clickedNodeWrapper.id)) return
         }
 
+        Log.d(TAG, "doSomething: 来了吗")
+
 
         val itemResults = getCurPrePageMatchList(result, curType)
 
-        var curClickInItemTag = ""
+        var leagueName: String = ""
+        var curLeftTeamName: String = ""
+        var curRightTeamName: String = ""
+
         var isClickHandicap = true
         //只在当前item首次被点击时才被需要
         var newSelectedLeague: PreMultiBasketballSelectedLeague? = null
@@ -116,9 +121,11 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
             itemResults.forEach { itemResult ->
                 if (itemResult.isContainsNodeWrapper(clickedNodeWrapper)) {
                     //被点击的节点在当前的item内
-                    curClickInItemTag =
-                        itemResult.findNodeById(IDPrePostMultiBasketBall.id_left_team_name)?.text?.blankOrThis() + "VS" +
-                                itemResult.findNodeById(IDPrePostMultiBasketBall.id_right_team_name)?.text?.blankOrThis()
+                    leagueName = itemResult.getTextById(IDPrePostMultiBasketBall.id_league_name)
+                    curLeftTeamName =
+                        itemResult.getTextById(IDPrePostMultiBasketBall.id_left_team_name)
+                    curRightTeamName =
+                        itemResult.getTextById(IDPrePostMultiBasketBall.id_right_team_name)
 
                     //存储一下数据，如果这个item是第一次被点击时会被用来存储进selectedItemArray
                     //根据节点id是否包含spf[不让球] 或者 rq[主队让/不让球],来判断是那种类型的玩法[让分或者不让分]
@@ -134,10 +141,12 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
                         }
                     scoreNodeWrapper?.let {
                         newSelectedLeague = PreMultiBasketballSelectedLeague(
-                            itemTag = curClickInItemTag,
+                            leagueName = leagueName,
+                            leftTeamName = curLeftTeamName,
+                            rightTeamName = curRightTeamName,
                             isHandicap = isClickHandicap,
                             scoreNodeWrapper = it,
-                            selectedNode = clickedNodeWrapper
+                            selectedNode = clickedNodeWrapper,
                         )
                     }
                     return@run
@@ -149,12 +158,14 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
         var position = -1
         run {
             selectedItemArray.forEachIndexed { index, league ->
-                if (league.itemTag == curClickInItemTag) {
+                if (league.leftTeamName == curLeftTeamName && league.rightTeamName == curRightTeamName) {
                     position = index
                     return@run
                 }
             }
         }
+
+        Log.d(TAG, "doSomething: position = $position")
 
         if (position >= 0) {
             //刚好有一个满足条件,更新记载的数据，或这删除

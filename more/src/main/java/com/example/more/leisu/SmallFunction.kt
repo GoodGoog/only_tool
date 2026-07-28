@@ -20,6 +20,7 @@ import com.example.more.leisu.data.PostSingleBasketBallHandicapTypeData
 import com.example.more.leisu.data.PostSingleBasketBallTotalScoreTypeData
 import com.example.more.leisu.data.PostSingleFootBallHandicapTypeData
 import com.example.more.leisu.data.PostSingleFootBallTotalScoreTypeData
+import com.example.more.leisu.data.PreMultiBasketballSelectedLeague
 import com.example.more.leisu.data.PreMultiFootballSelectedLeague
 import com.example.more.setting.judgeLeftTeamScoreTips
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -449,6 +450,13 @@ fun NodeWrapper.getChineseTextAndFilterOtherChar(): String {
     }
 }
 
+fun NodeWrapper?.getAllText() : String{
+    this?.let {
+        return it.text.blankOrThis()
+    }
+    return ""
+}
+
 
 /**
  * 篮球 拼接分析的ai提问 , 左客队，右主队
@@ -470,9 +478,9 @@ fun transToSingleBasketballHandicapAnalyseAiQuestion(data: PostSingleBasketBallH
                 "预测最终哪个队伍更有可能获胜。" +
                 "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
                 "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-                "全文不能有空白行，任意内容点之间都要换行。"  +
+                "全文不能有空白行，任意内容点之间都要换行。" +
                 "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。" +
-                "再给这段文章写一份60字以内的前瞻。"+
+                "再给这段文章写一份60字以内的前瞻。" +
                 "答案控制在600字左右，结尾不要有任何无关提醒！"
     }
 }
@@ -489,9 +497,9 @@ fun transToSingleBasketballTotalScoreAnalyseAiQuestion(data: PostSingleBasketBal
                 "并预测双方总得分是否会大于" + totalScore + "。" +
                 "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
                 "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-                "全文不能有空白行，任意内容点之间都要换行。"  +
+                "全文不能有空白行，任意内容点之间都要换行。" +
                 "单独再给一个回答，为这篇文章生成一个充满激情与吸引力，并且不带确定性结果的标题，控制在25字以内。" +
-                "再给这段文章写一份60字以内的前瞻。"+
+                "再给这段文章写一份60字以内的前瞻。" +
                 "答案控制在600字左右，结尾不要有任何无关提醒！"
     }
 
@@ -584,6 +592,63 @@ fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): S
             "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
             "全文不能有空白行，任意内容点之间都要换行。" +
             "答案控制在300字左右，结尾不要有任何无关提醒！"
+}
+
+
+/**
+ * 发布页-篮球-串关,让分 拼接分析的ai提问 , 左客队，右主队
+ */
+fun PreMultiBasketballSelectedLeague.transToMultiBasketballHandicapTypeAnalyseAiQuestion(): String {
+    //受让情况
+    val score = scoreNodeWrapper.getNumberTextAndFilterOtherChar().toFloat()
+    val handicapText = if (score == 0F) {
+        ""
+    } else {
+        "如果" + rightTeamName +
+                (if (score > 0) "受让" else "让") +
+                "${abs(score)}" + "分，"
+    }
+
+    //预测结果
+    val resultStr = if (selectedNode.getAllText().contains("主胜")) {
+        rightTeamName + "赢得比赛"
+    } else{
+        rightTeamName + "输掉比赛"
+    }
+
+    return "在" + leagueName + "赛事中，" +
+            leftTeamName + "对阵" + rightTeamName + "。" +
+            handicapText +
+            "预测最终结果为" + resultStr + "。" +
+            "为我的预测结果做出合理解释。" +
+            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
+            "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
+            "全文不能有空白行，任意内容点之间都要换行。" +
+            "答案控制在300字左右，结尾不要有任何无关提醒！"
+}
+
+
+/**
+ * 足球 拼接分析的ai提问 , 左客队，右主队
+ */
+fun PreMultiBasketballSelectedLeague.transToMultiBasketballTotalScoreAnalyseAiQuestion(): String {
+    val resultStr = if (selectedNode.getAllText().contains("大")) {
+        "大于"
+    } else {
+        "小于"
+    }.let {
+        it + scoreNodeWrapper.getNumberTextAndFilterOtherChar() + "分。"
+    }
+
+    return "在" + leagueName + "赛事中，" +
+            leftTeamName + "对阵" + rightTeamName + "，" +
+            "预测最终结果为" + resultStr +
+            "为我的预测结果做出合理解释。" +
+            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
+            "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
+            "全文不能有空白行，任意内容点之间都要换行。" +
+            "答案控制在300字左右，结尾不要有任何无关提醒！"
+
 }
 
 /**

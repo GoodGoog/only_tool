@@ -68,7 +68,7 @@ data class PostSingleBasketBallTotalScoreTypeData(
 
 
 /**
- * 篮球单关页 中 左主队  右  客队
+ * 单关页 中 左主队  右  客队
  */
 //单关-篮球，预测-让分 玩法
 data class PostSingleFootBallHandicapTypeData(

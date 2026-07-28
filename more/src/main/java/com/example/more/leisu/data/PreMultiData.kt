@@ -2,6 +2,7 @@ package com.example.more.leisu.data
 
 import android.util.Log
 import com.example.more.accessibility.NodeWrapper
+import com.example.more.accessibility.blankOrThis
 import com.example.more.leisu.isTwoNodeSame
 
 /**
@@ -216,11 +217,15 @@ data class PreMultiBasketBallSubData(
 
 
 /**
- * 预览页-足球-串关，被选中的Item
+ * 预览页-篮球-串关，被选中的Item
  */
 data class PreMultiBasketballSelectedLeague(
-    //tag = 左侧对伍名VS左侧队伍名
-    val itemTag: String = "",
+    val leagueName: String = "",
+
+    //左侧主队
+    val leftTeamName: String = "",
+    //右侧客队
+    val rightTeamName: String = "",
 
     //true为让分  false为总分比大小
     var isHandicap: Boolean,
@@ -230,12 +235,16 @@ data class PreMultiBasketballSelectedLeague(
     var scoreNodeWrapper: NodeWrapper,
 
     // 选中的玩法 ，最多1个
-    var selectedNode: NodeWrapper
+    var selectedNode: NodeWrapper,
+
+    //指selectedNode
+    //1.让分玩法时： 左侧按钮=客胜赔率，右侧按钮=主胜赔率
+    //2.总分玩法时： 左侧按钮=大于赔率，右侧按钮=小于赔率
 
 ) {
 
     override fun toString(): String {
-        return "itemTag = $itemTag ||||||||||||||| isHandicap = $isHandicap  ||||||||||||||| isHandicap =  + scoreNodeWrapper = $scoreNodeWrapper  ||||||||||||||| isHandicap =  selectedNode = $selectedNode---------------------------------"
+        return "leagueName = $leagueName ||leftTeamName=$leftTeamName || rightTeamName=$rightTeamName || isHandicap = $isHandicap || scoreNodeWrapper = ${scoreNodeWrapper.text} || selectedNode = ${selectedNode.text}----\n"
     }
 
     /**
@@ -248,6 +257,9 @@ data class PreMultiBasketballSelectedLeague(
         clickNodeWrapper: NodeWrapper
     ): Boolean {
 
+        //当前点击的玩法，和之间记录的玩法不使用一种，不响应
+        if (isHandicap != mIsHandicap) return false
+
         //下列为 之前的类型 和 当前点击的类型 一致
         if (isTwoNodeSame(selectedNode, clickNodeWrapper)) {
             //当前点击的节点已被选中了，故删除此已选中节点
@@ -259,6 +271,7 @@ data class PreMultiBasketballSelectedLeague(
         isHandicap = mIsHandicap
         this.scoreNodeWrapper = scoreNodeWrapper
         selectedNode = clickNodeWrapper
+
         return false
     }
 
