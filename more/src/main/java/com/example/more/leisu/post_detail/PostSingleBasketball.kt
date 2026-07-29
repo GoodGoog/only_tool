@@ -1,14 +1,18 @@
 package com.example.more.leisu.post_detail
 
 import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import com.example.more.EventBusTag
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
+import com.example.more.accessibility.NodeWrapper
 import com.example.more.accessibility.analyzeRecyclerView
 import com.example.more.accessibility.findNodeById
+import com.example.more.accessibility.transNodeInfoToNodeWrapper
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.data.IDPostBasketballSingle
+import com.example.more.leisu.data.IDPostFootballSingle
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PostSingleBasketBallHandicapTypeData
 import com.example.more.leisu.data.PostSingleBasketBallTotalScoreTypeData
@@ -17,10 +21,12 @@ import com.example.more.leisu.delayClickWithShowHighLight
 import com.example.more.leisu.getNumberTextByIdAndFilterOther
 import com.example.more.leisu.getRandomInt
 import com.example.more.leisu.getTextById
+import com.example.more.leisu.isTwoNodeSame
 import com.example.more.leisu.transToPostArrayIndex
 import com.example.more.leisu.transToSingleBasketballHandicapAnalyseAiQuestion
 import com.example.more.leisu.transToSingleBasketballTotalScoreAnalyseAiQuestion
 import com.jeremyliao.liveeventbus.LiveEventBus
+import kotlin.collections.contains
 
 class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 
@@ -60,15 +66,31 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
 //                if (getCurRemainCount(result) > 0) {
 //                    startAutoPost(result)
 //                }
-                startAutoPost(result)
-            }
-
-            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
-
+                //startAutoPost(result)
             }
 
             AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
 
+            }
+
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+                val node: AccessibilityNodeInfo? = eventWrapper.event.source
+                node ?: return
+                try {
+                    //如果不是当前页面信息列表的节点被点击，就不关注
+                    val validIds = setOf<String>(
+                        IDPostBasketballSingle.id_single_post_prospect_left_layout_container,
+                        IDPostBasketballSingle.id_single_post_prospect_right_layout_container
+                    )
+                    val nodeWrapper = node.transNodeInfoToNodeWrapper()
+                    //无效点击不响应
+                    if (!validIds.contains(nodeWrapper.id)) return
+                    //将接受点击
+                    doSomething(result, nodeWrapper)
+                } finally {
+                    // 【强制】必须回收，否则内存泄漏、系统杀服务
+                    node.recycle()
+                }
             }
 
             else -> {
@@ -77,47 +99,49 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
         }
     }
 
-    fun startAutoPost(result: AnalyzeSourceResult) {
+    /**
+     * 手动选择玩法后生成aiQuestion
+     */
+    fun doSomething(result: AnalyzeSourceResult, clickNodeWrapper: NodeWrapper) {
         //解析rv子视图
         val itemResults =
             result.findNodeById(IDPostBasketballSingle.id_single_post_player_detail_action)
                 .analyzeRecyclerView()
-        if (itemResults.isNotEmpty()) {
-            //默认执行第一种玩法
-            val firstItemResult = itemResults[0]
-//            if (isCurFreePost()) {
-//                doFreePost(result, firstItemResult)
-//            } else {
-//                //收费
-//                when (firstItemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_item_title)) {
-//                    PLAY_TYPE_HANDICAP -> {
-//                        //让分玩法
-//                        doHandicapType(result, firstItemResult)
-//                    }
-//
-//                    PLAY_TYPE_TOTAL_SCORE -> {
-//                        //预判总分大小
-//                        doTotalScoreType(result, firstItemResult)
-//                    }
-//                }
-//            }
-            //默认当前不区分收费免费，一律生成ai提问
-            when (firstItemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_item_title)) {
+
+        var position = -1
+        run {
+            itemResults.forEachIndexed { index, itemResult ->
+                itemResult.nodes.forEach { subNode ->
+                    if (isTwoNodeSame(clickNodeWrapper, subNode,isCompareBounds = true)) {
+                        position = index
+                        return@run
+                    }
+                }
+            }
+        }
+
+        if (position == -1){
+            //无效点击快走开
+            return
+        }
+
+        itemResults[position].apply {
+            when (getTextById(IDPostBasketballSingle.id_single_post_prospect_item_title)) {
                 PLAY_TYPE_HANDICAP -> {
                     //让分玩法
-                    doHandicapType(result, firstItemResult)
+                    doHandicapType(result, this,clickNodeWrapper)
                 }
 
                 PLAY_TYPE_TOTAL_SCORE -> {
                     //预判总分大小
-                    doTotalScoreType(result, firstItemResult)
+                    doTotalScoreType(result, this,clickNodeWrapper)
                 }
             }
         }
     }
 
     //让分-收费  左侧队伍为 客队， 右侧队伍为 主队
-    private fun doHandicapType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
+    private fun doHandicapType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult,clickNodeWrapper: NodeWrapper) {
         PostSingleBasketBallHandicapTypeData(
             leagueName = rootResult.getTextById(IDPostBasketballSingle.id_single_league_name),
             leagueStartTime = rootResult.getTextById(IDPostBasketballSingle.id_single_post_league_start_time),
@@ -129,13 +153,13 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             rightPlate = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_plate),
             rightValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
         ).apply {
-            val it = transToSingleBasketballHandicapAnalyseAiQuestion(this)
+            val it = transToSingleBasketballHandicapAnalyseAiQuestion(this,clickNodeWrapper)
             LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(it)
         }
     }
 
     //总分-收费
-    private fun doTotalScoreType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
+    private fun doTotalScoreType(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult,clickNodeWrapper: NodeWrapper) {
         PostSingleBasketBallTotalScoreTypeData(
             leagueName = rootResult.getTextById(IDPostBasketballSingle.id_single_league_name),
             leagueStartTime = rootResult.getTextById(IDPostBasketballSingle.id_single_post_league_start_time),
@@ -146,7 +170,7 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
             totalScore = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_center_total_score),
             smallerThanTotalValue = itemResult.getTextById(IDPostBasketballSingle.id_single_post_prospect_right_win_value),
         ).apply {
-            val it = transToSingleBasketballTotalScoreAnalyseAiQuestion(this)
+            val it = transToSingleBasketballTotalScoreAnalyseAiQuestion(this,clickNodeWrapper)
             LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(it)
         }
     }
@@ -207,11 +231,11 @@ class PostSingleBasketball private constructor() : BaseLeisuDispatch() {
     /***
      * 设置窗口状态变化接受间隔
      */
-    override fun getCurNeedReceptTimeSeparator(): BaseLeisuDispatch.Companion.TimeSeparator {
-        return BaseLeisuDispatch.Companion.TimeSeparator(
-            setOf(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED),
-            500L
-        )
-    }
+//    override fun getCurNeedReceptTimeSeparator(): BaseLeisuDispatch.Companion.TimeSeparator {
+//        return BaseLeisuDispatch.Companion.TimeSeparator(
+//            setOf(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED),
+//            500L
+//        )
+//    }
 
 }

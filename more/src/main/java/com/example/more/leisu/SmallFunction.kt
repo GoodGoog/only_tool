@@ -14,6 +14,7 @@ import com.example.more.accessibility.clickPerformWithResult
 import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.findNodesByExpression
 import com.example.more.accessibility.findNodesById
+import com.example.more.leisu.data.IDPostBasketballSingle
 import com.example.more.leisu.data.IDPostFootballSingle
 import com.example.more.leisu.data.IDPrePostHeader
 import com.example.more.leisu.data.PostConfigData
@@ -462,7 +463,12 @@ fun NodeWrapper?.getAllText(): String {
 /**
  * 篮球 拼接分析的ai提问 , 左客队，右主队
  */
-fun transToSingleBasketballHandicapAnalyseAiQuestion(data: PostSingleBasketBallHandicapTypeData): String {
+fun transToSingleBasketballHandicapAnalyseAiQuestion(
+    data: PostSingleBasketBallHandicapTypeData,
+    clickNodeWrapper: NodeWrapper
+): String {
+    val isLeftClicked =
+        clickNodeWrapper.id == IDPostBasketballSingle.id_single_post_prospect_left_layout_container
     data.apply {
         //受让情况
         val handicapText = if (data.leftPlate.toFloat() == 0F) {
@@ -472,36 +478,49 @@ fun transToSingleBasketballHandicapAnalyseAiQuestion(data: PostSingleBasketBallH
                     (if (rightPlate.toFloat() > 0F) "受让" else "让") +
                     "${abs(rightPlate.toFloat())}" + "分，"
         }
+        val resultStr = if (isLeftClicked) {
+            rightTeamName + "输掉比赛，"
+        } else {
+            rightTeamName + "赢得比赛，"
+        }
         return "在" + leagueName + "赛事中，" +
                 leftTeamName + "对阵" + rightTeamName + "，" +
                 "分析比赛双方各自的近况和优劣势。" +
                 handicapText +
-                "预测最终哪个队伍更有可能获胜。" +
-                "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-                "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-                "全文不能有空白行，任意内容点之间都要换行。" +
-                "为这篇文章生成一个能够体现连红，并且不带确定性结果的标题，控制在25字以内。" +
-                "再给这段文章写一份60字以内的前瞻，要体现连红概率大，并且期待大家解锁购买这篇文章。" +
-                "答案控制在600字左右，不要有任何无关提醒！"
+                "预测最终结果为" + resultStr +
+                "为我的预测结果做出合理解释。" +
+                singleEndStr
     }
 }
+
+const val singleEndStr =
+    "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
+            "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
+            "全文不能有空白行，任意内容点之间都要换行。" +
+            "为这篇文章生成一个能够体现连红，并且不带确定性结果的标题，控制在25字以内。" +
+            "再给这段文章写一份60字以内的前瞻，要体现连红概率大，并且期待大家解锁购买这篇文章。" +
+            "答案控制在600字左右，不要有任何无关提醒！"
 
 /**
  * 篮球 拼接分析的ai提问 , 左客队，右主队
  */
-fun transToSingleBasketballTotalScoreAnalyseAiQuestion(data: PostSingleBasketBallTotalScoreTypeData): String {
+fun transToSingleBasketballTotalScoreAnalyseAiQuestion(data: PostSingleBasketBallTotalScoreTypeData,clickNodeWrapper: NodeWrapper): String {
+    val isLeftClicked =
+        clickNodeWrapper.id == IDPostFootballSingle.id_single_post_prospect_left_layout_container
+
     data.apply {
+        val resultStr = if (isLeftClicked) {
+            "总得分大于$totalScore，"
+        } else {
+            "总得分小于$totalScore。"
+        }
         //受让情况
         return "在" + leagueName + "赛事中，" +
                 leftTeamName + "对阵" + rightTeamName + "，" +
                 "分析比赛双方各自的近况和优劣势，" +
-                "并预测双方总得分是否会大于" + totalScore + "。" +
-                "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-                "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-                "全文不能有空白行，任意内容点之间都要换行。" +
-                "为这篇文章生成一个能够体现连红，并且不带确定性结果的标题，控制在25字以内。" +
-                "再给这段文章写一份60字以内的前瞻，要体现连红概率大，并且期待大家解锁购买这篇文章。" +
-                "答案控制在600字左右，不要有任何无关提醒！"
+                "预测最终结果为" + resultStr +
+                "为我的预测结果做出合理解释。" +
+                singleEndStr
     }
 
 }
@@ -525,7 +544,7 @@ fun transToSingleFootballHandicapAnalyseAiQuestion(
                     "${abs(leftPlate.toFloat())}" + "分，"
         }
         val resultStr = if (isLeftClicked) {
-            leftTeamName + "获得比赛，"
+            leftTeamName + "赢得比赛，"
         } else {
             leftTeamName + "输掉比赛，"
         }
@@ -535,39 +554,9 @@ fun transToSingleFootballHandicapAnalyseAiQuestion(
                 handicapText +
                 "预测最终结果为" + resultStr +
                 "为我的预测结果做出合理解释。" +
-                "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-                "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-                "全文不能有空白行，任意内容点之间都要换行。" +
-                "为这篇文章生成一个能够体现连红，并且不带确定性结果的标题，控制在25字以内。" +
-                "再给这段文章写一份60字以内的前瞻，要体现连红概率大，并且期待大家解锁购买这篇文章。" +
-                "答案控制在600字左右，不要有任何无关提醒！"
+                singleEndStr
     }
 }
-
-//fun transToSingleFootballHandicapAnalyseAiQuestion(data: PostSingleFootBallHandicapTypeData): String {
-//    data.apply {
-//        //受让情况
-//        val handicapText = if (data.leftPlate.toFloat() == 0F) {
-//            ""
-//        } else {
-//            "如果" + leftTeamName +
-//                    (if (leftPlate.toFloat() > 0F) "受让" else "让") +
-//                    "${abs(leftPlate.toFloat())}" + "分，"
-//        }
-//        return "在" + leagueName + "赛事中，" +
-//                leftTeamName + "对阵" + rightTeamName + "，" +
-//                "分析比赛双方各自的近况和优劣势。" +
-//                handicapText +
-//                "预测最终哪个队伍更有可能获胜。" +
-//                "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-//                "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-//                "全文不能有空白行，任意内容点之间都要换行。" +
-//                "为这篇文章生成一个能够体现连红，并且不带确定性结果的标题，控制在25字以内。" +
-//                "再给这段文章写一份60字以内的前瞻，要体现连红概率大，并且期待大家解锁购买这篇文章。" +
-//                "答案控制在600字左右，不要有任何无关提醒！"
-//    }
-//}
-
 
 /**
  * 足球 拼接分析的ai提问 , 左主队，右客队
@@ -580,9 +569,9 @@ fun transToSingleFootballTotalScoreAnalyseAiQuestion(
         val isLeftClicked =
             clickNodeWrapper.id == IDPostFootballSingle.id_single_post_prospect_left_layout_container
         val resultStr = if (isLeftClicked) {
-            "总得分大于$totalScore,"
+            "总得分大于$totalScore，"
         } else {
-            "总得分小于$totalScore,"
+            "总得分小于$totalScore，"
         }
         //受让情况
         return "在" + leagueName + "赛事中，" +
@@ -590,33 +579,10 @@ fun transToSingleFootballTotalScoreAnalyseAiQuestion(
                 "分析比赛双方各自的近况和优劣势，" +
                 "预测最终结果为" + resultStr +
                 "为我的预测结果做出合理解释。" +
-                "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-                "每一个大内容点内，小内容点用（1.2.3.4.）等标识，" +
-                "全文不能有空白行，任意内容点之间都要换行。" +
-                "为这篇文章生成一个能够体现连红，并且不带确定性结果的标题，控制在25字以内。" +
-                "再给这段文章写一份60字以内的前瞻，要体现连红概率大，并且期待大家解锁购买这篇文章。" +
-                "答案控制在600字左右，不要有任何无关提醒！"
+                singleEndStr
     }
-
 }
 
-//fun transToSingleFootballTotalScoreAnalyseAiQuestion(data: PostSingleFootBallTotalScoreTypeData): String {
-//    data.apply {
-//        //受让情况
-//        return "在" + leagueName + "赛事中，" +
-//                leftTeamName + "对阵" + rightTeamName + "，" +
-//                "分析比赛双方各自的近况和优劣势，" +
-//                "并预测双方总得分是否会大于" + totalScore + "。" +
-//                "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-//                "每一个大内容点内，小内容点用（1.2.3.4.）等标识，" +
-//                "全文不能有空白行，任意内容点之间都要换行。" +
-//                "为这篇文章生成一个能够体现连红，并且不带确定性结果的标题，控制在25字以内。" +
-//                "再给这段文章写一份60字以内的前瞻，要体现连红概率大，并且期待大家解锁购买这篇文章。" +
-//                "答案控制在600字左右，不要有任何无关提醒！"
-//    }
-//
-//}
-//
 
 /**
  * 发布页-足球-串关 拼接分析的ai提问 , 左主队，右客队
