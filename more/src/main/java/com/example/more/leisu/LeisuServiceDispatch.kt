@@ -39,7 +39,7 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
      */
     //业务分发
     override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
-        Log.d(TAG, "onEventCome: result = " + result.nodes)
+        //Log.d(TAG, "onEventCome: result = " + result.nodes)
         if (isInExpertHomePage(result)) {
             //情况预览页-足球-串关-选中的数据
             PreMultiFootball.instance().clearAll()
@@ -52,7 +52,7 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
             //在发布页
             when (PreJumpUtils.instance().curPageType) {
                 PostConfigData.ConfigType.SingleFootball -> {
-                    Log.d(TAG, "onEventCome: SingleFootball")
+                    Log.d(TAG, "onEventCome: SingleFootball + eventType = ${wrapper.eventType.transAccessibilityEventToString()}")
                     //单关足球-发布页
                     PostSingleFootball.instance().eventCome(wrapper, result)
                 }

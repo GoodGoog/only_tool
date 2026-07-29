@@ -14,6 +14,7 @@ import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.getCurPrePageMatchList
 import com.example.more.leisu.isClickNodeInCurLeagueList
+import com.example.more.leisu.transAccessibilityEventToString
 import com.example.more.leisu.transToPostConfigType
 import com.jeremyliao.liveeventbus.LiveEventBus
 
@@ -91,7 +92,7 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
     override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
         this.result = result
         PreJumpUtils.instance().refreshResult(result)
-
+        Log.d(TAG, "onEventCome: !!!!-----------!type = " + eventWrapper.eventType.transAccessibilityEventToString())
         when (PreJumpUtils.instance().curPageType) {
             PostConfigData.ConfigType.SingleBasketball -> {
                 PreSingleBasketball.instance()

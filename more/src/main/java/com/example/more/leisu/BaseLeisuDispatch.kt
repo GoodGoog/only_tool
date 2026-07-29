@@ -1,10 +1,12 @@
 package com.example.more.leisu
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
+import com.example.more.leisu.LeisuServiceDispatch.Companion.TAG
 import com.example.more.leisu.data.PostConfigData
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +38,7 @@ abstract class BaseLeisuDispatch : LifecycleOwner {
      */
     @OptIn(DelicateCoroutinesApi::class)
     fun eventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
+        Log.d(TAG, "onEventCome: +++++ eventType = ${eventWrapper.eventType.transAccessibilityEventToString()}")
         getCurNeedReceptTimeSeparator().apply {
             if (filterEventSet == null) {
                 //无需过滤
