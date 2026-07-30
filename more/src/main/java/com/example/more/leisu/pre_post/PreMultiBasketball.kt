@@ -68,18 +68,17 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
                 node ?: return
                 try {
                     //如果不是当前页面信息列表的节点被点击，就不关注
-                    if (!isClickNodeInCurLeagueList(
-                            result,
-                            curType,
-                            node.transNodeInfoToNodeWrapper()
-                        )
-                    ) return
+//                    if (!isClickNodeInCurLeagueList(
+//                            result,
+//                            curType,
+//                            node.transNodeInfoToNodeWrapper()
+//                        )
+//                    ) return
                     //将接受点击的Item 和 item中的响应点击节点信息记录
                     doSomething(node.transNodeInfoToNodeWrapper(), result)
-                    Log.d(TAG, "onEventCome: 来了这边啊啊啊啊啊啊啊啊 ")
-                    selectedItemArray.forEachIndexed { index, league ->
-                        Log.d(TAG, "TYPE_VIEW_CLICKED == $league")
-                    }
+//                    selectedItemArray.forEachIndexed { index, league ->
+//                        Log.d(TAG, "TYPE_VIEW_CLICKED == $league")
+//                    }
                 } finally {
                     // 【强制】必须回收，否则内存泄漏、系统杀服务
                     node.recycle()
@@ -105,12 +104,11 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
             if (!it.contains(clickedNodeWrapper.id)) return
         }
 
-        Log.d(TAG, "doSomething: 来了吗")
-
 
         val itemResults = getCurPrePageMatchList(result, curType)
 
         var leagueName: String = ""
+        var startTime: String = ""
         var curLeftTeamName: String = ""
         var curRightTeamName: String = ""
 
@@ -126,6 +124,7 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
                 if (itemResult.isContainsNodeWrapper(clickedNodeWrapper)) {
                     //被点击的节点在当前的item内
                     leagueName = itemResult.getTextById(IDPrePostMultiBasketBall.id_league_name)
+                    startTime = itemResult.getTextById(IDPrePostMultiBasketBall.id_league_start_time)
                     curLeftTeamName =
                         itemResult.getTextById(IDPrePostMultiBasketBall.id_left_team_name)
                     curRightTeamName =
@@ -146,6 +145,7 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
                     scoreNodeWrapper?.let {
                         newSelectedLeague = PreMultiBasketballSelectedLeague(
                             leagueName = leagueName,
+                            startTime = startTime,
                             leftTeamName = curLeftTeamName,
                             rightTeamName = curRightTeamName,
                             isHandicap = isClickHandicap,
@@ -180,7 +180,6 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
                         scoreNodeWrapper,
                         clickedNodeWrapper
                     ).let { isNeedRemoveFormList ->
-                        Log.d(TAG, "doSomething:isNeedRemoveFormList = $isNeedRemoveFormList ")
                         if (isNeedRemoveFormList) {
                             //需要从选中列表中移除
                             selectedItemArray.removeAt(position)
@@ -237,7 +236,6 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
             rightTeamName = getTextById(IDPrePostMultiBasketBall.id_right_team_name),
             subDataArray = subDataArray,
         ).apply {
-            Log.d(TAG, "analyzeItemResult $this")
 
         }
     }
@@ -250,5 +248,10 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
     override fun onDestroy() {
 
     }
+
+    fun clearAll() {
+        selectedItemArray.clear()
+    }
+
 
 }

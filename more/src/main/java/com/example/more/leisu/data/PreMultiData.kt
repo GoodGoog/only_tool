@@ -224,6 +224,8 @@ data class PreMultiBasketBallSubData(
 data class PreMultiBasketballSelectedLeague(
     val leagueName: String = "",
 
+    val startTime : String = "",
+
     //左侧主队
     val leftTeamName: String = "",
     //右侧客队

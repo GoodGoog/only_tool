@@ -276,5 +276,4 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
         selectedItemArray.clear()
         Log.d(TAG, "clearAll: ----------------- ${selectedItemArray.size}")
     }
-
 }
