@@ -75,6 +75,8 @@ data class PreMultiFootBallSubData(
 data class PreMultiFootballSelectedLeague(
     val leagueName: String = "",
 
+    val startTime : String = "",
+
     //左侧主队
     val leftTeamName: String = "",
     //右侧客队
@@ -114,7 +116,7 @@ data class PreMultiFootballSelectedLeague(
         //当前只有一个节点被选中
         if (selectedNodes.size == 1) {
             // 之前的类型 和 当前点击的类型 是否一致
-            if (isTwoNodeSame(selectedNodes[0], clickNodeWrapper)) {
+            if (isTwoNodeSame(selectedNodes[0], clickNodeWrapper,isCompareBounds = false)) {
                 //当前点击的节点已被选中了，故删除此已选中节点
                 //零当前item已经没有选中的节点，需要冲selectedArray中移除
                 //selectedNodes.removeAt(0)

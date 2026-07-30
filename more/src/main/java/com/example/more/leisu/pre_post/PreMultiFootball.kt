@@ -65,12 +65,12 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
                 node ?: return
                 try {
                     //如果不是当前页面信息列表的节点被点击，就不关注
-                    if (!isClickNodeInCurLeagueList(
-                            result,
-                            curType,
-                            node.transNodeInfoToNodeWrapper()
-                        )
-                    ) return
+//                    if (!isClickNodeInCurLeagueList(
+//                            result,
+//                            curType,
+//                            node.transNodeInfoToNodeWrapper()
+//                        )
+//                    ) return
                     //将接受点击的Item 和 item中的响应点击节点信息记录
                     doSomething(node.transNodeInfoToNodeWrapper(), result)
                     printCurSelectedArray()
@@ -118,6 +118,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
                     //被点击的节点在当前的item内
 
                     val curLeagueName = itemResult.getTextById(IDPreMultiFootball.id_league_name)
+                    val startTime = itemResult.getTextById(IDPreMultiFootball.id_league_start_time)
                     curLeftTeamName =
                         itemResult.getTextById(IDPreMultiFootball.id_left_team_name)
                     cuRightTeamName =
@@ -139,6 +140,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
                     scoreNodeWrapper?.let {
                         newSelectedLeague = PreMultiFootballSelectedLeague(
                             leagueName = curLeagueName,
+                            startTime = startTime,
                             leftTeamName = curLeftTeamName,
                             rightTEamName = cuRightTeamName,
                             isSpf = isClickSpf,

@@ -504,7 +504,10 @@ const val singleEndStr =
 /**
  * 篮球 拼接分析的ai提问 , 左客队，右主队
  */
-fun transToSingleBasketballTotalScoreAnalyseAiQuestion(data: PostSingleBasketBallTotalScoreTypeData,clickNodeWrapper: NodeWrapper): String {
+fun transToSingleBasketballTotalScoreAnalyseAiQuestion(
+    data: PostSingleBasketBallTotalScoreTypeData,
+    clickNodeWrapper: NodeWrapper
+): String {
     val isLeftClicked =
         clickNodeWrapper.id == IDPostFootballSingle.id_single_post_prospect_left_layout_container
 
@@ -615,15 +618,18 @@ fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): S
         }
     }
 
-    return "在" + leagueName + "赛事中，" +
+    return "在" + startTime + "的" + leagueName + "赛事中，" +
             leftTeamName + "对阵" + rightTEamName + "。" +
             handicapText +
+            "分析比赛双方各自的近况和优劣势，" +
             "预测最终结果为" + resultStr + "。" +
-            "为我的预测结果做出合理解释。" +
-            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-            "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-            "全文不能有空白行，任意内容点之间都要换行。" +
-            "答案控制在300字左右，结尾不要有任何无关提醒！"
+            "为我的预测结果做出合理解释，" +
+            "分析已知机构指数并指出对我所做出的预测有利的点。" +
+            "最后另加一个大点，肯定我的预测是正确或者可信的的！" +
+            "每个大点用（一、二、三、）等数字标识，" +
+            "每一个大点内，小内容点用（1.2.3.）等标识， " +
+            "全文不能有空白行，任意大点之间都要换行。" +
+            "本条答案控制在350字左右，结尾不要有任何无关提醒！"
 }
 
 
@@ -651,12 +657,14 @@ fun PreMultiBasketballSelectedLeague.transToMultiBasketballHandicapTypeAnalyseAi
     return "在" + leagueName + "赛事中，" +
             leftTeamName + "对阵" + rightTeamName + "。" +
             handicapText +
+            "分析比赛双方各自的近况和优劣势，" +
             "预测最终结果为" + resultStr + "。" +
             "为我的预测结果做出合理解释。" +
-            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-            "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-            "全文不能有空白行，任意内容点之间都要换行。" +
-            "答案控制在300字左右，结尾不要有任何无关提醒！"
+            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、）等数字标识，" +
+            "每一个大内容点内，小内容点用（1.2.3.）等标识， " +
+//            "全文不能有空白行，任意内容点之间都要换行。" +
+            "答案控制在300字左右！"
+
 }
 
 
@@ -674,12 +682,13 @@ fun PreMultiBasketballSelectedLeague.transToMultiBasketballTotalScoreAnalyseAiQu
 
     return "在" + leagueName + "赛事中，" +
             leftTeamName + "对阵" + rightTeamName + "，" +
+            "分析比赛双方各自的近况和优劣势，" +
             "预测最终结果为" + resultStr +
             "为我的预测结果做出合理解释。" +
-            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-            "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-            "全文不能有空白行，任意内容点之间都要换行。" +
-            "答案控制在300字左右，结尾不要有任何无关提醒！"
+            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、）等数字标识，" +
+            "每一个大内容点内，小内容点用（1.2.3.）等标识， " +
+//            "全文不能有空白行，任意内容点之间都要换行。" +
+            "答案控制在300字左右！"
 
 }
 
@@ -743,5 +752,19 @@ fun isTwoNodeSame(
         firstNodeWrapper.text == secondNodeWrapper.text && firstNodeWrapper.id == secondNodeWrapper.id && firstNodeWrapper.bounds == secondNodeWrapper.bounds
     } else {
         firstNodeWrapper.text == secondNodeWrapper.text && firstNodeWrapper.id == secondNodeWrapper.id
+    }
+}
+
+fun Int.numberTransToChinese(): String {
+    return when (this) {
+        0 -> "零"
+        1 -> "一"
+        2 -> "二"
+        3 -> "三"
+        4 -> "四"
+        5 -> "五"
+        6 -> "六"
+        7 -> "七"
+        else -> "另外"
     }
 }

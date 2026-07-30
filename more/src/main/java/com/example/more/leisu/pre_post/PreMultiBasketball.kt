@@ -8,6 +8,7 @@ import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.NodeWrapper
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
+import com.example.more.accessibility.logD
 import com.example.more.accessibility.transNodeInfoToNodeWrapper
 import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.IDPreMultiFootball
@@ -75,7 +76,10 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
                     ) return
                     //将接受点击的Item 和 item中的响应点击节点信息记录
                     doSomething(node.transNodeInfoToNodeWrapper(), result)
-                    printCurSelectedArray()
+                    Log.d(TAG, "onEventCome: 来了这边啊啊啊啊啊啊啊啊 ")
+                    selectedItemArray.forEachIndexed { index, league ->
+                        Log.d(TAG, "TYPE_VIEW_CLICKED == $league")
+                    }
                 } finally {
                     // 【强制】必须回收，否则内存泄漏、系统杀服务
                     node.recycle()
@@ -193,15 +197,6 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
             }
         }
 
-    }
-
-    /**
-     * 打印当前选中的数据
-     */
-    fun printCurSelectedArray() {
-        selectedItemArray.forEachIndexed { index, league ->
-            Log.d(TAG, "ClickItem == $league")
-        }
     }
 
     fun AnalyzeSourceResult.analyzeItemResult() {

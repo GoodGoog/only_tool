@@ -9,6 +9,7 @@ import com.example.more.leisu.BaseLeisuDispatch
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.data.PreMultiFootballSelectedLeague
+import com.example.more.leisu.numberTransToChinese
 import com.example.more.leisu.pre_post.PreMultiFootball
 import com.example.more.leisu.transAccessibilityEventToString
 import com.example.more.leisu.transToMultiFootballSpfAnalyseAiQuestion
@@ -61,13 +62,15 @@ class PostMultiFootball private constructor() : BaseLeisuDispatch() {
     }
 
     fun loadAiQuestion() {
-        var totalQuestion : String = ""
+        var totalQuestion: String = ""
         PreMultiFootball.instance().selectedItemArray.let {
-            it.forEach { league ->
-                totalQuestion += league.transToMultiFootballSpfAnalyseAiQuestion() + "\n"
+            it.forEachIndexed { index, league ->
+                totalQuestion += (index + 1).numberTransToChinese() + "、" + league.transToMultiFootballSpfAnalyseAiQuestion() + "\n"
             }
+            totalQuestion += (it.size + 1).numberTransToChinese() + "、" + "为这篇${it.size}串1文章生成一个能够体现连红与信心，并且不带确定性结果的标题，控制在15字以内。\n" +
+                    (it.size + 2).numberTransToChinese() + "、" + "再给这段文章写一份60字以内的前瞻，要体现连红概率大，并且期待大家解锁购买这篇文章。"
+            LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(totalQuestion)
         }
-        LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(totalQuestion)
     }
 
     override fun onStart() {
