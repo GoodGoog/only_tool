@@ -238,6 +238,12 @@ data class PreMultiBasketballSelectedLeague(
     //右侧客队
     val rightTeamName: String = "",
 
+    //左侧胜率  [总分时为大于总分时胜率，让分时为客队获胜时赔率]
+    val leftValue : String = "",
+
+    //右侧胜率 [总分时为小于总分时胜率，让分时为主队获胜时赔率]
+    val rightValue : String = "",
+
     //true为让分  false为总分比大小
     var isHandicap: Boolean,
 

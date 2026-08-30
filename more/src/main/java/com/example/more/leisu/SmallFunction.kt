@@ -676,6 +676,11 @@ fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): S
  * 发布页-篮球-串关,让分 拼接分析的ai提问 , 左客队，右主队
  */
 fun PreMultiBasketballSelectedLeague.transToMultiBasketballHandicapTypeAnalyseAiQuestion(): String {
+    //此处记录赔率
+    val plateValue =
+        rightTeamName + "获胜时赔率为" + rightValue.getNumberTextAndFilterOtherChar() + "，" +
+                rightTeamName + "输掉比赛时赔率为" + leftValue.getNumberTextAndFilterOtherChar() + "。"
+
     //受让情况
     val score = scoreNodeWrapper.getNumberTextAndFilterOtherChar().toFloat()
     val handicapText = if (score == 0F) {
@@ -695,39 +700,37 @@ fun PreMultiBasketballSelectedLeague.transToMultiBasketballHandicapTypeAnalyseAi
 
     return "在" + leagueName + "赛事中，" +
             leftTeamName + "对阵" + rightTeamName + "。" +
+            plateValue +
             handicapText +
-            "分析比赛双方各自的近况和优劣势，" +
             "预测最终结果为" + resultStr + "。" +
-            "为我的预测结果做出合理解释。" +
-            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、）等数字标识，" +
-            "每一个大内容点内，小内容点用（1.2.3.）等标识， " +
-//            "全文不能有空白行，任意内容点之间都要换行。" +
-            "答案控制在300字左右！"
-
+            multiEndStr
 }
 
 
 /**
- * 足球 拼接分析的ai提问 , 左客队，右主队
+ * 篮球-串关 拼接分析的ai提问 , 左客队，右主队
  */
 fun PreMultiBasketballSelectedLeague.transToMultiBasketballTotalScoreAnalyseAiQuestion(): String {
+    val totalScoreNum = scoreNodeWrapper.getNumberTextAndFilterOtherChar()
+
+    //此处记录赔率
+    val plateValue =
+        "总分大于${totalScoreNum}时赔率为" + leftValue.getNumberTextAndFilterOtherChar() + "，" +
+                "总分小于于${totalScoreNum}时赔率为" + rightValue.getNumberTextAndFilterOtherChar() + "。"
+
     val resultStr = if (selectedNode.getAllText().contains("大")) {
         "大于"
     } else {
         "小于"
     }.let {
-        it + scoreNodeWrapper.getNumberTextAndFilterOtherChar() + "分。"
+        it + totalScoreNum + "分。"
     }
 
     return "在" + leagueName + "赛事中，" +
             leftTeamName + "对阵" + rightTeamName + "，" +
-            "分析比赛双方各自的近况和优劣势，" +
+            plateValue +
             "预测最终结果为" + resultStr +
-            "为我的预测结果做出合理解释。" +
-            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、）等数字标识，" +
-            "每一个大内容点内，小内容点用（1.2.3.）等标识， " +
-//            "全文不能有空白行，任意内容点之间都要换行。" +
-            "答案控制在300字左右！"
+            multiEndStr
 
 }
 

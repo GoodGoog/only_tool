@@ -20,6 +20,7 @@ import com.example.more.leisu.data.PreMultiBasketBallSubData
 import com.example.more.leisu.data.PreMultiBasketballSelectedLeague
 import com.example.more.leisu.data.PreMultiFootballSelectedLeague
 import com.example.more.leisu.getCurPrePageMatchList
+import com.example.more.leisu.getNumberTextAndFilterOtherChar
 import com.example.more.leisu.getNumberTextByIdAndFilterOther
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.isClickNodeInCurLeagueList
@@ -124,30 +125,42 @@ class PreMultiBasketball private constructor() : BaseLeisuDispatch() {
                 if (itemResult.isContainsNodeWrapper(clickedNodeWrapper)) {
                     //被点击的节点在当前的item内
                     leagueName = itemResult.getTextById(IDPrePostMultiBasketBall.id_league_name)
-                    startTime = itemResult.getTextById(IDPrePostMultiBasketBall.id_league_start_time)
+                    startTime =
+                        itemResult.getTextById(IDPrePostMultiBasketBall.id_league_start_time)
                     curLeftTeamName =
                         itemResult.getTextById(IDPrePostMultiBasketBall.id_left_team_name)
                     curRightTeamName =
                         itemResult.getTextById(IDPrePostMultiBasketBall.id_right_team_name)
 
+                    var leftValue = ""
+                    var rightValue = ""
+
                     //存储一下数据，如果这个item是第一次被点击时会被用来存储进selectedItemArray
+                    //rf让分   zf总分
                     //根据节点id是否包含spf[不让球] 或者 rq[主队让/不让球],来判断是那种类型的玩法[让分或者不让分]
-                    scoreNodeWrapper =
-                        if (clickedNodeWrapper.id.blankOrThis().contains("rf")) {
-                            //放分
-                            isClickHandicap = true
+                    if (clickedNodeWrapper.id.blankOrThis().contains("rf")) {
+                        //放分
+                        isClickHandicap = true
+                        leftValue = itemResult.getTextById(IDPrePostMultiBasketBall.id_handicap_lose_value).getNumberTextAndFilterOtherChar()
+                        rightValue = itemResult.getTextById(IDPrePostMultiBasketBall.id_handicap_win_value).getNumberTextAndFilterOtherChar()
+                        scoreNodeWrapper =
                             itemResult.findNodeById(IDPrePostMultiBasketBall.id_handicap_score)
-                        } else {
-                            //
-                            isClickHandicap = false
+                    } else {
+                        //
+                        isClickHandicap = false
+                        leftValue = itemResult.getTextById(IDPrePostMultiBasketBall.id_total_win_value).getNumberTextAndFilterOtherChar()
+                        rightValue = itemResult.getTextById(IDPrePostMultiBasketBall.id_total_lose_value).getNumberTextAndFilterOtherChar()
+                        scoreNodeWrapper =
                             itemResult.findNodeById(IDPrePostMultiBasketBall.id_total_score)
-                        }
+                    }
                     scoreNodeWrapper?.let {
                         newSelectedLeague = PreMultiBasketballSelectedLeague(
                             leagueName = leagueName,
                             startTime = startTime,
                             leftTeamName = curLeftTeamName,
                             rightTeamName = curRightTeamName,
+                            leftValue = leftValue,
+                            rightValue = rightValue,
                             isHandicap = isClickHandicap,
                             scoreNodeWrapper = it,
                             selectedNode = clickedNodeWrapper,
