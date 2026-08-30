@@ -85,6 +85,13 @@ data class PreMultiFootballSelectedLeague(
     //是否为互不让分
     var isSpf: Boolean,
 
+    //主胜赔率
+    var winValue : String = "",
+    //赔率
+    var flatValue : String = "",
+    //主败赔率
+    var failureValue : String = "",
+
     //被选中的玩法,spf 或者 rq
     //由第一列scor值为0或者非0区分
     var scoreNodeWrapper: NodeWrapper,

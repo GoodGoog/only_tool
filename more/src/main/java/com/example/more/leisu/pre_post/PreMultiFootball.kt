@@ -21,6 +21,7 @@ import com.example.more.leisu.getNumberTextByIdAndFilterOther
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.isClickNodeInCurLeagueList
 import com.example.more.leisu.isContainsNodeWrapper
+import kotlinx.coroutines.withTimeoutOrNull
 import org.w3c.dom.Node
 
 class PreMultiFootball private constructor() : BaseLeisuDispatch() {
@@ -124,16 +125,25 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
                     cuRightTeamName =
                         itemResult.getTextById(IDPreMultiFootball.id_right_team_name)
 
+                    var winValue: String = ""
+                    var flatValue: String = ""
+                    var failureValue: String = ""
+
                     //存储一下数据，如果这个item是第一次被点击时会被用来存储进selectedItemArray
                     //根据节点id是否包含spf[不让球] 或者 rq[主队让/不让球],来判断是那种类型的玩法[让分或者不让分]
-                    scoreNodeWrapper =
-                        if (clickedNodeWrapper.id.blankOrThis().contains("spf")) {
-                            isClickSpf = true
-                            itemResult.findNodeById(IDPreMultiFootball.id_tv_spf)
-                        } else {
-                            isClickSpf = false
-                            itemResult.findNodeById(IDPreMultiFootball.id_tv_rq)
-                        }
+                    if (clickedNodeWrapper.id.blankOrThis().contains("spf")) {
+                        isClickSpf = true
+                        winValue = itemResult.getTextById(IDPreMultiFootball.id_tv_spf_win_value)
+                        flatValue = itemResult.getTextById(IDPreMultiFootball.id_tv_spf_flat_value)
+                        failureValue = itemResult.getTextById(IDPreMultiFootball.id_tv_spf_lose_value)
+                        scoreNodeWrapper = itemResult.findNodeById(IDPreMultiFootball.id_tv_spf)
+                    } else {
+                        isClickSpf = false
+                        winValue = itemResult.getTextById(IDPreMultiFootball.id_tv_rq_win_value)
+                        flatValue = itemResult.getTextById(IDPreMultiFootball.id_tv_rq_flat_value)
+                        failureValue = itemResult.getTextById(IDPreMultiFootball.id_tv_rq_lose_value)
+                        scoreNodeWrapper = itemResult.findNodeById(IDPreMultiFootball.id_tv_rq)
+                    }
                     val selectedNodes = ArrayList<NodeWrapper>().apply {
                         add(clickedNodeWrapper)
                     }
@@ -144,6 +154,9 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
                             leftTeamName = curLeftTeamName,
                             rightTEamName = cuRightTeamName,
                             isSpf = isClickSpf,
+                            winValue = winValue,
+                            flatValue = flatValue,
+                            failureValue = failureValue,
                             scoreNodeWrapper = it,
                             selectedNodes
                         )

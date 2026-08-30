@@ -442,6 +442,16 @@ fun NodeWrapper.getNumberTextAndFilterOtherChar(): String {
     }
 }
 
+fun String?.getNumberTextAndFilterOtherChar(): String {
+    return blankOrThis().let { text ->
+        val removeChars = setOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '.')
+        //filter，保留满足条件的字符
+        val aimStr = text.filter { it in removeChars }
+        aimStr
+    }
+}
+
+
 fun NodeWrapper.getChineseTextAndFilterOtherChar(): String {
     return this.text.blankOrThis().let { text ->
         val removeChars =
@@ -500,7 +510,7 @@ fun transToSingleBasketballHandicapAnalyseAiQuestion(
 
 const val singleEndStr =
     "一、为我的预测结果写一篇350字的分析，" +
-            "分析要包含基本面+战术分析+指数变化+观点推荐四个大点,每个大点用（一、二、三、四、）等数字标识，" +
+            "分析要包含基本面+战术分析+指数变化+观点推荐四个大点，每个大点用（一、二、三、四、）等数字标识，" +
             "每一个大内容点内，小内容点用（1.2.3.）等标识，任意内容点之间都要换行。" +
             "【硬性约束】所有子点只写核心干货，禁止额外修饰铺垫，不扩充细节，" +
             "严格控制目标字数，写完自行压缩删减，不要冗余废话。\n" +
@@ -514,13 +524,15 @@ const val singleEndStr =
             //////////////
             "五、注意对分析、标题、前瞻的字数要求，不能有字数不对。"
 
-//const val singleEndStr =
-//    "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、四、）等数字标识，" +
-//            "每一个大内容点内，小内容点用（1.2.3.4.）等标识， " +
-//            "全文不能有空白行，任意内容点之间都要换行。" +
-//            "为这篇文章生成一个能够体现连红，并且不带确定性结果的标题，控制在25字以内。" +
-//            "再给这段文章写一份60字以内的前瞻，要体现连红概率大，并且期待大家解锁购买这篇文章。" +
-//            "答案控制在600字左右，不要有任何无关提醒！"
+
+const val multiEndStr =
+    "为我的预测结果写一篇250字的分析，" +
+            "分析要包含基本面+战术分析+指数变化+观点推荐四个大点， " +
+            "【硬性约束】所有要点只写核心干货，禁止额外修饰铺垫，不扩充细节，" +
+            "严格控制目标字数，写完自行压缩删减，不要冗余废话。" +
+            ///////////////
+            "全文不能有空白行，任意数字、英文左右不能有空白格，不要有任何无关提醒！\n"
+
 
 /**
  * 篮球 拼接分析的ai提问 , 左客队，右主队
@@ -618,6 +630,12 @@ fun transToSingleFootballTotalScoreAnalyseAiQuestion(
  * 发布页-足球-串关 拼接分析的ai提问 , 左主队，右客队
  */
 fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): String {
+    //此处记录赔率
+    val plateValue =
+        leftTeamName + "获胜时赔率为" + winValue.getNumberTextAndFilterOtherChar() + "，" +
+    "双方平局时赔率为" + flatValue.getNumberTextAndFilterOtherChar() + "，" +
+    leftTeamName + "输掉比赛时赔率为" + failureValue.getNumberTextAndFilterOtherChar() + "。"
+
     //受让情况
     val handicapText = if (isSpf) {
         //互不受让
@@ -647,14 +665,10 @@ fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): S
 
     return "在" + leagueName + "赛事中，" +
             leftTeamName + "对阵" + rightTEamName + "。" +
+            plateValue +
             handicapText +
-            "分析比赛双方各自的近况和优劣势，" +
             "预测最终结果为" + resultStr + "。" +
-            "为我的预测结果做出合理解释。" +
-            "对每个球队的分析控制在一个大内容点之内，每个大点用（一、二、三、）等数字标识，" +
-            "每一个大内容点内，小内容点用（1.2.3.）等标识， " +
-//            "全文不能有空白行，任意内容点之间都要换行。" +
-            "答案控制在300字左右！"
+            multiEndStr
 }
 
 
