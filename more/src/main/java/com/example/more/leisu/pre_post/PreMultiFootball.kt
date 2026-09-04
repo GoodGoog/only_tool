@@ -17,12 +17,14 @@ import com.example.more.leisu.data.PreMultiFootBallData
 import com.example.more.leisu.data.PreMultiFootBallSubData
 import com.example.more.leisu.data.PreMultiFootballSelectedLeague
 import com.example.more.leisu.getCurPrePageMatchList
+import com.example.more.leisu.getNumberTextAndFilterOtherChar
 import com.example.more.leisu.getNumberTextByIdAndFilterOther
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.isClickNodeInCurLeagueList
 import com.example.more.leisu.isContainsNodeWrapper
 import kotlinx.coroutines.withTimeoutOrNull
 import org.w3c.dom.Node
+import kotlin.math.max
 
 class PreMultiFootball private constructor() : BaseLeisuDispatch() {
     companion object {
@@ -135,13 +137,15 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
                         isClickSpf = true
                         winValue = itemResult.getTextById(IDPreMultiFootball.id_tv_spf_win_value)
                         flatValue = itemResult.getTextById(IDPreMultiFootball.id_tv_spf_flat_value)
-                        failureValue = itemResult.getTextById(IDPreMultiFootball.id_tv_spf_lose_value)
+                        failureValue =
+                            itemResult.getTextById(IDPreMultiFootball.id_tv_spf_lose_value)
                         scoreNodeWrapper = itemResult.findNodeById(IDPreMultiFootball.id_tv_spf)
                     } else {
                         isClickSpf = false
                         winValue = itemResult.getTextById(IDPreMultiFootball.id_tv_rq_win_value)
                         flatValue = itemResult.getTextById(IDPreMultiFootball.id_tv_rq_flat_value)
-                        failureValue = itemResult.getTextById(IDPreMultiFootball.id_tv_rq_lose_value)
+                        failureValue =
+                            itemResult.getTextById(IDPreMultiFootball.id_tv_rq_lose_value)
                         scoreNodeWrapper = itemResult.findNodeById(IDPreMultiFootball.id_tv_rq)
                     }
                     val selectedNodes = ArrayList<NodeWrapper>().apply {
@@ -205,6 +209,52 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
             }
         }
 
+        //数据跟新完毕，计算一下返还率
+        calculateRewardRate()
+    }
+
+    /**
+     * 计算该方案返还率
+     */
+    fun calculateRewardRate() {
+        var minRate: Float = 1F
+        var maxRate: Float = 1F
+        //投注数量
+        var betCount = 1
+        selectedItemArray.forEachIndexed { index, league ->
+            betCount *= league.selectedNodes.size
+            if (league.selectedNodes.size == 2) {
+                val firstRate = league.selectedNodes[0].getNumberTextAndFilterOtherChar().toFloat()
+                val secondRate = league.selectedNodes[1].getNumberTextAndFilterOtherChar().toFloat()
+                if (firstRate >= secondRate) {
+                    minRate *= secondRate
+                    maxRate *= firstRate
+                } else {
+                    minRate *= firstRate
+                    maxRate *= secondRate
+                }
+            } else {
+                val firstRate =
+                    league.selectedNodes.first().getNumberTextAndFilterOtherChar().toFloat()
+                minRate *= firstRate
+                maxRate *= firstRate
+            }
+        }
+        //投入金额 = 投入注数 * 单注价格(此处2元1单)
+        //中奖金额 = 单注价格 * 中奖赔率
+        //单篇收入串关文案的 返还率 = 中奖金额 / 投入金额
+
+        //投入金额
+        val investMoney = betCount * 2
+        //中奖金额
+        val minRewardMoney = minRate * 2
+        val maxRewardMoney = maxRate * 2
+
+        //返还率
+        val minRewardRate = minRewardMoney / investMoney
+        val maxRewardRate = maxRewardMoney / investMoney
+        Log.d(TAG, "calculateRewardRate: 最小中奖金额=$minRewardMoney ||| 最小返还率=${minRewardRate*100}%")
+        Log.d(TAG, "calculateRewardRate: 最大中奖金额=$maxRewardMoney ||| 最大返还率=${maxRewardRate*100}%")
     }
 
     /**
