@@ -1,5 +1,6 @@
 package com.example.more.leisu
 
+import android.R
 import android.content.Context
 import android.graphics.Rect
 import android.util.TypedValue
@@ -451,6 +452,15 @@ fun String?.getNumberTextAndFilterOtherChar(): String {
     }
 }
 
+fun String?.getChineseTextAndFilterOtherChar(): String {
+    return this.blankOrThis().let { text ->
+        val removeChars =
+            setOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '.')
+        //filter，保留满足条件的字符
+        val aimStr = text.filter { it !in removeChars }
+        aimStr.replace(" ", "")
+    }
+}
 
 fun NodeWrapper.getChineseTextAndFilterOtherChar(): String {
     return this.text.blankOrThis().let { text ->
@@ -645,6 +655,59 @@ fun transToSingleFootballTotalScoreAnalyseAiQuestion(
 
 }
 
+/**
+ * 足球-单关-竟足 拼接分析的ai提问 , 左主队，右客队
+ */
+fun transToSingleFootballRaceAiQuestion(
+    leagueName: String,
+    leftTeamName: String,
+    rightTeamName: String,
+    handicapText: String,
+    winText: String,
+    flatText: String,
+    loseText: String,
+    selectBtnTexts: ArrayList<String>
+): String {
+    //此处记录赔率
+    val plateValue =
+        leftTeamName + "获胜时赔率为" + winText.getNumberTextAndFilterOtherChar() + "，" +
+                "双方平局时赔率为" + flatText.getNumberTextAndFilterOtherChar() + "，" +
+                leftTeamName + "输掉比赛时赔率为" + loseText.getNumberTextAndFilterOtherChar() + "。"
+
+    //受让情况
+    val handicapText = if (handicapText.getNumberTextAndFilterOtherChar().toInt() == 0) {
+        //互不受让
+        ""
+    } else {
+        val plate = handicapText.getNumberTextAndFilterOtherChar()
+        "如果" + leftTeamName +
+                (if (plate.toFloat() > 0F) "受让" else "让") +
+                "${abs(plate.toFloat())}" + "分，"
+    }
+    var resultStr: String = ""
+    ArrayList<String>().apply {
+        //预测结果
+        selectBtnTexts.forEach { selectBtnText ->
+            selectBtnText.getChineseTextAndFilterOtherChar().let { resultStr ->
+                if (resultStr == "胜") add(leftTeamName + "赢得比赛")
+                if (resultStr == "平") add("双方平局")
+                if (resultStr == "负") add(leftTeamName + "输掉比赛")
+            }
+        }
+    }.let {
+        if (it.size == 1) resultStr += it[0]
+        if (it.size == 2) {
+            resultStr = it[0] + "或" + it[1]
+        }
+    }
+    return "在" + leagueName + "赛事中，" +
+            leftTeamName + "对阵" + rightTeamName + "。" +
+            plateValue +
+            handicapText +
+            "预测最终结果为" + resultStr + "。\n" +
+            singleEndStr
+}
+
 
 /**
  * 发布页-足球-串关 拼接分析的ai提问 , 左主队，右客队
@@ -653,8 +716,8 @@ fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): S
     //此处记录赔率
     val plateValue =
         leftTeamName + "获胜时赔率为" + winValue.getNumberTextAndFilterOtherChar() + "，" +
-    "双方平局时赔率为" + flatValue.getNumberTextAndFilterOtherChar() + "，" +
-    leftTeamName + "输掉比赛时赔率为" + failureValue.getNumberTextAndFilterOtherChar() + "。"
+                "双方平局时赔率为" + flatValue.getNumberTextAndFilterOtherChar() + "，" +
+                leftTeamName + "输掉比赛时赔率为" + failureValue.getNumberTextAndFilterOtherChar() + "。"
 
     //受让情况
     val handicapText = if (isSpf) {
@@ -829,4 +892,9 @@ fun Int.numberTransToChinese(): String {
         7 -> "七"
         else -> "另外"
     }
+}
+
+
+fun String.containsChineseWinOrLose(): Boolean{
+    return contains("胜") || contains("负")
 }

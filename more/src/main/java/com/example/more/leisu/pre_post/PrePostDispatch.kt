@@ -14,6 +14,7 @@ import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
 import com.example.more.leisu.getCurPrePageMatchList
 import com.example.more.leisu.isClickNodeInCurLeagueList
+import com.example.more.leisu.post_detail.PostSingleFootball
 import com.example.more.leisu.transAccessibilityEventToString
 import com.example.more.leisu.transToPostConfigType
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -113,6 +114,11 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
                 PreMultiFootball.instance()
                     .eventCome(eventWrapper, result)
             }
+        }
+        
+        if (eventWrapper.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED){
+            //每次回到赛事选择页都清空足球-单关-竟足中，已经选中的信息
+            PostSingleFootball.instance().selectRaceTexts.clear()
         }
 
         if (eventWrapper.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED){

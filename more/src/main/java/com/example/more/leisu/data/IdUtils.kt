@@ -356,7 +356,15 @@ class IDPostFootballSingle {
         //客队/右侧队伍 名称
         const val id_single_post_right_team_name = "com.leisu.sports:id/away_name"
 
+        //切换竟足按钮
+        const val id_single_post_race_button = "com.leisu.sports:id/rb_race"
 
+        //切换预测按钮
+        const val id_single_post_prospect_button = "com.leisu.sports:id/rb_expert"
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        //这一大模块为预测时控件
         //一.2发布页 预测RecyclerView信息
 //预测控件由RecyclerView实现,其id
         const val id_single_post_player_detail_action = "com.leisu.sports:id/rv_player_detail"
@@ -395,6 +403,39 @@ class IDPostFootballSingle {
         //[右侧胜赔率 \ 偶 ]
         const val id_single_post_prospect_right_win_value =
             "com.leisu.sports:id/tv_right_value"
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        //这一大模块为竟足时控件
+        //第一列为主队让分受让分
+        //队伍为 |||||||||||||| 左主队  右客队
+        //spf=互不让分,  rq=主队让球
+        //第一行，0分-双方互不让分
+        const val id_tv_spf = "com.leisu.sports:id/tv_jc_spf"
+        //第一行,0分-双方互不让分  [ 该玩法未开售 → com.leisu.sports:id/tv_spf_dns ] ///////////////////
+        //该玩法未开放时不能，此提示占满整行
+        const val id_tv_spf_not_open = "com.leisu.sports:id/tv_spf_dns" /////////////////////////
+        //0-主队胜赔率 [胜 2.28]
+        const val id_tv_spf_win_value = "com.leisu.sports:id/tv_jc_spf_s"
+        //0-平局赔率 [平 3.12]
+        const val id_tv_spf_flat_value = "com.leisu.sports:id/tv_jc_spf_p"
+        //0-主队败赔率 [负 2.7]
+        const val id_tv_spf_lose_value = "com.leisu.sports:id/tv_jc_spf_f"
+
+        //第二行，主队让分 / 受让分
+        const val id_tv_rq = "com.leisu.sports:id/tv_jc_rq"
+        //该玩法未开放时不能，此提示占满整行
+        const val id_tv_rq_not_open = "com.leisu.sports:id/tv_rq_dns"
+        //让分 / 受让分  -主队胜赔率
+        const val id_tv_rq_win_value = "com.leisu.sports:id/tv_jc_rq_s"
+        //让分 / 受让分  -平局赔率
+        const val id_tv_rq_flat_value = "com.leisu.sports:id/tv_jc_rq_p"
+        //让分 / 受让分  -主队败赔率
+        const val id_tv_rq_lose_value = "com.leisu.sports:id/tv_jc_rq_f"
+
+
+
 
 
         //一.3 发布页，具体需要发布的信息
