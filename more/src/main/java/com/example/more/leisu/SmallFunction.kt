@@ -24,6 +24,7 @@ import com.example.more.leisu.data.PostSingleFootBallHandicapTypeData
 import com.example.more.leisu.data.PostSingleFootBallTotalScoreTypeData
 import com.example.more.leisu.data.PreMultiBasketballSelectedLeague
 import com.example.more.leisu.data.PreMultiFootballHandicapData
+import com.example.more.leisu.data.PreMultiFootballTotalData
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -708,9 +709,9 @@ fun transToSingleFootballRaceAiQuestion(
 
 
 /**
- * 发布页-足球-串关 拼接分析的ai提问 , 左主队，右客队
+ * 发布页-足球-串关-让球玩法 拼接分析的ai提问 , 左主队，右客队
  */
-fun PreMultiFootballHandicapData.transToMultiFootballSpfAnalyseAiQuestion(): String {
+fun PreMultiFootballHandicapData.transToMultiFootballHandicapAiQuestion(): String {
     //此处记录赔率
     val plateValue =
         leftTeamName + "获胜时赔率为" + winValue.getNumberTextAndFilterOtherChar() + "，" +
@@ -749,6 +750,18 @@ fun PreMultiFootballHandicapData.transToMultiFootballSpfAnalyseAiQuestion(): Str
             plateValue +
             handicapText +
             "预测最终结果为" + resultStr + "。" +
+            multiEndStr
+}
+
+
+/**
+ * 发布页-足球-串关-总进球玩法 拼接分析的ai提问 , 左主队，右客队
+ */
+fun PreMultiFootballTotalData.transToMultiFootballTotalAiQuestion(): String {
+    return "在" + leagueName + "赛事中，" +
+            leftTeamName + "对阵" + rightTeamName + "。" +
+            "总进球数为__时赔率为__," +
+            "预测最终进球数为__。" +
             multiEndStr
 }
 

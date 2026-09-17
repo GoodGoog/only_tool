@@ -39,6 +39,7 @@ class PreFootballMultiChoices private constructor() : BaseLeisuDispatch() {
                 node ?: return
                 val clickNodeWrapper = node.transNodeInfoToNodeWrapper()
                 try {
+                    val leagueName = result.getTextById(IDFootballMultiChoices.id_league_name)
                     val startTime = result.getTextById(IDFootballMultiChoices.id_start_time)
                     val leftTeamName = result.getTextById(IDFootballMultiChoices.id_left_team_name)
                     val rightTeamName =
@@ -47,14 +48,14 @@ class PreFootballMultiChoices private constructor() : BaseLeisuDispatch() {
                     //添加本条比赛入选中列表
                     if (clickNodeWrapper.id == IDFootballMultiChoices.id_win_spf) {
                         PreMultiFootball.instance()
-                            .addMultiChoicesMatchInfo(true, startTime, leftTeamName, rightTeamName)
+                            .insertTotalData(leagueName,startTime, leftTeamName, rightTeamName)
                     }
 
-                    //取消
-                    if (clickNodeWrapper.id == IDFootballMultiChoices.id_flat_spf) {
-                        PreMultiFootball.instance()
-                            .addMultiChoicesMatchInfo(false, startTime, leftTeamName, rightTeamName)
-                    }
+//                    //取消
+//                    if (clickNodeWrapper.id == IDFootballMultiChoices.id_flat_spf) {
+//                        PreMultiFootball.instance()
+//                            .insertTotalData(leagueName,startTime, leftTeamName, rightTeamName)
+//                    }
 
                 } finally {
                     // 【强制】必须回收，否则内存泄漏、系统杀服务

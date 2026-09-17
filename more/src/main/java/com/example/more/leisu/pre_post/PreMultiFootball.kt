@@ -10,10 +10,12 @@ import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.transNodeInfoToNodeWrapper
 import com.example.more.leisu.BaseLeisuDispatch
+import com.example.more.leisu.data.BaseMultiFootballData
 import com.example.more.leisu.data.IDPreMultiFootball
 import com.example.more.leisu.data.MultiFootballChoiceType
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreMultiFootballHandicapData
+import com.example.more.leisu.data.PreMultiFootballTotalData
 import com.example.more.leisu.getCurPrePageMatchList
 import com.example.more.leisu.getNumberTextAndFilterOtherChar
 import com.example.more.leisu.getTextById
@@ -39,7 +41,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
     val curType = PostConfigData.ConfigType.MultiFootball
 
     //被选中的item,以及其中的详细被选中玩法
-    val selectedItemArray = ArrayList<PreMultiFootballHandicapData>()
+    val selectedItemArray = ArrayList<BaseMultiFootballData>()
 
     /**
      * 来这里的只有
@@ -68,7 +70,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
 //                        )
 //                    ) return
                     //将接受点击的Item 和 item中的响应点击节点信息记录
-                    doSomething(node.transNodeInfoToNodeWrapper(), result)
+                    insertHandicapData(node.transNodeInfoToNodeWrapper(), result)
                     printCurSelectedArray()
                 } finally {
                     // 【强制】必须回收，否则内存泄漏、系统杀服务
@@ -82,7 +84,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
         }
     }
 
-    fun doSomething(clickedNodeWrapper: NodeWrapper, result: AnalyzeSourceResult) {
+    fun insertHandicapData(clickedNodeWrapper: NodeWrapper, result: AnalyzeSourceResult) {
         //有效点击，只有点击到了 胜 平 负 这三个按钮，才算是有限点击，其他的统统无效
         setOf<String>(
             IDPreMultiFootball.id_tv_spf_win_value,
@@ -168,7 +170,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
         var position = -1
         run {
             selectedItemArray.forEachIndexed { index, league ->
-                if (league.leftTeamName == curLeftTeamName && league.rightTeamName == cuRightTeamName) {
+                if (league.leftTeamName == curLeftTeamName && league.rightTeamName == cuRightTeamName && league.type == MultiFootballChoiceType.TypeHandicap) {
                     position = index
                     return@run
                 }
@@ -177,7 +179,7 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
 
         if (position >= 0) {
             //刚好有一个满足条件,更新记载的数据，或这删除
-            selectedItemArray[position].apply {
+            (selectedItemArray[position] as PreMultiFootballHandicapData).apply {
                 if (isSpf != isClickSpf) {
                     //当前点击的玩法和已选中的玩法不一致，不左响应处理
                     return
@@ -202,131 +204,98 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
                 selectedItemArray.add(it)
             }
         }
-
-        //数据跟新完毕，计算一下返还率
-        calculateRewardRate()
     }
 
-    /**
-     * 计算该方案返还率
-     */
-    fun calculateRewardRate() {
-        var minRate: Float = 1F
-        var maxRate: Float = 1F
-        //投注数量
-        var betCount = 1
-        selectedItemArray.forEachIndexed { index, league ->
-            betCount *= league.selectedNodes.size
-            if (league.selectedNodes.size == 2) {
-                val firstRate = league.selectedNodes[0].getNumberTextAndFilterOtherChar().toFloat()
-                val secondRate = league.selectedNodes[1].getNumberTextAndFilterOtherChar().toFloat()
-                if (firstRate >= secondRate) {
-                    minRate *= secondRate
-                    maxRate *= firstRate
-                } else {
-                    minRate *= firstRate
-                    maxRate *= secondRate
-                }
-            } else {
-                val firstRate =
-                    league.selectedNodes.first().getNumberTextAndFilterOtherChar().toFloat()
-                minRate *= firstRate
-                maxRate *= firstRate
-            }
-        }
-        //投入金额 = 投入注数 * 单注价格(此处2元1单)
-        //中奖金额 = 单注价格 * 中奖赔率
-        //单篇收入串关文案的 返还率 = 中奖金额 / 投入金额
-
-        //投入金额
-        val investMoney = betCount * 2
-        //中奖金额
-        val minRewardMoney = minRate * 2
-        val maxRewardMoney = maxRate * 2
-
-        //返还率
-        val minRewardRate = minRewardMoney / investMoney
-        val maxRewardRate = maxRewardMoney / investMoney
-        Log.d(
-            TAG,
-            "calculateRewardRate: 最小中奖金额=$minRewardMoney ||| 最小返还率=${minRewardRate * 100}%"
-        )
-        Log.d(
-            TAG,
-            "calculateRewardRate: 最大中奖金额=$maxRewardMoney ||| 最大返还率=${maxRewardRate * 100}%"
-        )
-    }
+//    /**
+//     * 计算该方案返还率
+//     */
+//    fun calculateRewardRate() {
+//        var minRate: Float = 1F
+//        var maxRate: Float = 1F
+//        //投注数量
+//        var betCount = 1
+//        selectedItemArray.forEachIndexed { index, league ->
+//            betCount *= league.selectedNodes.size
+//            if (league.selectedNodes.size == 2) {
+//                val firstRate = league.selectedNodes[0].getNumberTextAndFilterOtherChar().toFloat()
+//                val secondRate = league.selectedNodes[1].getNumberTextAndFilterOtherChar().toFloat()
+//                if (firstRate >= secondRate) {
+//                    minRate *= secondRate
+//                    maxRate *= firstRate
+//                } else {
+//                    minRate *= firstRate
+//                    maxRate *= secondRate
+//                }
+//            } else {
+//                val firstRate =
+//                    league.selectedNodes.first().getNumberTextAndFilterOtherChar().toFloat()
+//                minRate *= firstRate
+//                maxRate *= firstRate
+//            }
+//        }
+//        //投入金额 = 投入注数 * 单注价格(此处2元1单)
+//        //中奖金额 = 单注价格 * 中奖赔率
+//        //单篇收入串关文案的 返还率 = 中奖金额 / 投入金额
+//
+//        //投入金额
+//        val investMoney = betCount * 2
+//        //中奖金额
+//        val minRewardMoney = minRate * 2
+//        val maxRewardMoney = maxRate * 2
+//
+//        //返还率
+//        val minRewardRate = minRewardMoney / investMoney
+//        val maxRewardRate = maxRewardMoney / investMoney
+//        Log.d(
+//            TAG,
+//            "calculateRewardRate: 最小中奖金额=$minRewardMoney ||| 最小返还率=${minRewardRate * 100}%"
+//        )
+//        Log.d(
+//            TAG,
+//            "calculateRewardRate: 最大中奖金额=$maxRewardMoney ||| 最大返还率=${maxRewardRate * 100}%"
+//        )
+//    }
 
     /**
      * 增加一个被选中的赛事-总进球数
      */
-    fun addMultiChoicesMatchInfo(
-        isAdd: Boolean,
+    fun insertTotalData(
+        leagueName: String,
         startTime: String,
         leftTeamName: String,
         rightTeamName: String
     ) {
-//
-//
-//        //只在当前item首次被点击时才被需要
-//        var newSelectedLeague: PreMultiFootballSelectedLeague? = null
-//        //找出被点击的节点对应的itemTag
-//                    //存储一下数据，如果这个item是第一次被点击时会被用来存储进selectedItemArray
-//                    //根据节点id是否包含spf[不让球] 或者 rq[主队让/不让球],来判断是那种类型的玩法[让分或者不让分]
-//                        newSelectedLeague = PreMultiFootballSelectedLeague(
-//                            leagueName = curLeagueName,
-//                            startTime = startTime,
-//                            leftTeamName = curLeftTeamName,
-//                            rightTEamName = cuRightTeamName,
-//                            isSpf = isClickSpf,
-//                            winValue = winValue,
-//                            flatValue = flatValue,
-//                            failureValue = failureValue,
-//                            scoreNodeWrapper = it,
-//                            selectedNodes
-//                        )
-//                }
-//
-//
-//        //记录点击的控件，在被选中数组的第几个位置
-//        var position = -1
-//        run {
-//            selectedItemArray.forEachIndexed { index, league ->
-//                if (league.leftTeamName == curLeftTeamName && league.rightTEamName == cuRightTeamName) {
-//                    position = index
-//                    return@run
-//                }
-//            }
-//        }
-//
-//        if (position >= 0) {
-//            //刚好有一个满足条件,更新记载的数据，或这删除
-//            selectedItemArray[position].apply {
-//                if (isSpf != isClickSpf) {
-//                    //当前点击的玩法和已选中的玩法不一致，不左响应处理
-//                    return
-//                }
-//                upDataClickNodeWrapper(
-//                    clickedNodeWrapper
-//                ).let { isNeedRemoveFormList ->
-//                    Log.d(TAG, "doSomething:isNeedRemoveFormList = $isNeedRemoveFormList ")
-//                    if (isNeedRemoveFormList) {
-//                        //需要从选中列表中移除
-//                        Log.d(TAG, "doSomething----------------: 移除")
-//                        selectedItemArray.removeAt(position)
-//                    } else {
-//                        //只是更新选中列表中对应item的数据，不需要额外处理
-//                        Log.d(TAG, "doSomething----------------: 不移除")
-//                    }
-//                }
-//            }
-//        } else {
-//            //没有满足条件的，就将当前点击的加进去
-//            newSelectedLeague?.let { it ->
-//                selectedItemArray.add(it)
-//            }
-//        }
 
+
+        //只在当前item首次被点击时才被需要
+        //找出被点击的节点对应的itemTag
+        //存储一下数据，如果这个item是第一次被点击时会被用来存储进selectedItemArray
+        val newSelectedLeague = PreMultiFootballTotalData(
+            type = MultiFootballChoiceType.TypeTotal,
+            leagueName = leagueName,
+            startTime = startTime,
+            leftTeamName = leftTeamName,
+            rightTeamName = rightTeamName
+        )
+
+        //记录点击的控件，在被选中数组的第几个位置
+        var position = -1
+        run {
+            selectedItemArray.forEachIndexed { index, league ->
+                if (league.leftTeamName == leftTeamName && league.rightTeamName == rightTeamName && league.type == MultiFootballChoiceType.TypeTotal) {
+                    position = index
+                    return@run
+                }
+            }
+        }
+
+        if (position >= 0) {
+            //刚好有一个满足条件,删除此数据
+            selectedItemArray.removeAt(position)
+        } else {
+            //没有满足条件的，就将当前点击的加进去
+            selectedItemArray.add(newSelectedLeague)
+        }
     }
 
     /**

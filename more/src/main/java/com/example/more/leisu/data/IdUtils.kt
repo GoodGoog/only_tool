@@ -499,7 +499,7 @@ class IDFootballMultiChoices {
         const val id_start_time = "com.leisu.sports:id/tv_time"
 
         //赛事名
-        const val id_cup_name = "com.leisu.sports:id/tv_comp_name"
+        const val id_league_name = "com.leisu.sports:id/tv_comp_name"
 
         //赛事名
         const val id_left_team_name = "com.leisu.sports:id/home_name"

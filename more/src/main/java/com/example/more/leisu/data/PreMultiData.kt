@@ -92,7 +92,7 @@ open class BaseMultiFootballData(
 }
 
 /**
- * 预览页-足球-串关，被选中的Item
+ * 预览页-足球-串关，被选中的比赛信息为让球类型
  */
 data class PreMultiFootballHandicapData(
     override val type: MultiFootballChoiceType,
@@ -178,6 +178,21 @@ data class PreMultiFootballHandicapData(
         }
         return isNeedRemoveFromList
     }
+
+}
+
+/**
+ * 预览页-足球-串关，被选中的比赛信息为总进球类型
+ */
+data class PreMultiFootballTotalData(
+    override val type: MultiFootballChoiceType,
+    override val leagueName: String = "",
+    override val startTime: String = "",
+    //左侧主队
+    override val leftTeamName: String = "",
+    //右侧客队
+    override val rightTeamName: String = "",
+): BaseMultiFootballData(type,leagueName, startTime, leftTeamName, rightTeamName) {
 
 }
 
