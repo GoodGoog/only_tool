@@ -69,28 +69,49 @@ data class PreMultiFootBallSubData(
     }
 }
 
+
+/**
+ * 联赛选中枚举
+ */
+enum class MultiFootballChoiceType {
+    TypeHandicap,    // 让球
+    TypeTotal,   // 总进球
+}
+
+/**
+ * 基础联赛选中基类，可被继承 open class
+ */
+open class BaseMultiFootballData(
+    open val type: MultiFootballChoiceType,
+    open val leagueName: String,
+    open val startTime: String,
+    open val leftTeamName: String,
+    open val rightTeamName: String
+){
+    fun getItemTag() = leftTeamName + "VS" + rightTeamName
+}
+
 /**
  * 预览页-足球-串关，被选中的Item
  */
-data class PreMultiFootballSelectedLeague(
-    val leagueName: String = "",
-
-    val startTime : String = "",
-
+data class PreMultiFootballHandicapData(
+    override val type: MultiFootballChoiceType,
+    override val leagueName: String = "",
+    override val startTime: String = "",
     //左侧主队
-    val leftTeamName: String = "",
+    override val leftTeamName: String = "",
     //右侧客队
-    val rightTEamName: String = "",
+    override val rightTeamName: String = "",
 
     //是否为互不让分
     var isSpf: Boolean,
 
     //主胜赔率
-    var winValue : String = "",
+    var winValue: String = "",
     //赔率
-    var flatValue : String = "",
+    var flatValue: String = "",
     //主败赔率
-    var failureValue : String = "",
+    var failureValue: String = "",
 
     //被选中的玩法,spf 或者 rq
     //由第一列scor值为0或者非0区分
@@ -99,8 +120,7 @@ data class PreMultiFootballSelectedLeague(
     // 选中的玩法 ，最多两个
     val selectedNodes: ArrayList<NodeWrapper>
 
-) {
-    fun getItemTag() = leftTeamName + "VS" + rightTEamName
+) : BaseMultiFootballData(type,leagueName, startTime, leftTeamName, rightTeamName) {
 
     override fun toString(): String {
         var selectedNodesText: String = ""
@@ -123,7 +143,7 @@ data class PreMultiFootballSelectedLeague(
         //当前只有一个节点被选中
         if (selectedNodes.size == 1) {
             // 之前的类型 和 当前点击的类型 是否一致
-            if (isTwoNodeSame(selectedNodes[0], clickNodeWrapper,isCompareBounds = false)) {
+            if (isTwoNodeSame(selectedNodes[0], clickNodeWrapper, isCompareBounds = false)) {
                 //当前点击的节点已被选中了，故删除此已选中节点
                 //零当前item已经没有选中的节点，需要冲selectedArray中移除
                 //selectedNodes.removeAt(0)
@@ -231,7 +251,7 @@ data class PreMultiBasketBallSubData(
 data class PreMultiBasketballSelectedLeague(
     val leagueName: String = "",
 
-    val startTime : String = "",
+    val startTime: String = "",
 
     //左侧主队
     val leftTeamName: String = "",
@@ -239,10 +259,10 @@ data class PreMultiBasketballSelectedLeague(
     val rightTeamName: String = "",
 
     //左侧胜率  [总分时为大于总分时胜率，让分时为客队获胜时赔率]
-    val leftValue : String = "",
+    val leftValue: String = "",
 
     //右侧胜率 [总分时为小于总分时胜率，让分时为主队获胜时赔率]
-    val rightValue : String = "",
+    val rightValue: String = "",
 
     //true为让分  false为总分比大小
     var isHandicap: Boolean,

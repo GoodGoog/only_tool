@@ -1,6 +1,5 @@
 package com.example.more.leisu
 
-import android.R
 import android.content.Context
 import android.graphics.Rect
 import android.util.TypedValue
@@ -24,8 +23,7 @@ import com.example.more.leisu.data.PostSingleBasketBallTotalScoreTypeData
 import com.example.more.leisu.data.PostSingleFootBallHandicapTypeData
 import com.example.more.leisu.data.PostSingleFootBallTotalScoreTypeData
 import com.example.more.leisu.data.PreMultiBasketballSelectedLeague
-import com.example.more.leisu.data.PreMultiFootballSelectedLeague
-import com.example.more.setting.judgeLeftTeamScoreTips
+import com.example.more.leisu.data.PreMultiFootballHandicapData
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -712,7 +710,7 @@ fun transToSingleFootballRaceAiQuestion(
 /**
  * 发布页-足球-串关 拼接分析的ai提问 , 左主队，右客队
  */
-fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): String {
+fun PreMultiFootballHandicapData.transToMultiFootballSpfAnalyseAiQuestion(): String {
     //此处记录赔率
     val plateValue =
         leftTeamName + "获胜时赔率为" + winValue.getNumberTextAndFilterOtherChar() + "，" +
@@ -747,7 +745,7 @@ fun PreMultiFootballSelectedLeague.transToMultiFootballSpfAnalyseAiQuestion(): S
     }
 
     return "在" + leagueName + "赛事中，" +
-            leftTeamName + "对阵" + rightTEamName + "。" +
+            leftTeamName + "对阵" + rightTeamName + "。" +
             plateValue +
             handicapText +
             "预测最终结果为" + resultStr + "。" +

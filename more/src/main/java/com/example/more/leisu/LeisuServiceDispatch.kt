@@ -1,11 +1,16 @@
 package com.example.more.leisu
 
 import android.util.Log
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import com.example.more.accessibility.AnalyzeSourceResult
 import com.example.more.accessibility.EventWrapper
 import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.findNodesByExpression
+import com.example.more.accessibility.transNodeInfoToNodeWrapper
+import com.example.more.leisu.data.IDFootballMultiChoices
+import com.example.more.leisu.data.IDPostFootballSingle
 import com.example.more.leisu.data.IDPostMultiDouble
 import com.example.more.leisu.data.IDPostSingleCommonId
 import com.example.more.leisu.data.IDPrePostHeader
@@ -14,9 +19,11 @@ import com.example.more.leisu.post_detail.PostMultiBasketball
 import com.example.more.leisu.post_detail.PostMultiFootball
 import com.example.more.leisu.post_detail.PostSingleBasketball
 import com.example.more.leisu.post_detail.PostSingleFootball
+import com.example.more.leisu.pre_post.PreFootballMultiChoices
 import com.example.more.leisu.pre_post.PreMultiBasketball
 import com.example.more.leisu.pre_post.PreMultiFootball
 import com.example.more.leisu.pre_post.PrePostDispatch
+import kotlin.collections.contains
 
 class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
     companion object {
@@ -40,6 +47,33 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
      */
     //业务分发
     override fun onEventCome(wrapper: EventWrapper, result: AnalyzeSourceResult) {
+        if (wrapper.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED){
+            val node: AccessibilityNodeInfo? = wrapper.event.source
+            node ?: return
+            try {
+                Log.d(TAG, "onEventCome: ============！！！=== " + node.transNodeInfoToNodeWrapper())
+            } finally {
+                // 【强制】必须回收，否则内存泄漏、系统杀服务
+                node.recycle()
+            }
+        }
+//        if (wrapper.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED){
+//            val node: AccessibilityNodeInfo? = wrapper.event.source
+//            if (node != null) {
+//                try {
+//                    val clickNodeWrapper = node.transNodeInfoToNodeWrapper()
+//                    Log.d(TAG, "onEventCome==: clickedWrapper== $clickNodeWrapper")
+//                } finally {
+//                    // 【强制】必须回收，否则内存泄漏、系统杀服务
+//                    node.recycle()
+//                }
+//            }
+//        }
+//        Log.d(
+//            TAG,
+//            "onEventCome!!!!: curtype！！！ = " + wrapper.eventType.transAccessibilityEventToString()
+//        )
+        Log.d(TAG, "onEventCome!!!!: result = " + result.nodes)
         //Log.d(TAG, "onEventCome: result = " + result.nodes)
         if (isInExpertHomePage(result)) {
             //情况预览页-足球-串关-选中的数据
@@ -76,7 +110,11 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
                     PostMultiBasketball.instance().eventCome(wrapper,result)
                 }
             }
+        }
 
+        if (isInPreFootballMultiChoices(result)) {
+            //在比赛信息选择页
+            PreFootballMultiChoices.instance().eventCome(wrapper, result)
         }
     }
 
@@ -116,6 +154,17 @@ class LeisuServiceDispatch private constructor() : BaseLeisuDispatch() {
         }
 
         return false
+    }
+
+    /**
+     * 在足球-串关-单个比赛多选项页面内
+     */
+    fun isInPreFootballMultiChoices(result: AnalyzeSourceResult): Boolean {
+        result.findNodesByExpression {
+            it.id == IDFootballMultiChoices.id_page_enter_tag
+        }.nodes.let {
+            return it.isNotEmpty()
+        }
     }
 
     override fun onStart() {

@@ -487,3 +487,41 @@ class IDPostMultiDouble {
     }
 }
 
+
+class IDFootballMultiChoices {
+    //本页面只有第一个胜平负中的子控件才是TextView，其他的几个大类都是draw上去的无法获取
+    companion object {
+
+        //ScrollView 用来标识进入了本页面
+        const val id_page_enter_tag = "com.leisu.sports:id/nest_scroll"
+
+        //开始事件
+        const val id_start_time = "com.leisu.sports:id/tv_time"
+
+        //赛事名
+        const val id_cup_name = "com.leisu.sports:id/tv_comp_name"
+
+        //赛事名
+        const val id_left_team_name = "com.leisu.sports:id/home_name"
+
+        //赛事名
+        const val id_right_team_name = "com.leisu.sports:id/away_name"
+
+
+        //胜==添加
+        //负==删除
+
+        //不让分
+        //胜
+        const val id_win_spf = "com.leisu.sports:id/tv_jc_spf_s"
+        //平
+        const val id_flat_spf = "com.leisu.sports:id/tv_jc_spf_p"
+
+        //让分
+        //胜
+        const val id_win_rq = "com.leisu.sports:id/tv_jc_rq_s"
+        //平
+        const val id_flat_rq = "com.leisu.sports:id/tv_jc_rq_p"
+
+    }
+}
