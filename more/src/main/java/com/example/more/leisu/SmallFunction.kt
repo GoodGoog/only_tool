@@ -479,61 +479,6 @@ fun NodeWrapper?.getAllText(): String {
 }
 
 
-/**
- * 篮球 拼接分析的ai提问 , 左客队，右主队
- */
-fun transToSingleBasketballHandicapAnalyseAiQuestion(
-    data: PostSingleBasketBallHandicapTypeData,
-    clickNodeWrapper: NodeWrapper
-): String {
-    val isLeftClicked =
-        clickNodeWrapper.id == IDPostBasketballSingle.id_single_post_prospect_left_layout_container
-    data.apply {
-        //受让情况
-        val handicapText = if (data.leftPlate.toFloat() == 0F) {
-            "对阵双方互不让分，"
-        } else {
-            "其中" + rightTeamName +
-                    (if (rightPlate.toFloat() > 0F) "受让" else "让") +
-                    "${abs(rightPlate.toFloat())}分，" +
-                    leftTeamName +
-                    (if (leftPlate.toFloat() > 0F) "受让" else "让") +
-                    "${abs(rightPlate.toFloat())}" + "分，"
-        }
-        //赔率情况
-        val valueText = leftTeamName + "获胜赔率为" + leftValue + "，" +
-                rightTeamName + "获胜赔率为" + rightValue + "。"
-        val resultStr = if (isLeftClicked) {
-            leftTeamName + "赢得比赛。"
-        } else {
-            rightTeamName + "赢得比赛。"
-        }
-        return "在" + leagueName + "赛事中，" +
-                leftTeamName + "对阵" + rightTeamName + "，" +
-                handicapText +
-                valueText +
-                "预测最终结果为" + resultStr + "\n" +
-                singleEndStr
-    }
-}
-
-//const val singleEndStr =
-//    "一、为我的预测结果写一篇350字的分析，" +
-//            "分析要包含基本面+战术分析+指数变化+观点推荐四个大点，每个大点用（一、二、三、四、）等数字标识，" +
-//            "每一个大内容点内，小内容点用（1.2.3.）等标识，任意内容点之间都要换行。" +
-//            "【硬性约束】所有子点只写核心干货，禁止额外修饰铺垫，不扩充细节，" +
-//            "严格控制目标字数，写完自行压缩删减，不要冗余废话。\n" +
-//            ///////////////
-//            "二、为这篇文章生成一个能够体现连红，对本场预测结果准确有信心的标题" +
-//            "标题需要包含本场赛事名或者对阵双方队伍名，并且不带确定性结果，控制在12-25 字。\n" +
-//            ////////////////
-//            "三、再给这段文章写一份60字以内的前瞻，要体现连红概率大，对冰场连红有信心，并且期待大家解锁购买这篇文章。\n" +
-//            //////////////
-//            "四、 全文不能有空白行，任意数字、英文左右不能有空白格，不要有任何无关提醒！\n" +
-//            //////////////
-//            "五、注意对分析、标题、前瞻的字数要求，不能有字数不对。"
-
-
 const val singleEndStr =
     "一、为我的预测结果写一篇分析，分析要包含以下四点：" +
             "1.基本面：只保留核心干货，联赛排名、近 5 轮战绩、主客场表现、核心伤缺，不做多余抒情；不编造伤病，全部参考平台公开数据。" +
@@ -566,30 +511,73 @@ const val multiEndStr =
 
 
 /**
- * 篮球 拼接分析的ai提问 , 左客队，右主队
+ * 篮球-竟篮-让分/不让分
+ * 左客队，右主队
  */
-fun transToSingleBasketballTotalScoreAnalyseAiQuestion(
-    data: PostSingleBasketBallTotalScoreTypeData,
-    clickNodeWrapper: NodeWrapper
+fun transToSingleBasketballRaceModeHandicapAiQuestion(
+    leagueName: String,
+    leagueStartTime: String,
+    leftTeamName: String,
+    rightTeamName: String,
+    isLeftClicked: Boolean,
+    handicapPlate: String, //以主队受让分为准
+    leftValue: String,
+    rightValue: String,
 ): String {
-    val isLeftClicked =
-        clickNodeWrapper.id == IDPostFootballSingle.id_single_post_prospect_left_layout_container
-
-    data.apply {
-        val resultStr = if (isLeftClicked) {
-            "总得分大于$totalScore。"
-        } else {
-            "总得分小于$totalScore。"
-        }
-        //受让情况
-        return "在" + leagueName + "赛事中，" +
-                leftTeamName + "对阵" + rightTeamName + "，" +
-                "总得分大于" + totalScore + "时赔率为$biggerThanTotalValue，" +
-                "总得分小于" + totalScore + "时赔率为$smallerThanTotalValue，" +
-                "预测最终结果为" + resultStr + "\n" +
-                singleEndStr
+    //受让情况
+    val handicapText = if (handicapPlate.toFloat() == 0F) {
+        "对阵双方互不让分，"
+    } else {
+        "其中" + rightTeamName +
+                (if (handicapPlate.toFloat() > 0F) "受让" else "让") +
+                "${abs(handicapPlate.toFloat())}分，" +
+                leftTeamName +
+                (if (handicapPlate.toFloat() < 0F) "受让" else "让") +
+                "${abs(handicapPlate.toFloat())}" + "分，"
     }
+    //赔率情况
+    val valueText = leftTeamName + "获胜时赔率为" + leftValue + "，" +
+            rightTeamName + "获胜时赔率为" + rightValue + "。"
+    val resultStr = if (isLeftClicked) {
+        leftTeamName + "赢得比赛。"
+    } else {
+        rightTeamName + "赢得比赛。"
+    }
+    return "在" + leagueName + "赛事中，" +
+            leftTeamName + "对阵" + rightTeamName + "，" +
+            handicapText +
+            valueText +
+            "预测最终结果为" + resultStr + "\n" +
+            singleEndStr
+}
 
+
+/**
+ * 篮球-竟篮-总分
+ * 左客队，右主队
+ */
+fun transToSingleBasketballModeRaceTotalAiQuestion(
+    leagueName: String,
+    leagueStartTime: String,
+    leftTeamName: String,
+    rightTeamName: String,
+    isLeftClicked: Boolean,
+    totalScore: String,
+    leftValue: String,
+    rightValue: String,
+): String {
+    val resultStr = if (isLeftClicked) {
+        "总得分大于$totalScore。"
+    } else {
+        "总得分小于$totalScore。"
+    }
+    //受让情况
+    return "在" + leagueName + "赛事中，" +
+            leftTeamName + "对阵" + rightTeamName + "，" +
+            "总得分大于" + totalScore + "时赔率为$leftValue，" +
+            "总得分小于" + totalScore + "时赔率为${rightValue}，" +
+            "预测最终结果为" + resultStr + "\n" +
+            singleEndStr
 }
 
 /**
@@ -911,6 +899,6 @@ fun Int.numberTransToChinese(): String {
 }
 
 
-fun String.containsChineseWinOrLose(): Boolean{
+fun String.containsChineseWinOrLose(): Boolean {
     return contains("胜") || contains("负")
 }

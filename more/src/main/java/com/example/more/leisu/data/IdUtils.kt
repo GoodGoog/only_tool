@@ -310,7 +310,6 @@ class IDPostBasketballSingle {
         const val id_single_post_prospect_right_win_value =
             "com.leisu.sports:id/tv_right_value"
 
-
         //一.3 发布页，具体需要发布的信息
 //发布文章的标题输入框
         const val id_single_post_title_edit = "com.leisu.sports:id/et_title"
@@ -327,7 +326,39 @@ class IDPostBasketballSingle {
 
 //！！！！！！！！！！！！！！单关发布页
 
+        /**
+         * 二、这一堆为竟篮模块的id
+         */
+        //二、1.不让分，单纯 预测输赢
+        //客胜赔率
+        const val id_race_spf_left_value = "com.leisu.sports:id/tv_away_odd"
+        //主胜赔率
+        const val id_race_spf_right_value = "com.leisu.sports:id/tv_home_odd"
 
+        //二、2.让分 胜/负
+        //客胜
+        //响应点击
+        const val id_race_rf_left_click_area = "com.leisu.sports:id/view_away_let"
+        //客胜-盘口
+        const val id_race_rf_left_plate = "com.leisu.sports:id/tv_away_let"
+        //客胜-赔率
+        const val id_race_rf_left_value = "com.leisu.sports:id/tv_away_let_odd"
+
+        //主胜
+        //响应点击
+        const val id_race_rf_right_click_area = "com.leisu.sports:id/view_home_let"
+        //客胜-盘口
+        const val id_race_rf_right_plate = "com.leisu.sports:id/tv_home_let"
+        //客胜-赔率
+        const val id_race_rf_right_value = "com.leisu.sports:id/tv_home_let_odd"
+
+        //二、3.总分
+        //左侧-大
+        const val id_race_total_left = "com.leisu.sports:id/tv_big_value"
+        //中间-总
+        const val id_race_total_center_score = "com.leisu.sports:id/tv_total_value"
+        //右侧-小
+        const val id_race_total_right = "com.leisu.sports:id/tv_small_value"
     }
 }
 
