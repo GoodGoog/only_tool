@@ -12,24 +12,15 @@ import com.example.more.accessibility.blankOrThis
 import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.transNodeInfoToNodeWrapper
 import com.example.more.leisu.BaseLeisuDispatch
-import com.example.more.leisu.PreJumpUtils
 import com.example.more.leisu.containsChineseWinOrLose
 import com.example.more.leisu.data.IDPostFootballSingle
 import com.example.more.leisu.data.PostConfigData
-import com.example.more.leisu.data.PostSingleFootBallHandicapTypeData
-import com.example.more.leisu.data.PostSingleFootBallTotalScoreTypeData
-import com.example.more.leisu.data.PreDataCenter
-import com.example.more.leisu.delayClickWithShowHighLight
-import com.example.more.leisu.getNumberTextByIdAndFilterOther
-import com.example.more.leisu.getRandomInt
 import com.example.more.leisu.getTextById
-import com.example.more.leisu.isClickNodeInCurLeagueList
 import com.example.more.leisu.isTwoNodeSame
 import com.example.more.leisu.transAccessibilityEventToString
-import com.example.more.leisu.transToPostArrayIndex
-import com.example.more.leisu.transToSingleFootballHandicapAnalyseAiQuestion
+import com.example.more.leisu.transToSingleFootballModeProspectHandicapAnalyseAiQuestion
+import com.example.more.leisu.transToSingleFootballModeProspectTotalScoreAnalyseAiQuestion
 import com.example.more.leisu.transToSingleFootballRaceAiQuestion
-import com.example.more.leisu.transToSingleFootballTotalScoreAnalyseAiQuestion
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 class PostSingleFootball private constructor() : BaseLeisuDispatch() {
@@ -61,28 +52,11 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
     //当前的竟足让分状况
     var curRaceHandicap = ""
 
-    init {
-//        LiveEventBus.get<String>(EventBusTag.POST_CHARGE_ANSWER_FROM_AI).observe(this) {
-//            //不是当前页面 或 无障碍服务连接已断开
-//            if (PreJumpUtils.instance().curPageType != curType || !isServiceConnect) return@observe
-//            //拿到了Ai返回的答案
-//        }
-    }
-
     override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
-        Log.d(
-            TAG,
-            "onEventCome: curtype！！！ = " + eventWrapper.eventType.transAccessibilityEventToString()
-        )
-        //Log.d(TAG, "onEventCome: result = " + result.nodes)
-        //if (!PreDataCenter.instance().isCurPrePageAllowAutoPost(curType)) return
+
         when (eventWrapper.event.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                //如果没有发布次数就不干了
-//                if (getCurRemainCount(result) > 0) {
-//                    startAutoPost(result)
-//                }
-                //startAutoPost(result)
+
             }
 
             AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
@@ -172,104 +146,91 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
             when (getTextById(IDPostFootballSingle.id_single_post_prospect_item_title)) {
                 PLAY_TYPE_HANDICAP -> {
                     //让分玩法
-                    doHandicapType(result, this, clickNodeWrapper)
+                    doProspectModeHandicapType(result, this, clickNodeWrapper)
                 }
 
                 PLAY_TYPE_TOTAL_SCORE -> {
                     //预判总分大小
-                    doTotalScoreType(result, this, clickNodeWrapper)
+                    doProspectModeTotalScoreType(result, this, clickNodeWrapper)
                 }
             }
         }
     }
 
     //让分-收费  左侧队伍为 主队， 右侧队伍为 客队
-    private fun doHandicapType(
+    private fun doProspectModeHandicapType(
         rootResult: AnalyzeSourceResult,
         itemResult: AnalyzeSourceResult,
         clickNodeWrapper: NodeWrapper
     ) {
-        val data = PostSingleFootBallHandicapTypeData(
-            leagueName = rootResult.getTextById(IDPostFootballSingle.id_single_league_name),
-            leagueStartTime = rootResult.getTextById(IDPostFootballSingle.id_single_post_league_start_time),
-            leftTeamName = rootResult.getTextById(IDPostFootballSingle.id_single_post_left_team_name),
-            rightTeamName = rootResult.getTextById(IDPostFootballSingle.id_single_post_right_team_name),
 
-            leftPlate = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_left_plate),
-            leftValue = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_left_win_value),
-            rightPlate = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_right_plate),
-            rightValue = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_right_win_value),
-        ).apply {
-            val it = transToSingleFootballHandicapAnalyseAiQuestion(this, clickNodeWrapper)
-            Log.d(TAG, "doHandicapType: -----$it")
-            //传递向AI发送的问题
-            LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(it)
-        }
+        val leagueName = rootResult.getTextById(IDPostFootballSingle.id_single_league_name)
+        val leagueStartTime =
+            rootResult.getTextById(IDPostFootballSingle.id_single_post_league_start_time)
+        val leftTeamName =
+            rootResult.getTextById(IDPostFootballSingle.id_single_post_left_team_name)
+        val rightTeamName =
+            rootResult.getTextById(IDPostFootballSingle.id_single_post_right_team_name)
+
+        val leftPlate =
+            itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_left_plate)
+        val leftValue =
+            itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_left_win_value)
+        val rightPlate =
+            itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_right_plate)
+        val rightValue =
+            itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_right_win_value)
+
+        val isLeftClicked =
+            clickNodeWrapper.id == IDPostFootballSingle.id_single_post_prospect_left_layout_container
+
+        val questionStr = transToSingleFootballModeProspectHandicapAnalyseAiQuestion(
+            leagueName,
+            leagueStartTime,
+            leftTeamName,
+            rightTeamName,
+            leftPlate,
+            leftValue,
+            rightValue,
+            isLeftClicked
+        )
+        //传递向AI发送的问题
+        LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(questionStr)
     }
 
     //总分-收费 左侧队伍为 主队， 右侧队伍为 客队
-    private fun doTotalScoreType(
+    private fun doProspectModeTotalScoreType(
         rootResult: AnalyzeSourceResult,
         itemResult: AnalyzeSourceResult,
         clickNodeWrapper: NodeWrapper
     ) {
-        val data = PostSingleFootBallTotalScoreTypeData(
-            leagueName = rootResult.getTextById(IDPostFootballSingle.id_single_league_name),
-            leagueStartTime = rootResult.getTextById(IDPostFootballSingle.id_single_post_league_start_time),
-            leftTeamName = rootResult.getTextById(IDPostFootballSingle.id_single_post_left_team_name),
-            rightTeamName = rootResult.getTextById(IDPostFootballSingle.id_single_post_right_team_name),
 
-            biggerThanTotalValue = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_left_win_value),
-            totalScore = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_center_total_score),
-            smallerThanTotalValue = itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_right_win_value),
-        ).apply {
-            val it = transToSingleFootballTotalScoreAnalyseAiQuestion(this, clickNodeWrapper)
-            LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(it)
-        }
-    }
+        val leagueName = rootResult.getTextById(IDPostFootballSingle.id_single_league_name)
+        val leagueStartTime =
+            rootResult.getTextById(IDPostFootballSingle.id_single_post_league_start_time)
+        val leftTeamName =
+            rootResult.getTextById(IDPostFootballSingle.id_single_post_left_team_name)
+        val rightTeamName =
+            rootResult.getTextById(IDPostFootballSingle.id_single_post_right_team_name)
 
-    //免费
-    fun doFreePost(rootResult: AnalyzeSourceResult, itemResult: AnalyzeSourceResult) {
-        val playNodeWrapperID =
-            when (itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_item_title)) {
-                PLAY_TYPE_HANDICAP -> {
-                    //让分玩法
-                    //随机选择胜利
-                    if (getRandomInt() % 2 == 0) {
-                        IDPostFootballSingle.id_single_post_prospect_left_layout_container
-                    } else {
-                        IDPostFootballSingle.id_single_post_prospect_right_layout_container
-                    }
-                }
+        val leftValue =
+            itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_left_win_value)
+        val totalScore =
+            itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_center_total_score)
+        val rightValue =
+            itemResult.getTextById(IDPostFootballSingle.id_single_post_prospect_right_win_value)
 
-                PLAY_TYPE_TOTAL_SCORE -> {
-                    if (getRandomInt() % 2 == 0) {
-                        IDPostFootballSingle.id_single_post_prospect_left_layout_container
-                    } else {
-                        IDPostFootballSingle.id_single_post_prospect_right_layout_container
-                    }
-                }
+        val isLeftClicked =
+            clickNodeWrapper.id == IDPostFootballSingle.id_single_post_prospect_left_layout_container
 
-                else -> {
-                    ""
-                }
-            }
-        //点击玩法
-        itemResult.findNodeById(playNodeWrapperID)
-            .delayClickWithShowHighLight(gestureClick = false) { isSuccess ->
-                if (isSuccess) {
-                    //点击提交
-                    rootResult.findNodeById(IDPostFootballSingle.id_single_post_submit_button)
-//                    .delayClickWithShowHighLight {
-//
-//                    }
-                }
-            }
+        val it = transToSingleFootballModeProspectTotalScoreAnalyseAiQuestion(leagueName,leagueStartTime,leftTeamName,rightTeamName,isLeftClicked,totalScore,leftValue,rightValue)
+        LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(it)
+
     }
 
 
     /**
-     * 竟足模式
+     * 竟足模式--胜平负
      */
     fun doRaceMode(result: AnalyzeSourceResult, clickNodeWrapper: NodeWrapper) {
         val leagueName = result.getTextById(IDPostFootballSingle.id_single_league_name)
@@ -317,10 +278,10 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
                                 true
                     }
                     if (isNeedClear) {
-                        if (!this[0].containsChineseWinOrLose()){
+                        if (!this[0].containsChineseWinOrLose()) {
                             //平排在第一
                             clear()
-                        }else{
+                        } else {
                             //没有平或者平不在第一位
                             removeAt(0)
                         }
@@ -355,13 +316,6 @@ class PostSingleFootball private constructor() : BaseLeisuDispatch() {
         //传递向AI发送的问题
         LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).post(it)
     }
-
-    fun getCurRemainCount(result: AnalyzeSourceResult) =
-        result.getNumberTextByIdAndFilterOther(IDPostFootballSingle.id_single_post_today_remains_times)
-            .toInt()
-
-    fun isCurFreePost(): Boolean =
-        PreDataCenter.instance().postArray[curPageType.transToPostArrayIndex()].isFree
 
     override fun onStart() {
 

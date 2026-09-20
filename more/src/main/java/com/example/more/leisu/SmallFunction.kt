@@ -580,26 +580,30 @@ fun transToSingleBasketballModeRaceTotalAiQuestion(
             singleEndStr
 }
 
+
 /**
  * 足球 拼接分析的ai提问 , 左主队，右客队
  */
-fun transToSingleFootballHandicapAnalyseAiQuestion(
-    data: PostSingleFootBallHandicapTypeData,
-    clickNodeWrapper: NodeWrapper
+fun transToSingleFootballModeProspectHandicapAnalyseAiQuestion(
+    leagueName: String,
+    startTime : String,
+    leftTeamName: String,
+    rightTeamName: String,
+    leftPlate: String,
+    leftValue: String,
+    rightValue: String,
+    isLeftClicked: Boolean
 ): String {
-    val isLeftClicked =
-        clickNodeWrapper.id == IDPostFootballSingle.id_single_post_prospect_left_layout_container
-    data.apply {
         //受让情况
-        val handicapText = if (data.leftPlate.toFloat() == 0F) {
+        val handicapText = if (leftPlate.toFloat() == 0F) {
             "对阵双方互不让分，"
         } else {
             "其中" + rightTeamName +
-                    (if (rightPlate.toFloat() > 0F) "受让" else "让") +
-                    "${abs(rightPlate.toFloat())}分，" +
+                    (if (leftPlate.toFloat() < 0F) "受让" else "让") +
+                    "${abs(leftPlate.toFloat())}分，" +
                     leftTeamName +
                     (if (leftPlate.toFloat() > 0F) "受让" else "让") +
-                    "${abs(rightPlate.toFloat())}" + "分，"
+                    "${abs(leftPlate.toFloat())}" + "分，"
         }
         //赔率情况
         val valueText = leftTeamName + "获胜赔率为" + leftValue + "，" +
@@ -615,19 +619,22 @@ fun transToSingleFootballHandicapAnalyseAiQuestion(
                 valueText +
                 "预测最终结果为" + resultStr + "\n" +
                 singleEndStr
-    }
 }
+
 
 /**
  * 足球 拼接分析的ai提问 , 左主队，右客队
  */
-fun transToSingleFootballTotalScoreAnalyseAiQuestion(
-    data: PostSingleFootBallTotalScoreTypeData,
-    clickNodeWrapper: NodeWrapper
+fun transToSingleFootballModeProspectTotalScoreAnalyseAiQuestion(
+    leagueName: String,
+    leagueStartTime: String,
+    leftTeamName: String,
+    rightTeamName: String,
+    isLeftClicked: Boolean,
+    totalScore: String,
+    leftValue: String,
+    rightValue: String,
 ): String {
-    data.apply {
-        val isLeftClicked =
-            clickNodeWrapper.id == IDPostFootballSingle.id_single_post_prospect_left_layout_container
         val resultStr = if (isLeftClicked) {
             "总得分大于$totalScore。"
         } else {
@@ -636,11 +643,10 @@ fun transToSingleFootballTotalScoreAnalyseAiQuestion(
         //受让情况
         return "在" + leagueName + "赛事中，" +
                 leftTeamName + "对阵" + rightTeamName + "，" +
-                "总得分大于" + totalScore + "时赔率为$biggerThanTotalValue，" +
-                "总得分小于" + totalScore + "时赔率为$smallerThanTotalValue，" +
+                "总得分大于" + totalScore + "时赔率为${leftValue}，" +
+                "总得分小于" + totalScore + "时赔率为${rightValue}，" +
                 "预测最终结果为" + resultStr + "\n" +
                 singleEndStr
-    }
 
 }
 
