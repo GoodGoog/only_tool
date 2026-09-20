@@ -1,7 +1,5 @@
 package com.example.more.leisu.data
 
-import com.example.more.leisu.BaseLeisuDispatch
-
 class AiQuestionManager private constructor() {
 
     companion object {
