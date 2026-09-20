@@ -554,5 +554,15 @@ class IDFootballMultiChoices {
         //平
         const val id_flat_rq = "com.leisu.sports:id/tv_jc_rq_p"
 
+
+        //一、包含进球数的GridView
+        const val id_total_number_grid = "com.leisu.sports:id/recycler_view"
+
+        //进球数
+        const val id_total_number = "com.leisu.sports:id/tv_name"
+
+        //当前进球数对应的赔率
+        const val id_total_cur_number_value= "com.leisu.sports:id/tv_value"
+
     }
 }

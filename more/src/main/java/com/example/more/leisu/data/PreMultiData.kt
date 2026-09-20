@@ -192,6 +192,11 @@ data class PreMultiFootballTotalData(
     override val leftTeamName: String = "",
     //右侧客队
     override val rightTeamName: String = "",
+
+    //总进球数
+    val shootNumber : String = "",
+    //对应的赔率
+    val value : String = ""
 ): BaseMultiFootballData(type,leagueName, startTime, leftTeamName, rightTeamName) {
 
 }

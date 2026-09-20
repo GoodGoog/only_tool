@@ -750,8 +750,8 @@ fun PreMultiFootballHandicapData.transToMultiFootballHandicapAiQuestion(): Strin
 fun PreMultiFootballTotalData.transToMultiFootballTotalAiQuestion(): String {
     return "在" + leagueName + "赛事中，" +
             leftTeamName + "对阵" + rightTeamName + "。" +
-            "总进球数为__时赔率为__," +
-            "预测最终进球数为__。" +
+            "总进球数为${shootNumber}时赔率为${value}," +
+            "预测最终进球数为${shootNumber}。" +
             multiEndStr
 }
 

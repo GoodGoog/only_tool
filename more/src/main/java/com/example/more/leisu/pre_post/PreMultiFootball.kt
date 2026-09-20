@@ -17,7 +17,6 @@ import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreMultiFootballHandicapData
 import com.example.more.leisu.data.PreMultiFootballTotalData
 import com.example.more.leisu.getCurPrePageMatchList
-import com.example.more.leisu.getNumberTextAndFilterOtherChar
 import com.example.more.leisu.getTextById
 import com.example.more.leisu.isContainsNodeWrapper
 
@@ -259,13 +258,14 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
     /**
      * 增加一个被选中的赛事-总进球数
      */
-    fun insertTotalData(
+    fun insertMultiChoicesShootNumData(
         leagueName: String,
         startTime: String,
         leftTeamName: String,
-        rightTeamName: String
+        rightTeamName: String,
+        shootNumber: String,
+        value: String
     ) {
-
 
         //只在当前item首次被点击时才被需要
         //找出被点击的节点对应的itemTag
@@ -275,7 +275,9 @@ class PreMultiFootball private constructor() : BaseLeisuDispatch() {
             leagueName = leagueName,
             startTime = startTime,
             leftTeamName = leftTeamName,
-            rightTeamName = rightTeamName
+            rightTeamName = rightTeamName,
+            shootNumber = shootNumber,
+            value = value
         )
 
         //记录点击的控件，在被选中数组的第几个位置
