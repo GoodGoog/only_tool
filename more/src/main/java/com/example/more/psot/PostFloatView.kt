@@ -14,8 +14,11 @@ import com.example.common.util.showToast
 import com.example.more.EventBusTag
 import com.example.more.R
 import com.example.more.databinding.MoreWindowFloatPostContentViewBinding
+import com.example.more.leisu.data.AiQuestionManager
+import com.example.more.leisu.data.AiQuestionType
 import com.example.more.leisu.data.PostConfigData
 import com.example.more.leisu.data.PreDataCenter
+import com.example.more.leisu.getNumberTextAndFilterOtherChar
 import com.jeremyliao.liveeventbus.LiveEventBus
 
 class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyleAttr: Int) :
@@ -69,6 +72,17 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
                 //一秒后执行 按钮背景颜色复原
                 binding.tvCopyAiQuestion.setBackgroundColor(bgTvNormal)
             }, 500)
+        }
+
+        binding.tvAiQuestionType.apply {
+            setOnClickListener {
+                text.toString().getNumberTextAndFilterOtherChar().toInt().let { typePosition ->
+                    val newTypePosition = (typePosition + 1) % 4
+                    setText("→提问类型=$newTypePosition←")
+                    AiQuestionManager.instance().curMultiAiQuestionType = AiQuestionType.fromCode(newTypePosition) ?: AiQuestionType.AiQuestionType1
+                    AiQuestionManager.instance().curSingleAiQuestionType = AiQuestionType.fromCode(newTypePosition) ?: AiQuestionType.AiQuestionType1
+                }
+            }
         }
 
     }

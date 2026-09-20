@@ -14,6 +14,8 @@ import com.example.more.accessibility.clickPerformWithResult
 import com.example.more.accessibility.findNodeById
 import com.example.more.accessibility.findNodesByExpression
 import com.example.more.accessibility.findNodesById
+import com.example.more.leisu.data.AiQuestionManager
+import com.example.more.leisu.data.AiQuestionType
 import com.example.more.leisu.data.IDPostBasketballSingle
 import com.example.more.leisu.data.IDPostFootballSingle
 import com.example.more.leisu.data.IDPrePostHeader
@@ -478,8 +480,27 @@ fun NodeWrapper?.getAllText(): String {
     return ""
 }
 
+/**
+ * 这里做一下区分，需要多几种提问方式，避免AI回复重复率过高
+ */
+fun obtainCurAiQuestionTypeSingleEndStr(): String {
+  return  when(AiQuestionManager.instance().curSingleAiQuestionType){
+        AiQuestionType.AiQuestionType1 ->{
+            singleEndStrType1
+        }
+        AiQuestionType.AiQuestionType2 ->{
+            ""
+        }
+        AiQuestionType.AiQuestionType3 ->{
+            ""
+        }
+        AiQuestionType.AiQuestionType4 ->{
+            ""
+        }
+    }
+}
 
-const val singleEndStr =
+const val singleEndStrType1 =
     "一、为我的预测结果写一篇分析，分析要包含以下四点：" +
             "1.基本面：只保留核心干货，联赛排名、近 5 轮战绩、主客场表现、核心伤缺，不做多余抒情；不编造伤病，全部参考平台公开数据。" +
             "2.战术分析：聚焦攻防倾向，控球打法、反击效率、攻防短板；不虚构战术细节，贴合两队固有打法。" +
@@ -501,7 +522,27 @@ const val singleEndStr =
             "六、给出的回答不能与之前已有的回答重复太多或相似太多！如果之前我已经发送过极度相似的问题，你就从不同角度重写一篇分析。"
 
 
-const val multiEndStr =
+/**
+ * 这里做一下区分，需要多几种提问方式，避免AI回复重复率过高
+ */
+fun obtainCurAiQuestionTypeMultiEndStr(): String {
+    return  when(AiQuestionManager.instance().curMultiAiQuestionType){
+        AiQuestionType.AiQuestionType1 ->{
+            multiEndStrType1
+        }
+        AiQuestionType.AiQuestionType2 ->{
+            ""
+        }
+        AiQuestionType.AiQuestionType3 ->{
+            ""
+        }
+        AiQuestionType.AiQuestionType4 ->{
+            ""
+        }
+    }
+}
+
+const val multiEndStrType1 =
     "为我的预测结果写一篇250字的分析，" +
             "分析要包含基本面+战术分析+指数变化+观点推荐四个大点， " +
             "【硬性约束】所有要点只写核心干货，禁止额外修饰铺垫，不扩充细节，" +
@@ -548,7 +589,7 @@ fun transToSingleBasketballRaceModeHandicapAiQuestion(
             handicapText +
             valueText +
             "预测最终结果为" + resultStr + "\n" +
-            singleEndStr
+            obtainCurAiQuestionTypeSingleEndStr()
 }
 
 
@@ -577,7 +618,7 @@ fun transToSingleBasketballModeRaceTotalAiQuestion(
             "总得分大于" + totalScore + "时赔率为$leftValue，" +
             "总得分小于" + totalScore + "时赔率为${rightValue}，" +
             "预测最终结果为" + resultStr + "\n" +
-            singleEndStr
+            obtainCurAiQuestionTypeSingleEndStr()
 }
 
 
@@ -586,7 +627,7 @@ fun transToSingleBasketballModeRaceTotalAiQuestion(
  */
 fun transToSingleFootballModeProspectHandicapAnalyseAiQuestion(
     leagueName: String,
-    startTime : String,
+    startTime: String,
     leftTeamName: String,
     rightTeamName: String,
     leftPlate: String,
@@ -594,31 +635,31 @@ fun transToSingleFootballModeProspectHandicapAnalyseAiQuestion(
     rightValue: String,
     isLeftClicked: Boolean
 ): String {
-        //受让情况
-        val handicapText = if (leftPlate.toFloat() == 0F) {
-            "对阵双方互不让分，"
-        } else {
-            "其中" + rightTeamName +
-                    (if (leftPlate.toFloat() < 0F) "受让" else "让") +
-                    "${abs(leftPlate.toFloat())}分，" +
-                    leftTeamName +
-                    (if (leftPlate.toFloat() > 0F) "受让" else "让") +
-                    "${abs(leftPlate.toFloat())}" + "分，"
-        }
-        //赔率情况
-        val valueText = leftTeamName + "获胜赔率为" + leftValue + "，" +
-                rightTeamName + "获胜赔率为" + rightValue + "。"
-        val resultStr = if (isLeftClicked) {
-            leftTeamName + "赢得比赛。"
-        } else {
-            rightTeamName + "赢得比赛。"
-        }
-        return "在" + leagueName + "赛事中，" +
-                leftTeamName + "对阵" + rightTeamName + "，" +
-                handicapText +
-                valueText +
-                "预测最终结果为" + resultStr + "\n" +
-                singleEndStr
+    //受让情况
+    val handicapText = if (leftPlate.toFloat() == 0F) {
+        "对阵双方互不让分，"
+    } else {
+        "其中" + rightTeamName +
+                (if (leftPlate.toFloat() < 0F) "受让" else "让") +
+                "${abs(leftPlate.toFloat())}分，" +
+                leftTeamName +
+                (if (leftPlate.toFloat() > 0F) "受让" else "让") +
+                "${abs(leftPlate.toFloat())}" + "分，"
+    }
+    //赔率情况
+    val valueText = leftTeamName + "获胜赔率为" + leftValue + "，" +
+            rightTeamName + "获胜赔率为" + rightValue + "。"
+    val resultStr = if (isLeftClicked) {
+        leftTeamName + "赢得比赛。"
+    } else {
+        rightTeamName + "赢得比赛。"
+    }
+    return "在" + leagueName + "赛事中，" +
+            leftTeamName + "对阵" + rightTeamName + "，" +
+            handicapText +
+            valueText +
+            "预测最终结果为" + resultStr + "\n" +
+            obtainCurAiQuestionTypeSingleEndStr()
 }
 
 
@@ -635,18 +676,18 @@ fun transToSingleFootballModeProspectTotalScoreAnalyseAiQuestion(
     leftValue: String,
     rightValue: String,
 ): String {
-        val resultStr = if (isLeftClicked) {
-            "总得分大于$totalScore。"
-        } else {
-            "总得分小于$totalScore。"
-        }
-        //受让情况
-        return "在" + leagueName + "赛事中，" +
-                leftTeamName + "对阵" + rightTeamName + "，" +
-                "总得分大于" + totalScore + "时赔率为${leftValue}，" +
-                "总得分小于" + totalScore + "时赔率为${rightValue}，" +
-                "预测最终结果为" + resultStr + "\n" +
-                singleEndStr
+    val resultStr = if (isLeftClicked) {
+        "总得分大于$totalScore。"
+    } else {
+        "总得分小于$totalScore。"
+    }
+    //受让情况
+    return "在" + leagueName + "赛事中，" +
+            leftTeamName + "对阵" + rightTeamName + "，" +
+            "总得分大于" + totalScore + "时赔率为${leftValue}，" +
+            "总得分小于" + totalScore + "时赔率为${rightValue}，" +
+            "预测最终结果为" + resultStr + "\n" +
+            obtainCurAiQuestionTypeSingleEndStr()
 
 }
 
@@ -700,7 +741,7 @@ fun transToSingleFootballRaceAiQuestion(
             plateValue +
             handicapText +
             "预测最终结果为" + resultStr + "。\n" +
-            singleEndStr
+            obtainCurAiQuestionTypeSingleEndStr()
 }
 
 
@@ -746,7 +787,7 @@ fun PreMultiFootballHandicapData.transToMultiFootballHandicapAiQuestion(): Strin
             plateValue +
             handicapText +
             "预测最终结果为" + resultStr + "。" +
-            multiEndStr
+            obtainCurAiQuestionTypeMultiEndStr()
 }
 
 
@@ -758,7 +799,7 @@ fun PreMultiFootballTotalData.transToMultiFootballTotalAiQuestion(): String {
             leftTeamName + "对阵" + rightTeamName + "。" +
             "总进球数为${shootNumber}时赔率为${value}," +
             "预测最终进球数为${shootNumber}。" +
-            multiEndStr
+            obtainCurAiQuestionTypeMultiEndStr()
 }
 
 
@@ -793,7 +834,7 @@ fun PreMultiBasketballSelectedLeague.transToMultiBasketballHandicapTypeAnalyseAi
             plateValue +
             handicapText +
             "预测最终结果为" + resultStr + "。" +
-            multiEndStr
+            obtainCurAiQuestionTypeMultiEndStr()
 }
 
 
@@ -820,7 +861,7 @@ fun PreMultiBasketballSelectedLeague.transToMultiBasketballTotalScoreAnalyseAiQu
             leftTeamName + "对阵" + rightTeamName + "，" +
             plateValue +
             "预测最终结果为" + resultStr +
-            multiEndStr
+            obtainCurAiQuestionTypeMultiEndStr()
 
 }
 
