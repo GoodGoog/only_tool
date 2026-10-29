@@ -79,9 +79,18 @@ class PostFloatView(var mContext: Context, var attrs: AttributeSet, var defStyle
                 text.toString().getNumberTextAndFilterOtherChar().toInt().let { typePosition ->
                     val newTypePosition = (typePosition + 1) % 4
                     setText("→提问类型=$newTypePosition←")
-                    AiQuestionManager.instance().curMultiAiQuestionType = AiQuestionType.fromCode(newTypePosition) ?: AiQuestionType.AiQuestionType1
-                    AiQuestionManager.instance().curSingleAiQuestionType = AiQuestionType.fromCode(newTypePosition) ?: AiQuestionType.AiQuestionType1
+                    AiQuestionManager.instance().curMultiAiQuestionType =
+                        AiQuestionType.fromCode(newTypePosition) ?: AiQuestionType.AiQuestionType1
+                    AiQuestionManager.instance().curSingleAiQuestionType =
+                        AiQuestionType.fromCode(newTypePosition) ?: AiQuestionType.AiQuestionType1
                 }
+            }
+        }
+
+        binding.ivTipsAccess.apply {
+            setOnClickListener {
+                LiveEventBus.get<Int>(EventBusTag.CLEAR_ALL_SELECTED_MATCH)
+                    .post(1)
             }
         }
 

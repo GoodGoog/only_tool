@@ -87,13 +87,17 @@ class PrePostDispatch private constructor() : BaseLeisuDispatch() {
                     }
                 }
 
+            LiveEventBus.get<Int>(EventBusTag.CLEAR_ALL_SELECTED_MATCH)
+                .observe(this) {
+                    PreMultiFootball.instance().clearAll()
+                    PreMultiBasketball.instance().clearAll()
+                }
         }
     }
 
     override fun onEventCome(eventWrapper: EventWrapper, result: AnalyzeSourceResult) {
         this.result = result
         PreJumpUtils.instance().refreshResult(result)
-        Log.d(TAG, "onEventCome: !!!!-----------!type = " + eventWrapper.eventType.transAccessibilityEventToString())
         when (PreJumpUtils.instance().curPageType) {
             PostConfigData.ConfigType.SingleBasketball -> {
                 PreSingleBasketball.instance()

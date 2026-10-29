@@ -40,6 +40,10 @@ class EventBusTag {
         //传递向AI回答
         const val POST_CHARGE_ANSWER_FROM_AI = "POST_CHARGE_ANSWER_FROM_AI"
 
+        //清空赛事预览页-串关选择数据
+        const val CLEAR_ALL_SELECTED_MATCH = "CLEAR_ALL_SELECTED_MATCH"
+
+
     }
 }
 
