@@ -116,6 +116,19 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             FloatUtils.instance().showAllLeisuWindow(window.decorView as ViewGroup)
         }
 
+        binding.tvTransToStandardAnalyse.setOnClickListener {
+            //获取已复制的数据
+            val rawAnswer = parseTextFromSystem()
+            val newAnswer = rawAnswer
+                .replace(" ", "")
+                .replace("赔率", "对应")
+                .replace("盘面","")
+                .replace("资金","")
+
+            //将新结果替换至粘贴板
+            copyTextToSystem(newAnswer, true)
+        }
+
         //跳转雷速
 //        binding.tvStartLeisu.setOnClickListener {
 //            //initWindow()
@@ -133,18 +146,19 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
         LiveEventBus.get<Boolean>(EventBusTag.ACCESSIBILITY_SERVICE_START_OR_DESTROY)
             .observe(this) { isConnect ->
                 FloatUtils.instance().upAccessWindowContent(isConnect)
-                if (isConnect){
+                if (isConnect) {
                     //已连接
 
-                }else{
+                } else {
 
                 }
             }
 
         //向Ai提问
-        LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI).observe(this){questionStr ->
-            FloatUtils.instance().refreshAiQuestion(questionStr)
-        }
+        LiveEventBus.get<String>(EventBusTag.POST_CHARGE_QUESTION_TO_AI)
+            .observe(this) { questionStr ->
+                FloatUtils.instance().refreshAiQuestion(questionStr)
+            }
 //
 //        binding.tvTestZhipu.setOnClickListener {
 //
