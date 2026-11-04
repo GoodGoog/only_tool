@@ -121,7 +121,9 @@ class PostActivity : BaseActivity<MoreActivityTouchBinding, BaseViewModel>() {
             val rawAnswer = parseTextFromSystem()
             val newAnswer = rawAnswer
                 .replace(" ", "")
-                .replace("赔率", "对应")
+                .replace("\n\n","\n")  //不需要空行
+                .replace("赔率", "赔")
+                .replace("赔","对应")
                 .replace("盘面","")
                 .replace("资金","")
 
